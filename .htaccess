@@ -1,0 +1,4 @@
+# Sandbox mockup: jangan diindeks mesin pencari, dan paksa UTF-8
+Header set X-Robots-Tag "noindex, nofollow"
+AddDefaultCharset UTF-8
+DirectoryIndex index.html

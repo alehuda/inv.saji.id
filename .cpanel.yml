@@ -1,0 +1,8 @@
+---
+# Dijalankan cPanel setiap kali "Deploy HEAD Commit" di Git Version Control.
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/sajiid/public_html/inv/sandbox/
+    - /bin/mkdir -p $DEPLOYPATH
+    - /bin/cp index.html $DEPLOYPATH
+    - /bin/cp .htaccess $DEPLOYPATH
