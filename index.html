@@ -339,6 +339,34 @@ input,select{color:var(--arang)}
  .nav.col button{justify-content:center;padding:9px 0}
  .nav.col .grp{display:block;height:1px;padding:0;margin:6px 8px;background:var(--line);font-size:0;color:transparent}
 }
+
+/* ===== v0.11 ===== */
+.sdb{display:inline-flex;align-items:center;justify-content:center}
+.sdot{width:12px;height:12px;border-radius:50%;display:block}.sdot.on{background:#2E8B3D}.sdot.off{background:#B5B0AE}
+.ib.ro-i{cursor:default;border-color:transparent;background:transparent}
+.card.off,.itx tr.off td{opacity:.6}
+.itlay{flex:1;min-height:0;display:flex;gap:12px;margin-top:2px}
+.itlay .itwrap{flex:1;min-width:0}
+#fpanel{display:block;flex:none;width:370px;max-height:none;overflow:auto;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff}
+.fph{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+.fg.full{grid-column:1/-1}.fg.full .fl{columns:2;column-gap:14px}
+.fl .fo{break-inside:avoid}
+.fo{display:flex;align-items:center;gap:7px;width:100%;border:0;background:transparent;text-align:left;padding:3px 4px;border-radius:6px;cursor:pointer;font-size:13px}
+.fo:hover{background:var(--tint-t)}
+.fo .bx{width:14px;height:14px;border:1.4px solid #9A9594;border-radius:4px;flex:none;position:relative}
+.fo[aria-pressed="true"] .bx{background:var(--terakota);border-color:var(--terakota)}
+.fo[aria-pressed="true"] .bx::after{content:"";position:absolute;left:3.5px;top:.5px;width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.fo .tx{flex:1}.fo i{font-style:normal;color:var(--muted);font-size:12px}
+@container app (max-width:759px){.itlay{flex-direction:column}#fpanel{width:auto;max-height:45vh}.fg.full .fl{columns:1}}
+@container app (min-width:760px) and (max-width:1000px){#fpanel{width:310px}.fg.full .fl{columns:1}}
+/* bobot huruf lebih ringan */
+*{font-weight:300!important}
+b,strong,.nm b,.tile b,.note b,.card b,.kv b,.badge,.chip[aria-pressed="true"],.nav button[aria-current="true"],.diff,.cnt,.autotag{font-weight:400!important}
+.stat b,.hello b,.big,.mt,h1,h2,h3,.ph-h h3,.eyebrow{font-weight:500!important}
+button,.btn,.primary,.ghost,.sm,.chip,.tbtn,.back,.hlp,.tile,select,.hbtn{font-weight:400!important}
+label,.field label,.lab,.sec,.hg,.grp,.cw,.itx th,.tbl th,.tbl2 th{font-weight:400!important}
+svg text{font-weight:700!important}
 </style>
 
 <div class="shell hide" id="shell">
@@ -348,7 +376,7 @@ input,select{color:var(--arang)}
   </header>
   <aside class="side" id="side" aria-label="Daftar use case">
     <div class="side-h"><img class="logo" alt="Saji Resto &amp; Cafe" src="data:image/png;base64,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"><button class="btn" id="hideSide" type="button">Sembunyikan</button></div>
-    <div><div class="eyebrow">Inventory · Versi awal · v0.10</div><h1>Mockup Inventory Saji</h1></div>
+    <div><div class="eyebrow">Inventory · Versi awal · v0.11</div><h1>Mockup Inventory Saji</h1></div>
     <div class="sample">Nama bahan, jumlah, harga, dan satuan di sini adalah contoh untuk menguji tampilan dan alur. Bukan data Saji.</div>
     <div class="notes" id="notes"></div>
   </aside>
@@ -369,9 +397,8 @@ input,select{color:var(--arang)}
 var LOCS=["Gudang","Dapur","Bar","Exp"];
 var DIVOF={Gudang:"Purchasing",Dapur:"Kitchen",Bar:"Bar",Exp:"Exp"};
 var ROLES={
- purch:{n:"Admin Purchasing",div:"Purchasing",loc:"Gudang",price:true,desk:"Mengelola data induk, pembelian, dan kualifikasi halal",can:{item:1,aset:1,pr:1,pu:1,approve:1,pantau:1,kualif:1,opnameView:1,laporanOp:1}},
+ cfo:{n:"CFO",div:"Keuangan dan Purchasing",loc:"Gudang",price:true,desk:"Mengelola keuangan, data induk, pembelian, dan halal",can:{item:1,aset:1,pr:1,pu:1,approve:1,pantau:1,kualif:1,batal:1,opnameView:1,laporanOp:1}},
  stafpurch:{n:"Staff Purchasing",div:"Purchasing",loc:"Gudang",price:false,desk:"Menginput item dan aset, mencatat pembelian",can:{item:1,aset:1,pu:1,pantau:1,opnameView:1,inputHarga:1,laporanOp:1}},
- cfo:{n:"CFO",div:"Keuangan",loc:"Gudang",price:true,desk:"Meloloskan kualifikasi halal dan memantau",can:{kualif:1,batal:1,pantau:1,opnameView:1}},
  manajer:{n:"Manager",div:"Manajemen",loc:"Dapur",price:true,desk:"Mengelola resep, harga jual, dan seluruh operasional",can:{resep:1,harga:1,pr:1,pakai:1,waste:1,pantau:1,laporanOp:1,opnameView:1,pilihDiv:1}},
  kitchen:{n:"Head Kitchen",div:"Kitchen",loc:"Dapur",price:true,desk:"Mengelola resep dan operasional dapur",can:{resep:1,pr:1,pakai:1,waste:1,pantau:1,finalize:1,opnameView:1}},
  headexp:{n:"Head Experience",div:"Exp",loc:"Exp",price:true,desk:"Mengelola operasional experience",can:{pr:1,pakai:1,waste:1,pantau:1,finalize:1,opnameView:1}},
@@ -434,7 +461,7 @@ function seed(){
   {id:1,periode:"2026-09",lokasi:"Bar",auditor:"Auditor (staf Exp)",status:"Disetujui",disetujui:"Head Bar",tglSetuju:"2026-09-30",lines:{1:{utuh:"2",sisa:"500"},7:{utuh:"2000",sisa:null}},snap:{1:2550,7:2100},selisih:2},
   {id:2,periode:today().slice(0,7),lokasi:"Dapur",auditor:"Auditor (staf Exp)",status:"Menunggu persetujuan",lines:{4:{utuh:"7200",sisa:null}},snap:{4:7500},selisih:1}
  ];
- log=[];S={};nextId=1000;enrichItems();enrichHalal();items=items.concat(realItems());normalize();
+ log=[];S={};nextId=1000;enrichItems();items=items.concat(realItems());enrichHalal();normalize();
 }
 function dstr(n){var d=new Date();d.setDate(d.getDate()+n);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
 function halalDays(it){if(!it.halal||!it.halal.exp)return null;return Math.ceil((new Date(it.halal.exp)-new Date(dstr(0)))/86400000);}
@@ -554,14 +581,14 @@ var LQ={q:"",sort:"panggil",dir:1,f:{status:[],halal:[],tipe:[],kat:[],dept:[],s
 var NOCAT="(Belum dikategorikan)",NOSUP="(Belum ada supplier)",NOSTOR="(Belum diisi)";
 var FACETS=[
  ["status","Status",["Aktif","Nonaktif"],function(i){return [i.status];}],
- ["halal","Status halal",["Aman","Segera berakhir","Kedaluwarsa","Belum ada data","Tidak perlu"],function(i){return [halalState(i).l];}],
+ ["halal","Status halal",["Aman (sertifikat berlaku)","Aman (green list)","Segera berakhir","Kedaluwarsa","Tidak perlu"],function(i){return [halalState(i).l];}],
  ["tipe","Tipe",["Bahan","Alat","Supplies"],function(i){return [i.tipe];}],
  ["kat","Kategori",KAT_ITEM.concat([NOCAT]),function(i){return [i.kat||NOCAT];}],
  ["dept","Dept Usage",DEPTS,function(i){return i.depts||[];}],
  ["stor","Storage",["Dry","Chiller","Freezer",NOSTOR],function(i){return [i.stor||NOSTOR];}],
  ["sup","Supplier",SUPS.concat([NOSUP]),function(i){return (i.sup&&i.sup.length)?i.sup:[NOSUP];}]
 ];
-var COLS=[["panggil","Nama panggil"],["name","Nama lengkap"],["tipe","Tipe"],["kat","Kategori"],["dept","Dept"],["stor","Storage"],["sup","Supplier"],["satuan","Satuan beli"],["harga","Harga beli"],["status","Status"]];
+var COLS=[["panggil","Nama panggil"],["name","Nama lengkap"],["tipe","Tipe"],["kat","Kategori"],["dept","Dept"],["sup","Supplier"],["satuan","Satuan beli"],["harga","Harga beli"],["status","Status"]];
 function lqMatch(i,skip){return FACETS.every(function(fc){var sel=LQ.f[fc[0]];if(!sel.length||fc[0]===skip)return true;return fc[3](i).some(function(v){return sel.indexOf(v)>-1;});});}
 function lqBase(){var q=LQ.q.trim();return (q?find(q,items):items).filter(function(i){return !i.wip;});}
 function lqVal(i,k){switch(k){case "panggil":return (i.panggil||"").toLowerCase();case "name":return i.name.toLowerCase();case "tipe":return i.tipe;case "kat":return i.kat||"";case "dept":return (i.depts||[]).join("/");case "stor":return i.stor||"";case "sup":return (i.sup&&i.sup[0])||"";case "satuan":return i.beli?i.beli.u:"";case "harga":return (R().price&&i.price)?i.price.perBeli:null;case "status":return i.status;}return "";}
@@ -571,37 +598,47 @@ function lqList(){
 }
 function depTxt(i){return (i.depts||[]).join(", ")||"-";}
 function supTxt(i){return (i.sup&&i.sup.length)?esc(i.sup.join(", ")):'<span class="mut">Belum diisi</span>';}
+function dotToggle(it){
+ var on=it.status==="Aktif",t=on?"Aktif":"Nonaktif";
+ if(can("item")&&!it.wip)return '<button type="button" class="ib sdb" title="'+t+'" aria-label="'+t+(on?", klik untuk menonaktifkan":", klik untuk mengaktifkan")+'" data-act="'+(on?"nonaktif":"aktif")+':'+it.id+'"><i class="sdot '+(on?"on":"off")+'"></i></button>';
+ return '<span class="ib sdb ro-i" title="'+t+'" aria-label="'+t+'"><i class="sdot '+(on?"on":"off")+'"></i></span>';
+}
 function itemActs(it){
  var hs=halalState(it);
- var h=ib("halal","Status halal: "+hs.l+" ("+hs.t+")",'data-halal="'+it.id+'"',"hg-"+hs.k).replace(ic("halal"),halalIc(hs.k));
+ var h=dotToggle(it)+ib("halal","Status halal: "+hs.l+" ("+hs.t+")",'data-halal="'+it.id+'"',"hg-"+hs.k).replace(ic("halal"),halalIc(hs.k));
  if(can("item")&&!it.wip){
   h+=ib("edit","Ubah",'data-go="itemEdit" data-p="'+it.id+'"');
-  h+=it.status==="Nonaktif"?ib("on","Aktifkan",'data-act="aktif:'+it.id+'"',"ok"):ib("off","Nonaktifkan",'data-act="nonaktif:'+it.id+'"');
   h+=ib("trash","Hapus",'data-act="hapus:'+it.id+'"',"bad");
  }
  return h;
+}
+function fpanelHTML(base){
+ var order=["status","tipe","dept","stor","halal","sup","kat"];
+ return '<div class="fph"><b>Filter</b><button type="button" class="sm" data-fclear="1">Reset</button></div><div class="fgrid">'+order.map(function(k){
+  var fc=FACETS.filter(function(f){return f[0]===k;})[0];
+  return '<div class="fg'+(k==="kat"?' full':'')+'"><div class="sec">'+fc[1]+'</div><div class="fl">'+fc[2].map(function(v){var c=base.filter(function(i){return lqMatch(i,k)&&fc[3](i).indexOf(v)>-1;}).length;var on=LQ.f[k].indexOf(v)>-1;return '<button type="button" class="fo" data-fc="'+k+'::'+esc(v)+'" aria-pressed="'+on+'"><span class="bx"></span><span class="tx">'+esc(v)+'</span><i>'+c+'</i></button>';}).join("")+'</div></div>';
+ }).join("")+'</div>';
 }
 function listItems(){
  var arr=lqList(),n=arr.length,pages=Math.max(1,Math.ceil(n/LQ.size));if(LQ.page>pages)LQ.page=pages;if(LQ.page<1)LQ.page=1;
  var st=(LQ.page-1)*LQ.size,slice=arr.slice(st,st+LQ.size),cs=arr.slice(0,LQ.more),pr=R().price,total=items.filter(function(i){return !i.wip;}).length;
  var cards=cs.map(function(it){
   var pt=pr&&it.price&&it.beli?'<span>'+rp(it.price.perBeli)+' per '+esc(it.beli.u)+' · sejak '+esc(it.price.since)+'</span>':'';
-  return '<div class="card" data-view="'+it.id+'" style="cursor:pointer"><div class="row"><div class="nm"><b>'+esc(it.panggil)+(it.pgTodo?' <span class="dotw" title="Nama panggil sementara">•</span>':'')+'</b><span>'+esc(it.name)+'</span><span>'+esc(it.tipe)+' · '+esc(it.kat||"Belum dikategorikan")+' · '+esc(depTxt(it))+(it.stor?' · '+esc(it.stor):'')+'</span><span>Supplier: '+supTxt(it)+'</span>'+pt+'</div><div style="text-align:right">'+badge(it)+'</div></div><div class="ics">'+itemActs(it)+'</div></div>';
+  return '<div class="card'+(it.status==="Nonaktif"?' off':'')+'" data-view="'+it.id+'" style="cursor:pointer"><div class="row"><div class="nm"><b>'+esc(it.panggil)+(it.pgTodo?' <span class="dotw" title="Nama panggil sementara">•</span>':'')+'</b><span>'+esc(it.name)+'</span><span>'+esc(it.tipe)+' · '+esc(it.kat||"Belum dikategorikan")+' · '+esc(depTxt(it))+'</span><span>Supplier: '+supTxt(it)+'</span>'+pt+'</div></div><div class="ics">'+itemActs(it)+'</div></div>';
  }).join("")+(cs.length<n?'<button type="button" class="ghost" data-more="1">Muat lebih banyak ('+(n-cs.length)+' lagi)</button>':'');
- var head1='<tr class="gh"><th class="stk1" style="text-align:left">Item</th><th colspan="4">Klasifikasi</th><th colspan="3">Informasi pembelian</th><th rowspan="2">Status</th><th rowspan="2" class="stk2">Aksi</th></tr>';
- var order=[["panggil","Nama item","stk1"],["tipe","Tipe"],["kat","Kategori"],["dept","Dept"],["stor","Storage"],["sup","Supplier"],["satuan","Satuan beli"],["harga","Harga beli"]];
+ var head1='<tr class="gh"><th class="stk1" style="text-align:left">Item</th><th colspan="3">Klasifikasi</th><th colspan="3">Informasi pembelian</th><th rowspan="2" class="stk2">Aksi</th></tr>';
+ var order=[["panggil","Nama item","stk1"],["tipe","Tipe"],["kat","Kategori"],["dept","Dept"],["sup","Supplier"],["satuan","Satuan beli"],["harga","Harga beli"]];
  var head2='<tr class="ch">'+order.map(function(c){var on=LQ.sort===c[0];return '<th data-sort="'+c[0]+'"'+(c[2]?' class="'+c[2]+'"':'')+' aria-sort="'+(on?(LQ.dir>0?"ascending":"descending"):"none")+'">'+c[1]+(on?(LQ.dir>0?' ▲':' ▼'):'')+'</th>';}).join("")+'</tr>';
  var rows=slice.map(function(it){
-  return '<tr data-view="'+it.id+'"><td class="stk1"><b>'+esc(it.panggil)+'</b>'+(it.pgTodo?' <span class="dotw" title="Nama panggil sementara, belum ditetapkan Manager atau Head">•</span>':'')+'<div class="mut nm2">'+esc(it.name)+'</div></td><td>'+esc(it.tipe)+'</td><td>'+esc(it.kat||"-")+'</td><td>'+esc(depTxt(it))+'</td><td>'+esc(it.stor||"-")+'</td><td>'+supTxt(it)+'</td><td>'+(it.beli?esc(it.beli.u)+' · '+num(it.beli.isi)+' '+esc(it.bu):'-')+'</td><td class="r">'+(pr&&it.price?rp(it.price.perBeli):'-')+'</td><td>'+badge(it)+'</td><td class="stk2"><div class="ics">'+itemActs(it)+'</div></td></tr>';
+  return '<tr'+(it.status==="Nonaktif"?' class="off"':'')+' data-view="'+it.id+'"><td class="stk1"><b>'+esc(it.panggil)+'</b>'+(it.pgTodo?' <span class="dotw" title="Nama panggil sementara, belum ditetapkan Manager atau Head">•</span>':'')+'<div class="mut nm2">'+esc(it.name)+'</div></td><td>'+esc(it.tipe)+'</td><td>'+esc(it.kat||"-")+'</td><td>'+esc(depTxt(it))+'</td><td>'+supTxt(it)+'</td><td>'+(it.beli?esc(it.beli.u)+' · '+num(it.beli.isi)+' '+esc(it.bu):'-')+'</td><td class="r">'+(pr&&it.price?rp(it.price.perBeli):'-')+'</td><td class="stk2"><div class="ics">'+itemActs(it)+'</div></td></tr>';
  }).join("");
  $("list").innerHTML=n?'<div class="cards">'+cards+'</div><div class="tbl-wrap"><table class="itx"><thead>'+head1+head2+'</thead><tbody>'+rows+'</tbody></table></div>':'<div class="empty">Tidak ada item untuk pencarian atau filter ini. <button type="button" class="sm" data-fclear="1">Reset filter</button></div>';
  var tb=$("list").querySelector(".itx");if(tb){var g=tb.querySelector("tr.gh");tb.style.setProperty("--gh",g.getBoundingClientRect().height+"px");}
  $("cnt").textContent=n+(n!==total?" dari "+total:"")+" item";
  var act=0;Object.keys(LQ.f).forEach(function(k){act+=LQ.f[k].length;});
  $("fbtn").innerHTML=ic("filter")+' Filter'+(act?'<span class="n">'+act+'</span>':'');$("fbtn").setAttribute("aria-pressed",String(LQ.panel));
- var base=lqBase();
  $("fpanel").hidden=!LQ.panel;
- if(LQ.panel)$("fpanel").innerHTML=FACETS.map(function(fc){return '<div><div class="sec">'+fc[1]+'</div><div class="chips">'+fc[2].map(function(v){var c=base.filter(function(i){return lqMatch(i,fc[0])&&fc[3](i).indexOf(v)>-1;}).length;return '<button type="button" class="chip" data-fc="'+fc[0]+'::'+esc(v)+'" aria-pressed="'+(LQ.f[fc[0]].indexOf(v)>-1)+'">'+esc(v)+'<i>'+c+'</i></button>';}).join("")+'</div></div>';}).join("")+'<div><button type="button" class="sm" data-fclear="1">Reset semua filter</button></div>';
+ if(LQ.panel){var ps=$("fpanel").scrollTop;$("fpanel").innerHTML=fpanelHTML(lqBase());$("fpanel").scrollTop=ps;}
  var chips="";FACETS.forEach(function(fc){LQ.f[fc[0]].forEach(function(v){chips+='<button type="button" class="chip" data-fc="'+fc[0]+'::'+esc(v)+'" aria-pressed="true">'+fc[1]+': '+esc(v)+' ×</button>';});});
  $("chips").innerHTML=chips;$("chips").hidden=!chips;
  $("pager").innerHTML=n?'<span>'+(st+1)+'–'+Math.min(st+LQ.size,n)+' dari '+n+'</span><span class="sp"><label>Baris <select id="pgsize">'+[25,50,100].map(function(x){return '<option'+(x===LQ.size?' selected':'')+'>'+x+'</option>';}).join("")+'</select></label><button type="button" class="sm" data-pg="-1"'+(LQ.page<=1?' disabled':'')+' aria-label="Halaman sebelumnya">‹</button><span>Hal '+LQ.page+' / '+pages+'</span><button type="button" class="sm" data-pg="1"'+(LQ.page>=pages?' disabled':'')+' aria-label="Halaman berikutnya">›</button></span>':'';
@@ -612,7 +649,7 @@ SCREENS.items=function(el){
  el.innerHTML='<div class="itbar">'+(can("item")?'<div class="actrow"><button class="primary" type="button" data-go="itemNew">+ Tambah Item Baru</button></div>':'')+
   '<div class="field"><input type="text" id="q" autocomplete="off" aria-label="Cari item" placeholder="Cari nama, nama panggil, atau istilah lain" value="'+esc(LQ.q)+'"></div>'+
   '<div class="tools"><button type="button" class="chip" id="fbtn" aria-pressed="false"></button><label class="lg" for="sortsel">Urutkan</label><select id="sortsel">'+sortOpts.map(function(c){return '<option value="'+c[0]+'"'+(LQ.sort===c[0]?' selected':'')+'>'+c[1]+'</option>';}).join("")+'</select><button type="button" class="sm" id="sortdir" aria-label="Balik urutan">'+(LQ.dir>0?"A–Z ▲":"Z–A ▼")+'</button><span class="cnt" id="cnt"></span></div>'+
-  '<div id="fpanel" hidden></div><div class="chips" id="chips" hidden></div></div><div class="itwrap" id="list"></div><div class="pager" id="pager"></div>';
+  '<div class="chips" id="chips" hidden></div></div><div class="itlay"><aside id="fpanel" hidden></aside><div class="itwrap" id="list"></div></div><div class="pager" id="pager"></div>';
  listItems();
 };
 
@@ -634,18 +671,26 @@ function realItems(){
 function halalState(i){
  var h=i.halal;
  if(!h){if(i.tipe==="Bahan"||i.foodContact)return {k:"none",l:"Belum ada data",t:"Data halal belum diisi"};return {k:"na",l:"Tidak perlu",t:"Tidak memerlukan data halal"};}
- if(h.dasar!=="Sertifikat halal"||!h.exp)return {k:"ok",l:"Aman",t:"Daftar positif, tanpa masa berlaku"};
+ if(h.dasar!=="Sertifikat halal"||!h.exp)return {k:"ok",s:"green",l:"Aman (green list)",t:"Green list: daftar positif, tanpa masa berlaku"};
  var d=halalDays(i);
  if(d<0)return {k:"bad",d:d,l:"Kedaluwarsa",t:"Kedaluwarsa "+(-d)+" hari lalu"};
  if(d<=30)return {k:"warn",d:d,l:"Segera berakhir",t:"Berakhir "+d+" hari lagi"};
- return {k:"ok",d:d,l:"Aman",t:"Berlaku s.d. "+h.exp};
+ return {k:"ok",s:"valid",d:d,l:"Aman (sertifikat berlaku)",t:"Sertifikat berlaku s.d. "+h.exp};
 }
 var HCOL={ok:"#2E8B3D",warn:"#E3A400",bad:"#C62828",none:"#8A8A8A",na:"#BDB8B6"};
 function halalIc(k){var c=HCOL[k];return '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="stroke:none"><circle cx="12" cy="12" r="10.2" style="fill:'+c+';fill-opacity:.15;stroke:'+c+';stroke-width:1.6"/><text x="12" y="15.4" text-anchor="middle" style="font-size:9.5px;font-weight:700;fill:'+c+';stroke:none;font-family:Geeza Pro,Noto Naskh Arabic,serif">حلال</text></svg>';}
 function enrichHalal(){
+ var FC=["Food Packaging","Plastic Bag & Wrap","Disposable Cutlery"];
  items.forEach(function(i){
   if(i.status==="Menunggu kualifikasi"){i.status="Aktif";delete i.reason;}
-  if(!i.wip&&i.tipe==="Bahan"&&!i.halal&&!i.real)i.halal={dasar:"Sertifikat halal",no:"ID-CONTOH-"+i.id,exp:dstr(60+i.id*25),doc:true};
+  if(i.wip||i.halal)return;
+  var needs=i.tipe==="Bahan"||(i.tipe==="Supplies"&&FC.indexOf(i.sub)>-1);
+  if(!needs)return;
+  if(i.tipe==="Supplies")i.foodContact=true;
+  var h=((i.id*2654435761)>>>0)%100,halal={no:"ID-DUMMY-"+i.id,doc:true,dummy:true,jenis:i.tipe==="Supplies"?"Packaging":"Raw Material",penerbit:"BPJPH (data contoh)"};
+  if(h<12)halal.dasar="Daftar positif";
+  else{halal.dasar="Sertifikat halal";halal.exp=dstr(h<16?-(3+h*5):(h<28?(3+h):(40+((h*37)%650))));}
+  i.halal=halal;
  });
 }
 function closeModal(){var d=document.getElementById("dlg");d.hidden=true;d.innerHTML="";CONF=null;}
@@ -676,7 +721,7 @@ function openDetail(id){
   kv("Satuan dasar",esc(it.bu||"Belum diisi"))+kv("Satuan beli",it.beli?esc(it.beli.u)+" = "+num(it.beli.isi)+" "+esc(it.bu):"Belum diisi")+kv("Bundling opname",it.bund?esc(it.bund.u)+" = "+num(it.bund.isi)+" "+esc(it.bu):"Tidak ada")+
   (pr?kv("Harga beli",it.price?rp(it.price.perBeli)+(it.beli?" per "+esc(it.beli.u):"")+" · sejak "+esc(it.price.since):"Belum diisi"):"")+kv("Batas minimum",num(it.min)+" "+esc(it.bu))+kv("Stok saat ini",stok)+'</div>'+hist+
   '<div class="kv"><span>Halal</span><b><i class="hdot" style="background:'+HCOL[hs.k]+'"></i>'+esc(hs.l)+' · '+esc(hs.t)+'</b></div>'+
-  (hh?'<div class="lg">'+esc(hh.dasar)+(hh.no?' · No. '+esc(hh.no):'')+(hh.exp?' · berlaku s.d. '+esc(hh.exp):'')+(hh.doc?' · dokumen terlampir':' · dokumen belum diunggah')+'</div>':'')+
+  (hh?'<div class="lg">'+esc(hh.dasar)+(hh.no?' · No. '+esc(hh.no):'')+(hh.exp?' · berlaku s.d. '+esc(hh.exp):'')+(hh.doc?' · dokumen terlampir':' · dokumen belum diunggah')+(hh.dummy?' · data contoh (dummy)':'')+'</div>':'')+
   (it.pgTodo?'<div class="lg">Nama Panggil masih sementara (belum ditetapkan Manager atau Head).</div>':'')+(it.real?'<div class="lg">Data dari lembar staging (Master Data dan BOM).</div>':'')+
   '</div><div class="mft">'+actBtns(it)+'<button type="button" class="primary" data-mclose="1">Tutup</button></div></div>';
  d.hidden=false;
@@ -685,8 +730,8 @@ function openHalal(id){
  var it=byId(items,id);if(!it)return;var hs=halalState(it),hh=it.halal;
  var d=document.getElementById("dlg");
  d.innerHTML='<div class="mdl sm" role="dialog" aria-modal="true" aria-label="Status halal"><div class="mhd"><div><b class="mt">Status halal</b><div class="lg">'+esc(it.panggil)+' · '+esc(it.name)+'</div></div><button type="button" class="ib" data-mclose="1" aria-label="Tutup">×</button></div><div class="mbd"><div><i class="hdot" style="background:'+HCOL[hs.k]+'"></i><b>'+esc(hs.l)+'</b> · '+esc(hs.t)+'</div>'+
-  (hh?'<div class="kvg">'+['Jenis|'+(hh.jenis||"-"),'Dasar kehalalan|'+hh.dasar,'No. sertifikat|'+(hh.no||"-"),'Masa berlaku|'+(hh.exp||"Tanpa masa berlaku"),'Dokumen|'+(hh.doc?"Terlampir":"Belum diunggah")].map(function(x){var p=x.split("|");return '<div class="kv"><span>'+p[0]+'</span><b>'+esc(p[1])+'</b></div>';}).join("")+'</div>':'<p class="lg">Belum ada data halal untuk item ini.</p>')+
-  '<div class="lg">Hijau: aman. Kuning: berakhir dalam 30 hari. Merah: sudah kedaluwarsa. Hanya penanda, item tetap bisa dipakai.</div></div><div class="mft">'+
+  (hh?'<div class="kvg">'+['Jenis|'+(hh.jenis||"-"),'Dasar kehalalan|'+hh.dasar,'No. sertifikat|'+(hh.no||"-"),'Masa berlaku|'+(hh.exp||"Tanpa masa berlaku"),'Dokumen|'+(hh.doc?"Terlampir":"Belum diunggah"),'Catatan|'+(hh.dummy?"Data contoh (dummy)":"-")].map(function(x){var p=x.split("|");return '<div class="kv"><span>'+p[0]+'</span><b>'+esc(p[1])+'</b></div>';}).join("")+'</div>':'<p class="lg">Belum ada data halal untuk item ini.</p>')+
+  '<div class="lg">Hijau: aman, karena sertifikat masih berlaku atau karena green list (daftar positif). Kuning: berakhir dalam 30 hari. Merah: sudah kedaluwarsa. Hanya penanda, item tetap bisa dipakai.</div></div><div class="mft">'+
   (can("item")&&(hs.k==="warn"||hs.k==="bad")?'<button type="button" class="ghost" data-hrenew="'+it.id+'">Perbarui sertifikat (contoh)</button>':'')+
   (can("item")&&!it.wip&&(hs.k==="none"||hs.k==="warn"||hs.k==="bad")?'<button type="button" class="ghost" data-go="itemEdit" data-p="'+it.id+'">'+ic("edit")+' Ubah data halal</button>':'')+
   '<button type="button" class="primary" data-mclose="1">Tutup</button></div></div>';
@@ -725,7 +770,7 @@ function downloadCsv(name,rows){
  try{var txt="\ufeff"+rows.map(function(r){return r.map(csvEsc).join(",");}).join("\r\n");var b=new Blob([txt],{type:"text/csv;charset=utf-8"});var u=URL.createObjectURL(b);var a=document.createElement("a");a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},1500);toast("CSV diunduh: "+name);}
  catch(e){toast("Unduhan tidak didukung di pratinjau ini");}
 }
-function canFinalize(s){if(role==="purch")return s.lokasi==="Gudang";return can("finalize")&&DIVOF[s.lokasi]===R().div;}
+function canFinalize(s){if(role==="cfo")return s.lokasi==="Gudang";return can("finalize")&&DIVOF[s.lokasi]===R().div;}
 function $(id){return document.getElementById(id);}
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
 function R(){return ROLES[role]||ROLE_NONE;}
@@ -840,7 +885,7 @@ SCREENS.home=function(el){
  if(can("pantau"))st.push(["Di bawah minimum",low.length]);
  if(can("pu"))st.push(["Permintaan menunggu",openPr]);
  if(can("kualif")||can("item")){st.push(["Halal segera berakhir",hwc]);st.push(["Halal kedaluwarsa",hbc]);}
- if(can("finalize")||role==="purch")st.push(["Opname menunggu persetujuan",toFin]);
+ if(can("finalize")||role==="cfo")st.push(["Opname menunggu persetujuan",toFin]);
  if(can("pr")&&!can("pu")){var mine=prs.filter(function(p){return prVisible(p);}),ol=0,bl=0;mine.forEach(function(p){p.lines.forEach(function(l){if(isOpen(l)&&l.approval!=="Ditolak")ol++;if(l.status==="Dibeli")bl++;});});st.push(["PR saya menunggu dibeli",ol]);st.push(["PR saya sudah dibeli",bl]);}
  var exp=items.filter(function(i){var d=halalDays(i);return i.status==="Aktif"&&d!=null&&d>=0&&d<=30;});
  var h='<div class="hello"><b>Halo, '+esc(R().n)+'</b><span>'+esc(R().desk)+' · Divisi '+esc(R().div)+' · Lokasi kerja '+esc(R().loc)+'</span></div>';
@@ -848,7 +893,7 @@ SCREENS.home=function(el){
  h+=(can("pantau")&&low.length?'<div class="low">Di bawah batas minimum: '+low.map(function(i){return esc(i.panggil);}).join(", ")+'. <button type="button" data-go="pantau">Lihat</button></div>':'')+
   (can("pu")&&openPr?'<div class="low">'+openPr+' baris permintaan beli menunggu diproses. <button type="button" data-go="puList">Proses</button></div>':'')+
   ((can("kualif")||can("item"))&&hbc?'<div class="low">'+hbc+' item sertifikat halalnya sudah kedaluwarsa (penanda merah di Daftar Item). <button type="button" data-go="items">Buka</button></div>':'')+
-  ((can("finalize")||role==="purch")&&toFin?'<div class="low">'+toFin+' opname menunggu persetujuan Anda. <button type="button" data-go="opnameList">Tinjau</button></div>':'')+
+  ((can("finalize")||role==="cfo")&&toFin?'<div class="low">'+toFin+' opname menunggu persetujuan Anda. <button type="button" data-go="opnameList">Tinjau</button></div>':'')+
   ((can("kualif")||can("item"))&&exp.length?'<div class="low">Sertifikat halal berakhir dalam 30 hari: '+exp.map(function(i){return esc(i.panggil)+' ('+halalDays(i)+' hari)';}).join(", ")+'. <button type="button" data-go="items">Buka</button></div>':'');
  GROUPS.forEach(function(g){var ts=g[1].filter(allowed);if(!ts.length)return;h+='<div class="hg">'+g[0]+'</div><div class="tiles">'+ts.map(function(x){return '<button type="button" class="tile" data-go="'+x[0]+'"><b>'+x[1]+'</b><span>'+x[2]+'</span></button>';}).join("")+'</div>';});
  el.innerHTML=h;
@@ -977,7 +1022,7 @@ function gmApply(){
 }
 
 /* --- PR --- */
-function prVisible(p){return role==="purch"||role==="manajer"||role==="stafpurch"||p.div===R().div||p.peminta===R().n;}
+function prVisible(p){return role==="cfo"||role==="manajer"||role==="stafpurch"||p.div===R().div||p.peminta===R().n;}
 function prState(p){var o=p.lines.filter(isOpen).length;if(o===p.lines.length&&p.lines.every(function(l){return l.status==="Diminta";}))return "Diajukan";return o?"Sedang diproses":"Selesai";}
 function lnBadge(l){var c=l.status==="Dibeli"?"ok":(l.status==="Tidak jadi dibeli"?"bad":"");return '<span class="badge '+c+'">'+esc(l.status==="Diminta"?"Diajukan":l.status)+'</span>';}
 SCREENS.prList=function(el){
@@ -1431,17 +1476,17 @@ $("nav").addEventListener("click",function(e){});
 /* ---------- catatan samping ---------- */
 /* ---------- daftar use case (sidebar) ---------- */
 var NOTES=[
- ["items","stafpurch","Use case 1 · Daftar Item dan CRUD","Daftar Item memuat bahan dasar (WIP tidak ada di sini, hanya di Resep dan Stock Opname): 14 contoh dan 440 item nyata dari lembar staging (supplier, harga, dan halal belum terisi di sumbernya). Klik baris untuk detail lengkap (popup, termasuk foto). Cari, Filter, klik judul kolom untuk urut. Ikon halal berwarna: hijau aman, kuning berakhir dalam 30 hari, merah kedaluwarsa. Nonaktifkan dan Hapus meminta konfirmasi. Tombol panah di menu kiri mengecilkan menu menjadi ikon."],
- ["items","cfo","Penanda masa berlaku halal","Semua item di Daftar Item sudah halal. Yang dipantau hanya masa berlaku sertifikat lewat ikon halal: Kecap Manis kuning (kurang dari 30 hari), Mayones merah (kedaluwarsa). Klik ikonnya untuk rincian. Hanya penanda, item tetap bisa dipakai."],
+ ["items","stafpurch","Use case 1 · Daftar Item dan CRUD","Daftar Item memuat bahan dasar (WIP tidak ada di sini). Filter terbuka di sisi kiri tabel dan angkanya ikut menyesuaikan. Status aktif diubah lewat bulatan di kolom Aksi (hijau aktif, abu-abu nonaktif; sorot untuk keterangan). Klik baris untuk detail lengkap (popup, termasuk Storage dan foto). Seluruh data halal pada item nyata adalah data contoh (dummy)."],
+ ["items","cfo","CFO memegang hak Admin Purchasing","Peran Admin Purchasing digabung ke CFO: CFO bisa melihat dan mengubah semua yang dulu dipegang Admin Purchasing (item, aset, PR, belanja, laporan opname, persetujuan opname Gudang) dan juga melihat harga. Ikon halal di Daftar Item: hijau (sertifikat berlaku atau green list), kuning (berakhir dalam 30 hari), merah (kedaluwarsa). Klik ikonnya untuk rincian."],
  ["prNew","kitchen","Use case 2 · Head mengajukan PR","Head membuat PR (item dicari lewat nama panggil, atau tulis bebas) lalu memantau di Permintaan beli: status per baris (Diajukan, Dibeli sebagian, Dibeli, Tidak jadi dibeli) dengan jejak siapa membeli apa dan ke mana barangnya. Beranda Head menampilkan jumlah PR yang menunggu dan yang sudah dibeli."],
- ["puList","purch","Use case 2 · Purchasing belanja","Antrean belanja berisi PR yang belum selesai. Admin Purchasing menyetujui atau menolak (opsional), lalu Beli: supplier, jumlah, harga, dan tujuan (gudang atau dioper ke divisi). Bisa beli sebagian, atau Tidak jadi dibeli dengan alasan wajib. Stok bertambah, harga baru masuk riwayat, dan Head melihat statusnya. Ada juga belanja tanpa PR."],
+ ["puList","cfo","Use case 2 · Purchasing belanja","Antrean belanja berisi PR yang belum selesai. CFO menyetujui atau menolak (opsional), lalu Beli: supplier, jumlah, harga, dan tujuan (gudang atau dioper ke divisi). Bisa beli sebagian, atau Tidak jadi dibeli dengan alasan wajib. Stok bertambah, harga baru masuk riwayat, dan Head melihat statusnya. Ada juga belanja tanpa PR."],
  ["asetNew","stafpurch","Aset","Aset dicatat per unit fisik dan ambang Rp1.000.000 berlaku per unit. Coba harga Rp600.000: ditolak dan diarahkan ke item bertipe Alat."],
  ["resepNew","manajer","Resep","Head hanya bisa membuat resep untuk divisinya. Harga jual hanya muncul untuk Manager. COGS dan margin dihitung otomatis. WIP (Sambal Merah) bisa jadi bahan."],
  ["resepList","manajer","Ubah resep dan ganti merek","Di Resep, klik Ubah resep pada sebuah menu. Pada baris bahan, Ganti merek memilih SKU baru (kategori dan satuan dasar sama) dan bisa diterapkan ke semua resep yang memakai SKU lama. SKU lama menjadi Nonaktif jika tidak lagi dipakai resep mana pun. Coba Susu UHT di Caramel Latte."],
  ["pakai","kitchen","Pemakaian dan Ambil dari gudang","Pemakaian hanya dari penyimpanan divisi. Pilih Gudang di 'Dipakai' untuk melihat penolakan. 'Ambil dari gudang' memindahkan stok ke divisi."],
  ["waste","kitchen","Waste","Alasan dipilih dari daftar, stok lokasi berkurang."],
  ["opnameStart","auditor","Use case 3 · Tim menghitung stok","Auditor dari divisi lain menghitung item saja (bahan, alat, supplies; aset tidak termasuk). Kolom cari menempel di atas. Stok tercatat tersembunyi sampai hitungan diisi. Botol terbuka dicatat lewat kolom Sisa. Selesai dihitung dikirim ke Head divisi untuk disetujui."],
- ["opnameList","kitchen","Use case 3 · Head menyetujui","Head divisi yang diopname meninjau selisih, lalu Setujui (stok disesuaikan) atau Kembalikan untuk hitung ulang dengan catatan. Head Kitchen hanya bisa menyetujui Dapur, bukan Bar. Gudang disetujui Admin Purchasing. Coba sesi Dapur yang sedang menunggu."],
+ ["opnameList","kitchen","Use case 3 · Head menyetujui","Head divisi yang diopname meninjau selisih, lalu Setujui (stok disesuaikan) atau Kembalikan untuk hitung ulang dengan catatan. Head Kitchen hanya bisa menyetujui Dapur, bukan Bar. Gudang disetujui CFO. Coba sesi Dapur yang sedang menunggu."],
  ["opnameLaporan","manajer","Use case 3 · Laporan opname","Manager dan Purchasing melihat laporan per periode dan lokasi: item dihitung, berselisih, dan nilai selisih (hanya peran yang boleh melihat harga), bisa difilter dan diunduh sebagai CSV. Staff Purchasing tidak melihat nilai."],
  ["home","staf","Akses level Staff","Staff (dapur, Warehouse, Purchasing) tidak bisa mengajukan PR dan tidak melihat harga. Staff Purchasing tetap mengisi harga saat input item dan Belanja."],
  ["pantau","manajer","Inventory Monitoring","Stok terkini dengan tampilan bundling, di bawah minimum, riwayat opname, PR terbuka, dan nilai stok. Nilai stok tidak muncul untuk peran tanpa akses harga."],
