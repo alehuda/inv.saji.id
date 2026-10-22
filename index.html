@@ -391,6 +391,8 @@ svg text{font-weight:700!important}
 .bsel{width:auto;padding:4px 8px;font-size:13px}
 .minus{color:var(--maroon)}
 .bt .ics{flex-wrap:nowrap}.bt td.stk2,.bt th.stk2{min-width:118px}
+.frm-act{display:flex;gap:10px;justify-content:flex-end;margin-top:6px}
+.frm-act .primary,.frm-act .ghost{width:auto;padding:10px 26px}
 </style>
 
 <div class="shell hide" id="shell">
@@ -400,7 +402,7 @@ svg text{font-weight:700!important}
   </header>
   <aside class="side" id="side" aria-label="Daftar use case">
     <div class="side-h"><img class="logo" alt="Saji Resto &amp; Cafe" src="data:image/png;base64,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"><button class="btn" id="hideSide" type="button">Sembunyikan</button></div>
-    <div><div class="eyebrow">Inventory · Versi awal · v0.12</div><h1>Mockup Inventory Saji</h1></div>
+    <div><div class="eyebrow">Inventory · Versi awal · v0.13</div><h1>Mockup Inventory Saji</h1></div>
     <div class="sample">Nama bahan, jumlah, harga, dan satuan di sini adalah contoh untuk menguji tampilan dan alur. Bukan data Saji.</div>
     <div class="notes" id="notes"></div>
   </aside>
@@ -424,7 +426,7 @@ var DIVOF={Gudang:"Purchasing",Dapur:"Kitchen",Bar:"Bar",Exp:"Exp"};
 var ROLES={
  cfo:{n:"CFO",div:"Keuangan dan Purchasing",loc:"Gudang",price:true,desk:"Mengelola keuangan, data induk, pembelian, dan halal",can:{item:1,aset:1,pu:1,bel:1,bl:1,approve:1,pantau:1,kualif:1,batal:1,opnameView:1,laporanOp:1}},
  stafpurch:{n:"Staff Purchasing",div:"Purchasing",loc:"Gudang",price:false,desk:"Menginput item dan aset, mencatat pembelian",can:{item:1,aset:1,pu:1,bel:1,bl:1,pantau:1,opnameView:1,inputHarga:1,laporanOp:1}},
- manajer:{n:"Manager",div:"Manajemen",loc:"Dapur",price:true,desk:"Mengelola resep, harga jual, dan seluruh operasional",can:{resep:1,harga:1,bel:1,bl:1,min:1,pakai:1,waste:1,pantau:1,laporanOp:1,opnameView:1,pilihDiv:1}},
+ manajer:{n:"Manager",div:"Manajemen",loc:"Dapur",price:true,desk:"Mengelola resep, harga jual, dan seluruh operasional",can:{resep:1,harga:1,pr:1,bel:1,bl:1,min:1,pakai:1,waste:1,pantau:1,laporanOp:1,opnameView:1,pilihDiv:1}},
  kitchen:{n:"Head Kitchen",div:"Kitchen",loc:"Dapur",price:true,desk:"Mengelola resep dan operasional dapur",can:{resep:1,pr:1,bel:1,bl:1,min:1,pakai:1,waste:1,pantau:1,finalize:1,opnameView:1}},
  headexp:{n:"Head Experience",div:"Exp",loc:"Exp",price:true,desk:"Mengelola operasional experience",can:{pr:1,bel:1,bl:1,min:1,pakai:1,waste:1,pantau:1,finalize:1,opnameView:1}},
  bar:{n:"Head Bar",div:"Bar",loc:"Bar",price:true,desk:"Mengelola resep dan operasional bar",can:{resep:1,pr:1,bel:1,bl:1,min:1,pakai:1,waste:1,pantau:1,finalize:1,opnameView:1}},
@@ -498,11 +500,12 @@ function seed(){
   {id:2,kode:"BL-0002",tgl:"2026-10-21",oleh:"Staff Kitchen",div:"Kitchen",sup:"Minimarket",dest:"Dapur",catatan:"Kehabisan saat service",lines:[{item:5,qty:2,u:"Kg",hg:30000}]},
   {id:3,kode:"BL-0003",tgl:"2026-10-19",oleh:"Head Bar",div:"Bar",sup:"Minimarket",dest:"Bar",catatan:"",lines:[{item:2,qty:6,u:"Kotak",hg:16500}]}
  ];
+ genBelanja();
  sessions=[
-  {id:1,periode:"2026-09",lokasi:"Bar",auditor:"Auditor (staf Exp)",status:"Disetujui",disetujui:"Head Bar",tglSetuju:"2026-09-30",lines:{1:{utuh:"2",sisa:"500"},7:{utuh:"2000",sisa:null}},snap:{1:2550,7:2100},selisih:2},
-  {id:2,periode:today().slice(0,7),lokasi:"Dapur",auditor:"Auditor (staf Exp)",status:"Menunggu persetujuan",lines:{4:{utuh:"7200",sisa:null}},snap:{4:7500},selisih:1}
+  {id:1,periode:"2026-09",lokasi:"Bar",auditor:"Auditor (staf Exp)",status:"Disetujui",disetujui:"Head Bar",tglSetuju:"2026-09-30 16:20",upd:"2026-09-30 16:20",lines:{1:{utuh:"2",sisa:"500"},7:{utuh:"2000",sisa:null}},snap:{1:2550,7:2100},selisih:2},
+  {id:2,periode:today().slice(0,7),lokasi:"Dapur",auditor:"Auditor (staf Exp)",status:"Menunggu persetujuan",upd:"2026-10-21 09:40",tglSelesai:"2026-10-21 09:40",lines:{4:{utuh:"7200",sisa:null}},snap:{4:7500},selisih:1}
  ];
- log=[];S={};nextId=1000;enrichItems();items=items.concat(realItems());enrichHalal();normalize();
+ log=[];S={};nextId=1000;enrichItems();items=items.concat(realItems());enrichHalal();enrichStamps();normalize();
 }
 function dstr(n){var d=new Date();d.setDate(d.getDate()+n);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
 function halalDays(it){if(!it.halal||!it.halal.exp)return null;return Math.ceil((new Date(it.halal.exp)-new Date(dstr(0)))/86400000);}
@@ -817,6 +820,58 @@ function showTip(el){
  tip.style.left=left+"px";tip.style.top=top+"px";tip.style.visibility="visible";
 }
 function hideTip(){document.getElementById("tip").hidden=true;}
+
+var MVSRC="Transaksi";
+function nowStamp(){return today()+" "+now();}
+function fmtDT(st){if(!st)return "-";return fmtDate(st.slice(0,10))+(st.length>10?", "+st.slice(11,16):"");}
+function lastUpd(it){var m="";if(it.upd)LOCS.forEach(function(l){if(it.upd[l]&&it.upd[l].t>m)m=it.upd[l].t;});return m;}
+function enrichStamps(){
+ var SRC=["Stock opname","Belanja","Pemakaian","Waste"];
+ items.forEach(function(it){if(it.upd)return;it.upd={};LOCS.forEach(function(l,li){if(it.st[l]>0){var off=((it.id*7+li*3)%12)+1;it.upd[l]={t:dstr(-off)+" "+String(8+(it.id*3+li)%10).padStart(2,"0")+":"+String((it.id*17+li*11)%60).padStart(2,"0"),src:SRC[(it.id+li)%4]};}});});
+}
+function dmS(iso){var p=iso.split("-");return +p[2]+" "+MONS[+p[1]-1];}
+function isoAdd(base,off){var d=new Date(base+"T00:00:00");d.setDate(d.getDate()+off);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function genBelanja(){
+ var sd=20261022;function rnd(){sd=(sd*1103515245+12345)&0x7fffffff;return sd/0x7fffffff;}
+ function pick(a){return a[Math.floor(rnd()*a.length)];}
+ var CAND=[1,2,3,4,5,6,7,8,10,12,13,14],QTY={Kg:[2,12],Karton:[1,4],Botol:[2,8],Ikat:[1,3],Pack:[2,10],Pcs:[2,8],Jar:[2,6]};
+ var REQ=[["Head Kitchen","Kitchen"],["Head Kitchen","Kitchen"],["Head Bar","Bar"],["Head Bar","Bar"],["Head Experience","Exp"],["Manager","Manajemen"]];
+ var BUYER=["Staff Purchasing","Staff Warehouse","Staff Purchasing"],SUPB=["Supplier A (WhatsApp)","Pasar","Toko Sumber Rejeki","Marketplace","Pasar"];
+ var TOLAK=["stok Gudang masih cukup","anggaran bulan ini","diganti item lain"],BATAL=["Supplier kosong","Harga naik","Barang tidak tersedia"];
+ var BASE="2026-10-21";
+ function price(it){return Math.round(it.price.perBeli*(0.94+rnd()*0.14)/500)*500;}
+ function qtyOf(u){var r=QTY[u]||[1,4];return r[0]+Math.floor(rnd()*(r[1]-r[0]+1));}
+ var P=[],B=[];
+ for(var n=0;n<46;n++){
+  var rq=pick(REQ),recent=rnd()<.22,off=recent?Math.floor(rnd()*6):7+Math.floor(rnd()*46),tgl=isoAdd(BASE,-off),k=1+Math.floor(rnd()*3),used={},lines=[];
+  for(var j=0;j<k;j++){
+   var id=pick(CAND);if(used[id])continue;used[id]=1;var it=byId(items,id),u=it.beli.u,q=qtyOf(u),r=rnd();
+   var st=recent?(r<.4?"Diajukan":r<.75?"Disetujui":"Dibeli"):(r<.65?"Dibeli":r<.75?"Dibeli sebagian":r<.88?"Ditolak":"Tidak jadi dibeli");
+   var l={id:lines.length+1,item:id,free:"",qty:q,u:u,f:it.beli.isi,note:"",status:"Diminta",approval:"",dest:"",bought:0,trail:[dmS(tgl)+" · Diajukan oleh "+rq[0]]};
+   if(st==="Disetujui"||st==="Dibeli"||st==="Dibeli sebagian"||st==="Tidak jadi dibeli"){if(st!=="Dibeli"||rnd()<.85){l.approval="Disetujui";l.trail.push(dmS(tgl)+" · Disetujui CFO");}}
+   if(st==="Ditolak"){l.approval="Ditolak";l.trail.push(dmS(tgl)+" · Ditolak CFO ("+pick(TOLAK)+")");}
+   if(st==="Dibeli"||st==="Dibeli sebagian"){
+    var by=pick(BUYER),sup=pick(SUPB),tb=isoAdd(tgl,1+Math.floor(rnd()*3)),dest=rnd()<.7?"Masuk gudang":"Dioper ke "+(rq[1]==="Bar"?"Bar":"Dapur"),got=st==="Dibeli"?q:Math.max(1,Math.ceil(q/2));
+    l.status=st;l.bought=got;l.sup=sup;l.harga=price(it);l.tglBeli=tb;l.dest=dest;
+    l.trail.push(dmS(tb)+" · Dibeli "+got+" "+u+" dari "+sup+", "+dest.toLowerCase()+" ("+by+")");
+   }
+   if(st==="Tidak jadi dibeli"){var al=pick(BATAL);l.status=st;l.reason=al;l.trail.push(dmS(isoAdd(tgl,1))+" · Tidak jadi dibeli: "+al+" (Staff Purchasing)");}
+   lines.push(l);
+  }
+  P.push({tgl:tgl,peminta:rq[0],div:rq[1],butuh:"",lines:lines});
+ }
+ P.sort(function(a,b){return a.tgl<b.tgl?-1:1;});
+ P.forEach(function(p,i){p.id=7+i;p.kode="PR-"+String(p.id).padStart(4,"0");prs.push(p);});
+ var WHO=[["Staff Warehouse","Purchasing"],["Staff Kitchen","Kitchen"],["Head Bar","Bar"],["Staff Purchasing","Purchasing"],["Head Kitchen","Kitchen"],["Head Experience","Exp"],["Staff Warehouse","Purchasing"]];
+ var SUPL=["Pasar","Minimarket","Toko Sumber Rejeki","Marketplace","Pasar","Minimarket"],CT=["Belanja pasar pagi","Kehabisan saat service","Stok darurat event","","Titipan dari dapur","Belanja mingguan",""],DST=["Gudang","Gudang","Dapur","Bar","Exp"];
+ for(var m=0;m<38;m++){
+  var w=pick(WHO),tg=isoAdd(BASE,-Math.floor(rnd()*50)),kk=1+Math.floor(rnd()*3),us={},ln=[];
+  for(var a=0;a<kk;a++){var id2=pick(CAND);if(us[id2])continue;us[id2]=1;var it2=byId(items,id2);ln.push({item:id2,qty:qtyOf(it2.beli.u),u:it2.beli.u,hg:price(it2)});}
+  B.push({tgl:tg,oleh:w[0],div:w[1],sup:pick(SUPL),dest:pick(DST),catatan:pick(CT),lines:ln});
+ }
+ B.sort(function(a,b){return a.tgl<b.tgl?-1:1;});
+ B.forEach(function(b,i){b.id=4+i;b.kode="BL-"+String(b.id).padStart(4,"0");buys.push(b);});
+}
 function tglS(){var d=new Date();return d.getDate()+" "+["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"][d.getMonth()];}
 function isOpen(l){return ["Diminta","Dibeli sebagian"].indexOf(l.status)>-1;}
 function usedBy(it){
@@ -871,7 +926,7 @@ function find(q,list){
 }
 function toast(m){var t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(toast._t);toast._t=setTimeout(function(){t.classList.remove("on");},2400);}
 function addLog(type,text){log.unshift({t:now(),who:R().n,type:type,text:text});}
-function move(loc,id,d){var it=byId(items,id);it.st[loc]=Math.max(0,Math.round((it.st[loc]+d)*100)/100);}
+function move(loc,id,d){var it=byId(items,id);it.st[loc]=Math.max(0,Math.round((it.st[loc]+d)*100)/100);it.upd=it.upd||{};it.upd[loc]={t:nowStamp(),src:MVSRC};}
 function badge(it){
  if(it.status==="Nonaktif")return '<span class="badge bad">Nonaktif</span>'+(it.reason?' <span class="badge">'+esc(it.reason)+'</span>':'');
  if(it.status==="Aktif")return '<span class="badge ok">Aktif</span>';
@@ -987,7 +1042,7 @@ SCREENS.itemNew=function(el){
  '<div id="f-cert" class="two"><div class="field"><label for="f-no">No. Sertifikat</label><input type="text" id="f-no"></div><div class="field"><label for="f-bl2">Masa berlaku</label><input type="date" id="f-bl2"></div></div>'+
  '<button class="chip" type="button" id="doc" aria-pressed="false">Unggah dokumen pendukung (contoh)</button></div>'+
  '<div class="sec">Foto</div><div class="field"><label for="f-foto">Foto item (opsional)</label><div class="fto"><img id="f-foto-img" alt="Pratinjau foto" hidden><input type="file" id="f-foto" accept="image/*"><button type="button" class="sm" id="f-foto-rm" hidden>Hapus foto</button><div class="lg">Otomatis dikecilkan (maksimal sekitar 100 KB). Hanya tampil di detail item, tidak di daftar.</div></div></div>'+
- '<div class="err" id="err" hidden></div><button class="primary" type="button" data-save="item">Simpan item</button>';
+ '<div class="err" id="err" hidden></div><div class="frm-act"><button class="ghost" type="button" data-cancel="1">Batalkan</button><button class="primary" type="button" data-save="item">Simpan item</button></div>';
 };
 SCREENS.itemEdit=function(el,p){
  var it=byId(items,+p);SCREENS.itemNew(el);S.editItem=it;head("Ubah item",true);
@@ -1094,12 +1149,12 @@ function prState(p){var o=p.lines.filter(isOpen).length;if(o===p.lines.length&&p
 function lnBadge(l){var c=l.status==="Dibeli"?"ok":(l.status==="Tidak jadi dibeli"?"bad":"");return '<span class="badge '+c+'">'+esc(l.status==="Diminta"?"Diajukan":l.status)+'</span>';}
 SCREENS.prNew=function(el){
  head("Minta beli",true);S.onlyActive=true;S.freeText=true;S.noWip=true;
- el.innerHTML='<div class="card"><span class="lab">Peminta</span><div><b>'+esc(R().n)+'</b> <span class="lg">'+esc(R().div)+'</span></div></div><div class="field"><label for="p-bt">Dibutuhkan sebelum</label><input type="date" id="p-bt"></div>'+
- picker("Cari item (hanya yang Aktif)")+'<div id="sel"></div><div class="err" id="err" hidden></div><button class="primary" type="button" data-save="pr">Kirim permintaan</button>';
+ el.innerHTML='<div class="card"><span class="lab">Pengaju</span><div><b>'+esc(R().n)+'</b> <span class="lg">'+esc(R().div)+'</span></div></div><div class="field"><label for="p-bt">Dibutuhkan sebelum</label><input type="date" id="p-bt"></div>'+
+ picker("Cari item (hanya yang Aktif)")+'<div id="sel"></div><div class="err" id="err" hidden></div><div class="frm-act"><button class="ghost" type="button" data-cancel="1">Batalkan</button><button class="primary" type="button" data-save="pr">Kirim permintaan</button></div>';
 };
 
 /* --- Purchase Update --- */
-var BQ={q:"",sort:"tgl",dir:-1,st:[],jenis:"Semua",div:"Semua"};
+var BQ={q:"",sort:"tgl",dir:-1,st:[],jenis:"Semua",div:"Semua",page:1,size:25,more:25};
 var BST=["Diajukan","Disetujui","Dibeli sebagian","Dibeli","Ditolak","Tidak jadi dibeli"];
 function lnStatus(l){if(l.approval==="Ditolak")return "Ditolak";if(l.status==="Diminta")return l.approval==="Disetujui"?"Disetujui":"Diajukan";return l.status;}
 function stCls(st){return st==="Dibeli"?"ok":((st==="Ditolak"||st==="Tidak jadi dibeli")?"bad":"");}
@@ -1131,24 +1186,26 @@ function bActs(r){
  return h;
 }
 function renderBel(){
- var k=BQ.sort,d=BQ.dir,pr=R().price;
+ var k=BQ.sort,d=BQ.dir,pr=R().price,showAct=can("approve")||can("pu");
  var arr=bFilter(false).sort(function(a,b){var x=bVal(a,k),y=bVal(b,k),ex=(x===""||x==null),ey=(y===""||y==null);if(ex&&ey)return 0;if(ex)return 1;if(ey)return -1;return (typeof x==="number"?x-y:String(x).localeCompare(String(y),"id"))*d;});
- var base=bFilter(true);
- var cols=[["tgl","Tanggal"],["kode","Kode"],["jenis","Jenis"],["itemTxt","Item"],["qty","Jumlah"],["oleh","Peminta / pembeli"],["div","Divisi"],["sup","Supplier"],["dest","Tujuan"]].concat(pr?[["harga","Harga satuan"]]:[]).concat([["status","Status"]]);
- var th=cols.map(function(c,i){var on=BQ.sort===c[0];return '<th data-bsort="'+c[0]+'"'+(i===0?' class="stk1"':'')+' aria-sort="'+(on?(BQ.dir>0?"ascending":"descending"):"none")+'">'+c[1]+(on?(BQ.dir>0?' ▲':' ▼'):'')+'</th>';}).join("")+'<th class="stk2">Aksi</th>';
- var rows=arr.map(function(r){return '<tr data-bview="'+r.key+'"><td class="stk1">'+esc(fmtDate(r.tgl))+'</td><td>'+esc(r.kode)+'</td><td>'+esc(r.jenis)+'</td><td><b>'+esc(r.itemTxt)+'</b></td><td class="r">'+num(r.qty)+' '+esc(r.u)+'</td><td>'+esc(r.oleh)+'</td><td>'+esc(r.div)+'</td><td>'+(r.sup?esc(r.sup):'<span class="mut">-</span>')+'</td><td>'+(r.dest?esc(r.dest):'<span class="mut">-</span>')+'</td>'+(pr?'<td class="r">'+(r.harga?rp(r.harga)+' / '+esc(r.u):'-')+'</td>':'')+'<td><span class="badge '+stCls(r.status)+'">'+esc(r.status)+'</span></td><td class="stk2"><div class="ics">'+bActs(r)+'</div></td></tr>';}).join("");
- var cards=arr.map(function(r){return '<div class="card" data-bview="'+r.key+'" style="cursor:pointer"><div class="row"><div class="nm"><b>'+esc(r.itemTxt)+'</b><span>'+num(r.qty)+' '+esc(r.u)+' · '+esc(r.kode)+' · '+esc(r.jenis)+'</span><span>'+esc(r.oleh)+' · '+esc(r.div)+' · '+esc(fmtDate(r.tgl))+'</span>'+(r.sup?'<span>'+esc(r.sup)+(r.dest?' → '+esc(r.dest):'')+'</span>':'')+'</div><span class="badge '+stCls(r.status)+'">'+esc(r.status)+'</span></div><div class="ics">'+bActs(r)+'</div></div>';}).join("");
- $("blist").innerHTML=arr.length?'<div class="cards">'+cards+'</div><div class="tbl-wrap"><table class="bt"><thead><tr>'+th+'</tr></thead><tbody>'+rows+'</tbody></table></div>':'<div class="empty">Tidak ada data belanja untuk filter ini.</div>';
- $("bchips").innerHTML=BST.map(function(st){var c=base.filter(function(r){return r.status===st;}).length;return '<button type="button" class="chip" data-bst="'+esc(st)+'" aria-pressed="'+(BQ.st.indexOf(st)>-1)+'">'+esc(st)+' <i style="font-style:normal;color:var(--muted)">'+c+'</i></button>';}).join("");
- $("bcnt").textContent=arr.length+" baris";
+ var n=arr.length,pages=Math.max(1,Math.ceil(n/BQ.size));if(BQ.page>pages)BQ.page=pages;if(BQ.page<1)BQ.page=1;
+ var st=(BQ.page-1)*BQ.size,slice=arr.slice(st,st+BQ.size),cs=arr.slice(0,BQ.more),base=bFilter(true);
+ var cols=[["tgl","Tanggal"],["kode","Kode"],["jenis","Jenis"],["itemTxt","Item"],["qty","Jumlah"],["oleh","Pengaju"]].concat(pr?[["harga","Harga satuan"]]:[]).concat([["status","Status"]]);
+ var th=cols.map(function(c,i){var on=BQ.sort===c[0];return '<th data-bsort="'+c[0]+'"'+(i===0?' class="stk1"':'')+' aria-sort="'+(on?(BQ.dir>0?"ascending":"descending"):"none")+'">'+c[1]+(on?(BQ.dir>0?' ▲':' ▼'):'')+'</th>';}).join("")+(showAct?'<th class="stk2">Aksi</th>':'');
+ var rows=slice.map(function(r){return '<tr data-bview="'+r.key+'"><td class="stk1">'+esc(fmtDate(r.tgl))+'</td><td>'+esc(r.kode)+'</td><td>'+esc(r.jenis)+'</td><td><b>'+esc(r.itemTxt)+'</b></td><td class="r">'+num(r.qty)+' '+esc(r.u)+'</td><td>'+esc(r.oleh)+'</td>'+(pr?'<td class="r">'+(r.harga?rp(r.harga)+' / '+esc(r.u):'-')+'</td>':'')+'<td><span class="badge '+stCls(r.status)+'">'+esc(r.status)+'</span></td>'+(showAct?'<td class="stk2"><div class="ics">'+bActs(r)+'</div></td>':'')+'</tr>';}).join("");
+ var cards=cs.map(function(r){return '<div class="card" data-bview="'+r.key+'" style="cursor:pointer"><div class="row"><div class="nm"><b>'+esc(r.itemTxt)+'</b><span>'+num(r.qty)+' '+esc(r.u)+' · '+esc(r.kode)+' · '+esc(r.jenis)+'</span><span>'+esc(r.oleh)+' · '+esc(fmtDate(r.tgl))+'</span></div><span class="badge '+stCls(r.status)+'">'+esc(r.status)+'</span></div>'+(showAct&&bActs(r)?'<div class="ics">'+bActs(r)+'</div>':'')+'</div>';}).join("")+(cs.length<n?'<button type="button" class="ghost" data-bmore="1">Muat lebih banyak ('+(n-cs.length)+' lagi)</button>':'');
+ $("blist").innerHTML=n?'<div class="cards">'+cards+'</div><div class="tbl-wrap"><table class="bt"><thead><tr>'+th+'</tr></thead><tbody>'+rows+'</tbody></table></div>':'<div class="empty">Tidak ada data belanja untuk filter ini.</div>';
+ $("bchips").innerHTML=BST.map(function(x){var c=base.filter(function(r){return r.status===x;}).length;return '<button type="button" class="chip" data-bst="'+esc(x)+'" aria-pressed="'+(BQ.st.indexOf(x)>-1)+'">'+esc(x)+' <i style="font-style:normal;color:var(--muted)">'+c+'</i></button>';}).join("");
+ $("bcnt").textContent=n+" baris";
+ $("bpager").innerHTML=n?'<span>'+(st+1)+'–'+Math.min(st+BQ.size,n)+' dari '+n+'</span><span class="sp"><label>Baris <select id="bpgsize">'+[25,50,100].map(function(x){return '<option'+(x===BQ.size?' selected':'')+'>'+x+'</option>';}).join("")+'</select></label><button type="button" class="sm" data-bpg="-1"'+(BQ.page<=1?' disabled':'')+' aria-label="Halaman sebelumnya">‹</button><span>Hal '+BQ.page+' / '+pages+'</span><button type="button" class="sm" data-bpg="1"'+(BQ.page>=pages?' disabled':'')+' aria-label="Halaman berikutnya">›</button></span>':'';
 }
 SCREENS.puList=function(el){
  head("Daftar Belanja",true);
- var divs=["Semua","Kitchen","Bar","Exp","Purchasing"];
+ var divs=["Semua","Kitchen","Bar","Exp","Purchasing","Manajemen"];
  el.innerHTML='<div class="itbar"><div class="actrow" style="gap:8px">'+(can("pr")?'<button class="ghost" type="button" data-go="prNew" style="width:auto;padding:8px 18px">+ Ajukan PR</button>':'')+'<button class="primary" type="button" data-go="blNew">+ Belanja Langsung</button></div>'+
-  '<div class="field"><input type="text" id="bq" autocomplete="off" aria-label="Cari belanja" placeholder="Cari item, kode, peminta, atau supplier" value="'+esc(BQ.q)+'"></div>'+
+  '<div class="field"><input type="text" id="bq" autocomplete="off" aria-label="Cari belanja" placeholder="Cari item, kode, pengaju, atau supplier" value="'+esc(BQ.q)+'"></div>'+
   '<div class="tools"><label class="lg" for="bjenis">Jenis</label><select id="bjenis" class="bsel">'+opts(["Semua","PR","Langsung"],BQ.jenis)+'</select><label class="lg" for="bdiv">Divisi</label><select id="bdiv" class="bsel">'+opts(divs,BQ.div)+'</select><span class="cnt" id="bcnt"></span></div>'+
-  '<div class="chips" id="bchips"></div></div><div class="itlay"><div class="itwrap" id="blist"></div></div>';
+  '<div class="chips" id="bchips"></div></div><div class="itlay"><div class="itwrap" id="blist"></div></div><div class="pager" id="bpager"></div>';
  renderBel();
 };
 SCREENS.prList=SCREENS.puList;
@@ -1157,7 +1214,7 @@ function openBel(key){
  var kv=function(k,v){return '<div class="kv"><span>'+k+'</span><b>'+v+'</b></div>';};
  var d=document.getElementById("dlg");
  d.innerHTML='<div class="mdl" role="dialog" aria-modal="true" aria-label="Detail belanja"><div class="mhd"><div><b class="mt">'+esc(r.itemTxt)+'</b><div class="lg">'+esc(r.kode)+' · '+esc(r.jenis==="PR"?"Purchase Request":"Belanja langsung (laporan)")+'</div></div><button type="button" class="ib" data-mclose="1" aria-label="Tutup">×</button></div><div class="mbd"><div class="kvg">'+
-  kv("Status",'<span class="badge '+stCls(r.status)+'">'+esc(r.status)+'</span>')+kv("Tanggal",esc(fmtDate(r.tgl)))+kv("Jumlah",num(r.qty)+" "+esc(r.u))+kv(r.jenis==="PR"?"Peminta":"Dibeli oleh",esc(r.oleh)+" · "+esc(r.div))+kv("Supplier",r.sup?esc(r.sup):"-")+kv("Tujuan",r.dest?esc(r.dest):"-")+(pr?kv("Harga satuan",r.harga?rp(r.harga)+" / "+esc(r.u):"-"):"")+(r.jenis==="PR"&&r.p.butuh?kv("Dibutuhkan sebelum",esc(fmtDate(r.p.butuh))):"")+'</div>'+
+  kv("Status",'<span class="badge '+stCls(r.status)+'">'+esc(r.status)+'</span>')+kv("Tanggal",esc(fmtDate(r.tgl)))+kv("Jumlah",num(r.qty)+" "+esc(r.u))+kv(r.jenis==="PR"?"Pengaju":"Dibeli oleh",esc(r.oleh)+" · "+esc(r.div))+kv("Supplier",r.sup?esc(r.sup):"-")+kv("Tujuan",r.dest?esc(r.dest):"-")+(pr?kv("Harga satuan",r.harga?rp(r.harga)+" / "+esc(r.u):"-"):"")+(r.jenis==="PR"&&r.p.butuh?kv("Dibutuhkan sebelum",esc(fmtDate(r.p.butuh))):"")+'</div>'+
   (r.jenis==="PR"?((r.l.note?'<div class="lg">Catatan: '+esc(r.l.note)+'</div>':'')+'<div class="sec">Jejak</div>'+(r.l.trail||[]).map(function(t){return '<div class="trail">'+esc(t)+'</div>';}).join("")):(r.b.catatan?'<div class="lg">Catatan: '+esc(r.b.catatan)+'</div>':'')+'<div class="lg">Belanja langsung bersifat laporan: pembelian sudah terjadi sebelum diinput.</div>')+
   '</div><div class="mft">'+bActs(r)+'<button type="button" class="primary" data-mclose="1">Tutup</button></div></div>';
  d.hidden=false;
@@ -1168,7 +1225,7 @@ SCREENS.blNew=function(el){
  '<div class="two"><div class="field"><label for="b-tg">Tanggal belanja *</label><input type="date" id="b-tg" value="'+today()+'"></div><div class="field"><label for="b-sup">Tempat / supplier *</label><select id="b-sup">'+opts(SUPS,"Pasar")+'</select></div></div>'+
  '<div class="two"><div class="field"><label data-h="b-oleh" data-t="Dibeli oleh">Dibeli oleh <span class="autotag">otomatis</span></label><div class="card ro">'+esc(R().n)+' · '+esc(R().div)+'</div></div><div class="field"><label for="b-dst">Tujuan barang *</label><select id="b-dst">'+opts(["Gudang","Dapur","Bar","Exp"],R().loc)+'</select></div></div>'+
  picker("Tambah item yang dibeli (hanya yang Aktif)")+'<div id="sel"></div>'+
- '<div class="field"><label for="b-ct">Catatan</label><input type="text" id="b-ct" placeholder="mis. belanja pasar pagi"></div><button class="chip" type="button" id="nota" aria-pressed="false">Tambah foto nota (contoh)</button><div class="err" id="err" hidden></div><button class="primary" type="button" data-save="bl">Simpan laporan belanja</button>';
+ '<div class="field"><label for="b-ct">Catatan</label><input type="text" id="b-ct" placeholder="mis. belanja pasar pagi"></div><button class="chip" type="button" id="nota" aria-pressed="false">Tambah foto nota (contoh)</button><div class="err" id="err" hidden></div><div class="frm-act"><button class="ghost" type="button" data-cancel="1">Batalkan</button><button class="primary" type="button" data-save="bl">Simpan laporan belanja</button></div>';
 };
 SCREENS.puForm=function(el,p){
  head("Belanja",true);S.onlyActive=true;S.noWip=true;S.fromPr=null;
@@ -1196,7 +1253,7 @@ function renderPuRest(){
  '<div class="field" id="tj-dv" hidden><label for="u-dv">Divisi tujuan *</label><select id="u-dv">'+opts(["Dapur","Bar","Exp"],fp?({Kitchen:"Dapur",Bar:"Bar",Exp:"Exp"}[fp.pr.div]||"Dapur"):"Dapur")+'</select></div>'+
  '<button class="chip" type="button" id="nota" aria-pressed="false">Tambah foto nota (contoh)</button></div>'+
  '<div id="pu-cancel" hidden><div class="field"><label for="u-alasan">Alasan tidak jadi dibeli *</label><input type="text" id="u-alasan" placeholder="mis. stok supplier kosong"></div></div>'+
- '<div class="err" id="err" hidden></div><button class="primary" type="button" data-save="pu">Simpan</button>';
+ '<div class="err" id="err" hidden></div><div class="frm-act"><button class="ghost" type="button" data-cancel="1">Batalkan</button><button class="primary" type="button" data-save="pu">Simpan</button></div>';
  S.tujuan="Gudang";
 }
 
@@ -1233,7 +1290,7 @@ SCREENS.opnameList=function(el){
   var sm=sesSum(s),act="";
   if(s.status==="Draft"&&can("opname"))act='<button type="button" class="sm" data-go="opnameSes" data-p="'+s.id+'">Lanjutkan</button>';
   else if(s.status!=="Draft"){var rv=s.status==="Menunggu persetujuan"&&canFinalize(s);act='<button type="button" class="sm'+(rv?' ok':'')+'" data-go="opnameDetail" data-p="'+s.id+'">'+(rv?'Tinjau dan setujui':'Lihat hasil')+'</button>';}
-  return '<div class="card"><div class="row"><div class="nm"><b>'+esc(s.periode)+' · '+esc(s.lokasi)+'</b><span>Auditor: '+esc(s.auditor)+(s.status!=="Draft"?' · '+sm.n+' item dihitung, '+sm.sel+' berselisih':'')+'</span></div><span class="badge '+sesCls(s)+'">'+esc(s.status)+'</span></div>'+(s.status==="Draft"&&s.note?'<div class="err">Dikembalikan: '+esc(s.note)+'</div>':'')+(s.status==="Menunggu persetujuan"&&!canFinalize(s)?'<div class="lg">Menunggu persetujuan Head divisi '+esc(DIVOF[s.lokasi])+'.</div>':'')+(act?'<div>'+act+'</div>':'')+'</div>';
+  return '<div class="card"><div class="row"><div class="nm"><b>'+esc(s.periode)+' · '+esc(s.lokasi)+'</b><span>Auditor: '+esc(s.auditor)+(s.status!=="Draft"?' · '+sm.n+' item dihitung, '+sm.sel+' berselisih':'')+(s.upd?' · Diperbarui '+esc(fmtDT(s.upd)):'')+'</span></div><span class="badge '+sesCls(s)+'">'+esc(s.status)+'</span></div>'+(s.status==="Draft"&&s.note?'<div class="err">Dikembalikan: '+esc(s.note)+'</div>':'')+(s.status==="Menunggu persetujuan"&&!canFinalize(s)?'<div class="lg">Menunggu persetujuan Head divisi '+esc(DIVOF[s.lokasi])+'.</div>':'')+(act?'<div>'+act+'</div>':'')+'</div>';
  }).join("")||'<div class="empty">Belum ada sesi opname.</div>';
  el.innerHTML=h;
 };
@@ -1273,7 +1330,7 @@ function sesSum(s){var r=sesRows(s);return {n:r.length,sel:r.filter(function(x){
 SCREENS.opnameDetail=function(el,p){
  var s=byId(sessions,+p);S.ses=s;head("Hasil opname "+s.lokasi,true);
  var rows=sesRows(s),sm=sesSum(s),pr=R().price;
- var h='<div class="card"><div class="row"><div class="nm"><b>'+esc(s.periode)+' · '+esc(s.lokasi)+'</b><span>Auditor: '+esc(s.auditor)+(s.disetujui?' · Disetujui '+esc(s.disetujui)+' ('+esc(s.tglSetuju)+')':'')+'</span></div><span class="badge '+sesCls(s)+'">'+esc(s.status)+'</span></div></div>';
+ var h='<div class="card"><div class="row"><div class="nm"><b>'+esc(s.periode)+' · '+esc(s.lokasi)+'</b><span>Auditor: '+esc(s.auditor)+(s.disetujui?' · Disetujui '+esc(s.disetujui)+' ('+esc(fmtDT(s.tglSetuju))+')':'')+(s.upd?' · Diperbarui '+esc(fmtDT(s.upd)):'')+'</span></div><span class="badge '+sesCls(s)+'">'+esc(s.status)+'</span></div></div>';
  h+='<div class="stats"><div class="stat"><b>'+sm.n+'</b><span>Item dihitung</span></div><div class="stat"><b>'+sm.sel+'</b><span>Item berselisih</span></div>'+(pr?'<div class="stat"><b>'+rp(sm.nilai)+'</b><span>Nilai selisih</span></div>':'')+'</div>';
  h+='<div class="tbl2-wrap"><table class="tbl2"><thead><tr><th>Item</th><th>Tercatat</th><th>Hitung</th><th>Selisih</th>'+(pr?'<th>Nilai</th>':'')+'</tr></thead><tbody>'+rows.map(function(r){return '<tr'+(Math.abs(r.d)>0.001?' class="sel"':'')+'><td><b>'+esc(r.it.panggil)+'</b></td><td class="r">'+esc(fmtStock(r.it,r.sys))+'</td><td class="r">'+esc(fmtStock(r.it,r.hit))+'</td><td class="r"><span class="diff '+(r.d<0?'neg':r.d>0?'pos':'')+'">'+(r.d>0?"+":"")+num(r.d)+' '+esc(r.it.bu)+'</span></td>'+(pr?'<td class="r">'+rp(r.d*ppb(r.it))+'</td>':'')+'</tr>';}).join("")+'</tbody></table></div>';
  if(s.status==="Menunggu persetujuan"&&canFinalize(s))h+='<div class="field"><label for="rej-note">Catatan (wajib jika dikembalikan)</label><input type="text" id="rej-note" placeholder="mis. hitung ulang Telur"></div><div class="two"><button class="ghost" type="button" data-rej="'+s.id+'">Kembalikan untuk hitung ulang</button><button class="primary" type="button" data-fin="'+s.id+'">Setujui</button></div>';
@@ -1291,7 +1348,7 @@ function renderLaporan(el){
  var pr=R().price,tn=0,ts=0;list.forEach(function(s){var m=sesSum(s);tn+=m.nilai;ts+=m.sel;});
  var h='<div class="two"><div class="field"><label for="rp-per">Periode</label><select id="rp-per">'+opts(["Semua"].concat(pers),S.rp.per)+'</select></div><div class="field"><label for="rp-lok">Lokasi</label><select id="rp-lok">'+opts(["Semua"].concat(LOCS),S.rp.lok)+'</select></div></div>';
  h+='<div class="stats"><div class="stat"><b>'+list.length+'</b><span>Sesi opname</span></div><div class="stat"><b>'+ts+'</b><span>Item berselisih</span></div>'+(pr?'<div class="stat"><b>'+rp(tn)+'</b><span>Nilai selisih</span></div>':'')+'</div>';
- h+=list.length?'<div class="tbl2-wrap"><table class="tbl2"><thead><tr><th>Periode</th><th>Lokasi</th><th>Auditor</th><th>Status</th><th>Dihitung</th><th>Berselisih</th>'+(pr?'<th>Nilai selisih</th>':'')+'</tr></thead><tbody>'+list.map(function(s){var m=sesSum(s);return '<tr data-go="opnameDetail" data-p="'+s.id+'"><td>'+esc(s.periode)+'</td><td>'+esc(s.lokasi)+'</td><td>'+esc(s.auditor)+'</td><td><span class="badge '+sesCls(s)+'">'+esc(s.status)+'</span></td><td class="r">'+m.n+'</td><td class="r">'+m.sel+'</td>'+(pr?'<td class="r">'+rp(m.nilai)+'</td>':'')+'</tr>';}).join("")+'</tbody></table></div><button class="ghost" type="button" data-csv="all">Unduh CSV ringkasan</button>':'<div class="empty">Tidak ada sesi untuk filter ini.</div>';
+ h+=list.length?'<div class="tbl2-wrap"><table class="tbl2"><thead><tr><th>Periode</th><th>Lokasi</th><th>Auditor</th><th>Status</th><th>Dihitung</th><th>Berselisih</th><th>Diperbarui</th>'+(pr?'<th>Nilai selisih</th>':'')+'</tr></thead><tbody>'+list.map(function(s){var m=sesSum(s);return '<tr data-go="opnameDetail" data-p="'+s.id+'"><td>'+esc(s.periode)+'</td><td>'+esc(s.lokasi)+'</td><td>'+esc(s.auditor)+'</td><td><span class="badge '+sesCls(s)+'">'+esc(s.status)+'</span></td><td class="r">'+m.n+'</td><td class="r">'+m.sel+'</td><td>'+esc(fmtDT(s.upd))+'</td>'+(pr?'<td class="r">'+rp(m.nilai)+'</td>':'')+'</tr>';}).join("")+'</tbody></table></div><button class="ghost" type="button" data-csv="all">Unduh CSV ringkasan</button>':'<div class="empty">Tidak ada sesi untuk filter ini.</div>';
  el.innerHTML=h;
 }
 
@@ -1300,8 +1357,8 @@ var MQ={q:"",sort:"panggil",dir:1,st:[],all:false,page:1,size:25};
 var MST=["Aman","Menipis","Habis","Tanpa batas"];
 function stokState(it){var t=tot(it);if(it.min>0){if(t<=0)return "Habis";if(t<it.min)return "Menipis";return "Aman";}return "Tanpa batas";}
 function stCls2(x){return x==="Aman"?"ok":((x==="Menipis"||x==="Habis")?"bad":"");}
-function mBase(){var q=MQ.q.trim();var a=q?find(q,items):items;return a.filter(function(i){return MQ.all||tot(i)>0||i.min>0;});}
-function mVal(i,k){switch(k){case "panggil":return (i.panggil||"").toLowerCase();case "tipe":return i.tipe;case "total":return tot(i);case "min":return i.min;case "status":return MST.indexOf(stokState(i));case "nilai":return R().price?tot(i)*ppb(i):null;default:return i.st[k]==null?0:i.st[k];}}
+function mBase(){var q=MQ.q.trim();var a=q?find(q,items):items;return a.filter(function(i){return !i.wip&&(MQ.all||tot(i)>0||i.min>0);});}
+function mVal(i,k){switch(k){case "panggil":return (i.panggil||"").toLowerCase();case "tipe":return i.tipe;case "total":return tot(i);case "min":return i.min;case "status":return MST.indexOf(stokState(i));case "nilai":return R().price?tot(i)*ppb(i):null;case "upd":return lastUpd(i)||"";default:return i.st[k]==null?0:i.st[k];}}
 function mList(){var k=MQ.sort,d=MQ.dir;return mBase().filter(function(i){return !MQ.st.length||MQ.st.indexOf(stokState(i))>-1;}).sort(function(a,b){var x=mVal(a,k),y=mVal(b,k);if(x==null&&y==null)return 0;if(x==null)return 1;if(y==null)return -1;return (typeof x==="number"?x-y:String(x).localeCompare(String(y),"id"))*d;});}
 function mActs(it){return ib("eye","Lihat detail stok",'data-mview="'+it.id+'"')+(can("min")?ib("edit","Atur batas minimum",'data-mmin="'+it.id+'"'):"");}
 function renderMon(){
@@ -1309,10 +1366,11 @@ function renderMon(){
  var st=(MQ.page-1)*MQ.size,slice=arr.slice(st,st+MQ.size),base=mBase();
  var nilai=base.reduce(function(a,i){return a+tot(i)*ppb(i);},0);
  $("mstats").innerHTML='<div class="stat"><b>'+base.length+'</b><span>Item dipantau</span></div><div class="stat"><b>'+base.filter(function(i){return stokState(i)==="Menipis";}).length+'</b><span>Menipis</span></div><div class="stat"><b>'+base.filter(function(i){return stokState(i)==="Habis";}).length+'</b><span>Habis</span></div>'+(pr?'<div class="stat"><b>'+rp(nilai)+'</b><span>Nilai stok</span></div>':'');
- var cols=[["panggil","Nama item"],["tipe","Tipe"],["Gudang","Gudang"],["Dapur","Dapur"],["Bar","Bar"],["Exp","Exp"],["total","Total"],["min","Minimum"],["status","Status"]].concat(pr?[["nilai","Nilai"]]:[]);
+ var mx="";base.forEach(function(i){var u=lastUpd(i);if(u>mx)mx=u;});$("mupd").textContent="Data stok diperbarui terakhir: "+fmtDT(mx);
+ var cols=[["panggil","Nama item"],["tipe","Tipe"],["Gudang","Gudang"],["Dapur","Dapur"],["Bar","Bar"],["Exp","Exp"],["total","Total"],["status","Status"]].concat(pr?[["nilai","Nilai"]]:[]).concat([["upd","Pembaruan terakhir"]]);
  var th=cols.map(function(c,i){var on=MQ.sort===c[0];return '<th data-msort="'+c[0]+'"'+(i===0?' class="stk1"':'')+' aria-sort="'+(on?(MQ.dir>0?"ascending":"descending"):"none")+'">'+c[1]+(on?(MQ.dir>0?' ▲':' ▼'):'')+'</th>';}).join("")+'<th class="stk2">Aksi</th>';
- var rows=slice.map(function(it){var ss=stokState(it);return '<tr data-mview="'+it.id+'"><td class="stk1"><b>'+esc(it.panggil)+'</b>'+(it.wip?' <span class="badge">WIP</span>':'')+'<div class="mut nm2">'+esc(it.name)+'</div></td><td>'+esc(it.tipe)+'</td>'+["Gudang","Dapur","Bar","Exp"].map(function(l){return '<td class="r">'+num(it.st[l])+'</td>';}).join("")+'<td class="r"><b>'+esc(fmtStock(it,tot(it)))+'</b></td><td class="r">'+(it.min?num(it.min)+' '+esc(it.bu):'-')+'</td><td><span class="badge '+stCls2(ss)+'">'+ss+'</span></td>'+(pr?'<td class="r">'+rp(tot(it)*ppb(it))+'</td>':'')+'<td class="stk2"><div class="ics">'+mActs(it)+'</div></td></tr>';}).join("");
- var cards=slice.map(function(it){var ss=stokState(it);return '<div class="card" data-mview="'+it.id+'" style="cursor:pointer"><div class="row"><div class="nm"><b>'+esc(it.panggil)+'</b><span>'+LOCS.map(function(l){return l+" "+num(it.st[l]);}).join(" · ")+' '+esc(it.bu)+'</span><span>Total '+esc(fmtStock(it,tot(it)))+(it.min?' · minimum '+num(it.min):'')+'</span></div><span class="badge '+stCls2(ss)+'">'+ss+'</span></div><div class="ics">'+mActs(it)+'</div></div>';}).join("");
+ var rows=slice.map(function(it){var ss=stokState(it);return '<tr data-mview="'+it.id+'"><td class="stk1"><b>'+esc(it.panggil)+'</b>'+(it.wip?' <span class="badge">WIP</span>':'')+'<div class="mut nm2">'+esc(it.name)+'</div></td><td>'+esc(it.tipe)+'</td>'+["Gudang","Dapur","Bar","Exp"].map(function(l){return '<td class="r">'+num(it.st[l])+'</td>';}).join("")+'<td class="r"><b>'+esc(fmtStock(it,tot(it)))+'</b></td><td><span class="badge '+stCls2(ss)+'">'+ss+'</span></td>'+(pr?'<td class="r">'+rp(tot(it)*ppb(it))+'</td>':'')+'<td>'+esc(fmtDT(lastUpd(it)))+'</td><td class="stk2"><div class="ics">'+mActs(it)+'</div></td></tr>';}).join("");
+ var cards=slice.map(function(it){var ss=stokState(it);return '<div class="card" data-mview="'+it.id+'" style="cursor:pointer"><div class="row"><div class="nm"><b>'+esc(it.panggil)+'</b><span>'+LOCS.map(function(l){return l+" "+num(it.st[l]);}).join(" · ")+' '+esc(it.bu)+'</span><span>Total '+esc(fmtStock(it,tot(it)))+'</span><span>Diperbarui '+esc(fmtDT(lastUpd(it)))+'</span></div><span class="badge '+stCls2(ss)+'">'+ss+'</span></div><div class="ics">'+mActs(it)+'</div></div>';}).join("");
  $("mlist").innerHTML=n?'<div class="cards">'+cards+'</div><div class="tbl-wrap"><table class="bt"><thead><tr>'+th+'</tr></thead><tbody>'+rows+'</tbody></table></div>':'<div class="empty">Tidak ada item untuk filter ini.</div>';
  $("mchips").innerHTML=MST.map(function(x){var c=base.filter(function(i){return stokState(i)===x;}).length;return '<button type="button" class="chip" data-mst="'+x+'" aria-pressed="'+(MQ.st.indexOf(x)>-1)+'">'+x+' <i style="font-style:normal;color:var(--muted)">'+c+'</i></button>';}).join("")+'<button type="button" class="chip" data-mall="1" aria-pressed="'+MQ.all+'">Semua item</button>';
  $("mcnt").textContent=n+" item";
@@ -1320,12 +1378,12 @@ function renderMon(){
 }
 SCREENS.pantau=function(el){
  head("Monitoring Stock",true);
- el.innerHTML='<div class="itbar"><div class="stats" id="mstats"></div><div class="field"><input type="text" id="mq" autocomplete="off" aria-label="Cari item" placeholder="Cari item" value="'+esc(MQ.q)+'"></div><div class="tools"><div class="chips" id="mchips"></div><span class="cnt" id="mcnt"></span></div></div><div class="itlay"><div class="itwrap" id="mlist"></div></div><div class="pager" id="mpager"></div>';
+ el.innerHTML='<div class="itbar"><div class="stats" id="mstats"></div><div class="lg" id="mupd"></div><div class="field"><input type="text" id="mq" autocomplete="off" aria-label="Cari item" placeholder="Cari item" value="'+esc(MQ.q)+'"></div><div class="tools"><div class="chips" id="mchips"></div><span class="cnt" id="mcnt"></span></div></div><div class="itlay"><div class="itwrap" id="mlist"></div></div><div class="pager" id="mpager"></div>';
  renderMon();
 };
 function openStok(id){
  var it=byId(items,id);if(!it)return;var d=document.getElementById("dlg"),pr=R().price,ss=stokState(it);
- d.innerHTML='<div class="mdl sm" role="dialog" aria-modal="true" aria-label="Detail stok"><div class="mhd"><div><b class="mt">'+esc(it.panggil)+'</b><div class="lg">'+esc(it.name)+'</div></div><button type="button" class="ib" data-mclose="1" aria-label="Tutup">×</button></div><div class="mbd"><div class="kvg">'+LOCS.map(function(l){return '<div class="kv"><span>'+l+'</span><b>'+esc(fmtStock(it,it.st[l]))+'</b></div>';}).join("")+'</div><div class="kv"><span>Total</span><b>'+esc(fmtStock(it,tot(it)))+'</b></div><div class="kv"><span>Batas minimum</span><b>'+(it.min?num(it.min)+' '+esc(it.bu):'Belum diatur')+'</b></div><div class="kv"><span>Status stok</span><b>'+ss+'</b></div>'+(pr?'<div class="kv"><span>Nilai stok</span><b>'+rp(tot(it)*ppb(it))+'</b></div>':'')+'<div class="lg">Stok berubah lewat belanja, pemakaian, waste, dan opname, sehingga tidak diedit langsung. Yang bisa diubah di sini hanya batas minimum.</div></div><div class="mft">'+(can("min")?'<button type="button" class="ghost" data-mmin="'+it.id+'">Atur batas minimum</button>':'')+'<button type="button" class="primary" data-mclose="1">Tutup</button></div></div>';
+ d.innerHTML='<div class="mdl sm" role="dialog" aria-modal="true" aria-label="Detail stok"><div class="mhd"><div><b class="mt">'+esc(it.panggil)+'</b><div class="lg">'+esc(it.name)+'</div></div><button type="button" class="ib" data-mclose="1" aria-label="Tutup">×</button></div><div class="mbd"><div class="kvg">'+LOCS.map(function(l){return '<div class="kv"><span>'+l+'</span><b>'+esc(fmtStock(it,it.st[l]))+'</b><span style="text-transform:none;letter-spacing:0">'+(it.upd&&it.upd[l]?'Diperbarui '+esc(fmtDT(it.upd[l].t))+' · '+esc(it.upd[l].src):'Belum ada pembaruan')+'</span></div>';}).join("")+'</div><div class="kv"><span>Total</span><b>'+esc(fmtStock(it,tot(it)))+'</b></div><div class="kv"><span>Pembaruan terakhir</span><b>'+esc(fmtDT(lastUpd(it)))+'</b></div><div class="kv"><span>Batas minimum</span><b>'+(it.min?num(it.min)+' '+esc(it.bu):'Belum diatur')+'</b></div><div class="kv"><span>Status stok</span><b>'+ss+'</b></div>'+(pr?'<div class="kv"><span>Nilai stok</span><b>'+rp(tot(it)*ppb(it))+'</b></div>':'')+'<div class="lg">Stok berubah lewat belanja, pemakaian, waste, dan opname, sehingga tidak diedit langsung. Yang bisa diubah di sini hanya batas minimum.</div></div><div class="mft">'+(can("min")?'<button type="button" class="ghost" data-mmin="'+it.id+'">Atur batas minimum</button>':'')+'<button type="button" class="primary" data-mclose="1">Tutup</button></div></div>';
  d.hidden=false;
 }
 function openMin(id){
@@ -1440,7 +1498,7 @@ function save(kind){
   if(!reqMark(["u-jm"].concat((R().price||can("inputHarga"))?["u-hg"]:[])))return;
   if((R().price||can("inputHarga"))&&!(hg4>0)){err("Harga per satuan beli wajib diisi.");return;}
   var dest=S.tujuan==="Gudang"?"Gudang":$("u-dv").value;
-  move(dest,it2.id,jm*it2.beli.isi);
+  MVSRC="Belanja (PR)";move(dest,it2.id,jm*it2.beli.isi);
   var chg="";if(it2.price&&hg4!==it2.price.perBeli){chg=" · harga baru tercatat ("+rp(hg4)+")";if(!it2.hist)it2.hist=[{tgl:it2.price.since,harga:it2.price.perBeli}];it2.hist.push({tgl:today(),harga:hg4});}
   it2.price={perBeli:hg4,since:today()};
   var destTxt=S.tujuan==="Gudang"?"masuk gudang":"dioper ke "+dest;
@@ -1456,7 +1514,7 @@ function save(kind){
   if(S.lines.some(function(l){return !(l.hg>0);})){err("Isi harga per satuan untuk setiap item.");return;}
   var dst=$("b-dst").value,bsup=$("b-sup").value,btg=$("b-tg").value||today();
   var nb={id:nextId++,kode:"BL-"+String(buys.length+1).padStart(4,"0"),tgl:btg,oleh:R().n,div:R().div,sup:bsup,dest:dst,catatan:$("b-ct").value.trim(),lines:[]};
-  S.lines.forEach(function(l){var it=byId(items,l.item),u=units(it)[l.ui||0];move(dst,it.id,baseQty(l));
+  MVSRC="Belanja langsung";S.lines.forEach(function(l){var it=byId(items,l.item),u=units(it)[l.ui||0];move(dst,it.id,baseQty(l));
    if(it.beli){var np=Math.round(l.hg/u.f*it.beli.isi);if(!it.price||np!==it.price.perBeli){if(!it.hist)it.hist=it.price?[{tgl:it.price.since,harga:it.price.perBeli}]:[];it.hist.push({tgl:btg,harga:np});it.price={perBeli:np,since:btg};}}
    nb.lines.push({item:it.id,qty:Number(l.qty),u:u.l,hg:l.hg});});
   buys.push(nb);
@@ -1468,7 +1526,7 @@ function save(kind){
   if(j==="Dipakai"){from=$("pk-from").value;if(from==="Gudang"){err("Pemakaian hanya dari penyimpanan divisi. Gudang hanya tempat transit: ambil dulu ke penyimpanan divisi.");return;}}
   else{from="Gudang";to=$("pk-to").value;}
   for(var i=0;i<S.lines.length;i++){var l=S.lines[i];if(!l.item){err("Pilih dari daftar item.");return;}var itx=byId(items,l.item);if(baseQty(l)>itx.st[from]+1e-9){err("Stok "+itx.panggil+" di "+from+" hanya "+fmtStock(itx,itx.st[from])+".");return;}}
-  S.lines.forEach(function(l){var q=baseQty(l);move(from,l.item,-q);if(j==="Ambil dari gudang")move(to,l.item,q);});
+  MVSRC=j;S.lines.forEach(function(l){var q=baseQty(l);move(from,l.item,-q);if(j==="Ambil dari gudang")move(to,l.item,q);});
   addLog(j,(j==="Dipakai"?"Dari "+from:"Gudang ke "+to)+": "+lineText()+($("pk-ket").value?". "+$("pk-ket").value:""));
   toast(j==="Dipakai"?"Pemakaian tercatat":"Stok dipindah ke "+to);hist=["home"];show("home");return;
  }
@@ -1477,7 +1535,7 @@ function save(kind){
   if(!S.reason){err("Pilih alasan waste.");return;}
   var loc=$("w-loc").value;
   for(var k=0;k<S.lines.length;k++){var lk=S.lines[k];if(!lk.item){err("Pilih dari daftar item.");return;}var ik=byId(items,lk.item);if(baseQty(lk)>ik.st[loc]+1e-9){err("Stok "+ik.panggil+" di "+loc+" hanya "+fmtStock(ik,ik.st[loc])+".");return;}}
-  S.lines.forEach(function(l){move(loc,l.item,-baseQty(l));});
+  MVSRC="Waste";S.lines.forEach(function(l){move(loc,l.item,-baseQty(l));});
   addLog("Waste ("+S.reason+")",loc+": "+lineText());toast("Waste tercatat");hist=["home"];show("home");return;
  }
  if(kind==="opStart"){
@@ -1485,7 +1543,7 @@ function save(kind){
   if(DIVOF[lk2]===R().div){err("Auditor tidak boleh mengopname divisinya sendiri ("+R().div+"). Pilih lokasi lain.");return;}
   var per=$("o-per").value.trim();
   if(sessions.some(function(s){return s.lokasi===lk2&&s.periode===per&&s.status!=="Draft";})){err("Sudah ada sesi opname "+lk2+" untuk periode "+per+".");return;}
-  var ses={id:nextId++,periode:per,lokasi:lk2,auditor:R().n,status:"Draft",lines:{},snap:{},selisih:null};sessions.push(ses);hist=["home","opnameList"];show("opnameSes",ses.id);return;
+  var ses={id:nextId++,periode:per,lokasi:lk2,auditor:R().n,status:"Draft",upd:nowStamp(),lines:{},snap:{},selisih:null};sessions.push(ses);hist=["home","opnameList"];show("opnameSes",ses.id);return;
  }
  if(kind==="opDraft"||kind==="opDone"){
   var s=S.ses;
@@ -1493,10 +1551,10 @@ function save(kind){
    var miss=S.rows.filter(function(i){var v=s.lines[i.id];return !v||(v.utuh==null&&v.sisa==null);});
    if(miss.length){err(miss.length+" item belum dihitung: "+miss.map(function(i){return i.panggil;}).join(", ")+".");return;}
    s.snap={};S.rows.forEach(function(i){s.snap[i.id]=i.st[s.lokasi];});
-   s.status="Menunggu persetujuan";delete s.note;
+   s.status="Menunggu persetujuan";delete s.note;s.tglSelesai=nowStamp();s.upd=s.tglSelesai;
    s.selisih=S.rows.filter(function(i){return Math.abs(opTotal(i,s.lines[i.id])-i.st[s.lokasi])>0.001;}).length;
    addLog("Opname selesai dihitung",s.lokasi+" "+s.periode+": "+s.selisih+" item berselisih");toast("Selesai dihitung. Dikirim ke Head divisi "+DIVOF[s.lokasi]+" untuk disetujui.");
-  }else{addLog("Opname draft",s.lokasi+" "+s.periode);toast("Draft disimpan");}
+  }else{s.upd=nowStamp();addLog("Opname draft",s.lokasi+" "+s.periode);toast("Draft disimpan");}
   hist=["home"];show("opnameList");return;
  }
 }
@@ -1505,6 +1563,7 @@ function save(kind){
 var ph=$("phone");
 ph.addEventListener("click",function(e){
  var t=e.target;
+ if(t.closest("[data-cancel]")){closeModal();back();return;}
  if(t.closest("#dlg [data-go]"))closeModal();
  if(t.id==="dlg"){closeModal();return;}
  if(t.closest("[data-mclose]")){closeModal();return;}
@@ -1513,8 +1572,10 @@ ph.addEventListener("click",function(e){
  var hi=t.closest("[data-halal]");if(hi){openHalal(+hi.dataset.halal);return;}
  var hr=t.closest("[data-hrenew]");if(hr){var ih=byId(items,+hr.dataset.hrenew);ih.halal=ih.halal||{dasar:"Sertifikat halal",no:"",doc:true};ih.halal.exp=dstr(365);addLog("Sertifikat halal diperbarui",ih.name);toast("Masa berlaku diperbarui (contoh)");openHalal(ih.id);if($("list"))listItems();return;}
  if(t.id==="f-foto-rm"){S.foto=null;setFotoPrev(null);var fi=$("f-foto");if(fi)fi.value="";return;}
- var bs=t.closest("[data-bst]");if(bs){var bi=BQ.st.indexOf(bs.dataset.bst);if(bi>-1)BQ.st.splice(bi,1);else BQ.st.push(bs.dataset.bst);renderBel();return;}
- var bso=t.closest("[data-bsort]");if(bso){var bk=bso.dataset.bsort;if(BQ.sort===bk)BQ.dir=-BQ.dir;else{BQ.sort=bk;BQ.dir=1;}renderBel();return;}
+ var bpg=t.closest("[data-bpg]");if(bpg){BQ.page+=+bpg.dataset.bpg;renderBel();return;}
+ if(t.closest("[data-bmore]")){BQ.more+=BQ.size;renderBel();return;}
+ var bs=t.closest("[data-bst]");if(bs){var bi=BQ.st.indexOf(bs.dataset.bst);if(bi>-1)BQ.st.splice(bi,1);else BQ.st.push(bs.dataset.bst);BQ.page=1;BQ.more=BQ.size;renderBel();return;}
+ var bso=t.closest("[data-bsort]");if(bso){var bk=bso.dataset.bsort;if(BQ.sort===bk)BQ.dir=-BQ.dir;else{BQ.sort=bk;BQ.dir=1;}BQ.page=1;renderBel();return;}
  var msr=t.closest("[data-msort]");if(msr){var mk=msr.dataset.msort;if(MQ.sort===mk)MQ.dir=-MQ.dir;else{MQ.sort=mk;MQ.dir=1;}MQ.page=1;renderMon();return;}
  var mst=t.closest("[data-mst]");if(mst){var mi=MQ.st.indexOf(mst.dataset.mst);if(mi>-1)MQ.st.splice(mi,1);else MQ.st.push(mst.dataset.mst);MQ.page=1;renderMon();return;}
  if(t.closest("[data-mall]")){MQ.all=!MQ.all;MQ.page=1;renderMon();return;}
@@ -1563,9 +1624,9 @@ var q1=t.closest("[data-qual]");if(q1){var it=byId(items,+q1.dataset.qual);if(q1
  var tab=t.closest("[data-tab]");if(tab){S.tab=tab.dataset.tab;renderPantau();return;}
  var lf=t.closest("[data-lf]");if(lf){S.lokf=lf.dataset.lf;renderPantau();return;}
 var fin=t.closest("[data-fin]");if(fin){var s=byId(sessions,+fin.dataset.fin);if(!canFinalize(s)){toast("Hanya Head divisi "+DIVOF[s.lokasi]+" yang bisa menyetujui.");return;}
-   Object.keys(s.lines).forEach(function(k){var it2=byId(items,+k);it2.st[s.lokasi]=opTotal(it2,s.lines[k]);});
-   s.status="Disetujui";s.disetujui=R().n;s.tglSetuju=today();addLog("Opname disetujui",s.lokasi+" "+s.periode+": stok disesuaikan ke hasil hitung");toast("Disetujui. Stok "+s.lokasi+" disesuaikan.");SCREENS.opnameDetail($("scr"),s.id);return;}
- var rj=t.closest("[data-rej]");if(rj){var s3=byId(sessions,+rj.dataset.rej);var nt=$("rej-note")?$("rej-note").value.trim():"";if(!nt){toast("Isi catatan alasan pengembalian.");return;}s3.status="Draft";s3.note=nt;addLog("Opname dikembalikan",s3.lokasi+" "+s3.periode+": "+nt);toast("Dikembalikan ke Auditor untuk dihitung ulang.");hist=["home"];show("opnameList");return;}
+   Object.keys(s.lines).forEach(function(k){var it2=byId(items,+k);it2.st[s.lokasi]=opTotal(it2,s.lines[k]);it2.upd=it2.upd||{};it2.upd[s.lokasi]={t:nowStamp(),src:"Stock opname"};});
+   s.status="Disetujui";s.disetujui=R().n;s.tglSetuju=nowStamp();s.upd=s.tglSetuju;addLog("Opname disetujui",s.lokasi+" "+s.periode+": stok disesuaikan ke hasil hitung");toast("Disetujui. Stok "+s.lokasi+" disesuaikan.");SCREENS.opnameDetail($("scr"),s.id);return;}
+ var rj=t.closest("[data-rej]");if(rj){var s3=byId(sessions,+rj.dataset.rej);var nt=$("rej-note")?$("rej-note").value.trim():"";if(!nt){toast("Isi catatan alasan pengembalian.");return;}s3.status="Draft";s3.note=nt;s3.upd=nowStamp();addLog("Opname dikembalikan",s3.lokasi+" "+s3.periode+": "+nt);toast("Dikembalikan ke Auditor untuk dihitung ulang.");hist=["home"];show("opnameList");return;}
  var dl=t.closest("[data-csv]");if(dl){var pc=R().price,rows2;
    if(dl.dataset.csv==="all"){rows2=[["Periode","Lokasi","Auditor","Status","Item dihitung","Item berselisih"].concat(pc?["Nilai selisih (Rp)"]:[])];sessions.filter(function(x){return x.status!=="Draft"&&(S.rp.per==="Semua"||x.periode===S.rp.per)&&(S.rp.lok==="Semua"||x.lokasi===S.rp.lok);}).forEach(function(x){var m=sesSum(x);rows2.push([x.periode,x.lokasi,x.auditor,x.status,m.n,m.sel].concat(pc?[Math.round(m.nilai)]:[]));});downloadCsv("laporan-opname-ringkasan.csv",rows2);}
    else{var sx=byId(sessions,+dl.dataset.csv);rows2=[["Periode","Lokasi","Item","Tercatat","Hitung","Selisih","Satuan"].concat(pc?["Nilai selisih (Rp)"]:[])];sesRows(sx).forEach(function(r){rows2.push([sx.periode,sx.lokasi,r.it.panggil,r.sys,r.hit,r.d,r.it.bu].concat(pc?[Math.round(r.d*ppb(r.it))]:[]));});downloadCsv("opname-"+sx.lokasi+"-"+sx.periode+".csv",rows2);}
@@ -1579,7 +1640,7 @@ ph.addEventListener("input",function(e){
  if(t.classList&&t.classList.contains("money")){fmtMoney(t);if(t.dataset.hg!=null){S.lines[+t.dataset.hg].hg=Number(String(t.value).replace(/\./g,""))||0;return;}if(screen==="resepNew")updCogs();return;}
  if(t.dataset.eq!=null){S.edit[+t.dataset.eq].qty=Number(t.value);if($("re-cogs"))$("re-cogs").textContent=rp(editCogs());return;}
  if(t.id==="o-q"){opFilter(t.value);return;}
- if(t.id==="bq"){BQ.q=t.value;renderBel();return;}
+ if(t.id==="bq"){BQ.q=t.value;BQ.page=1;BQ.more=BQ.size;renderBel();return;}
  if(t.id==="mq"){MQ.q=t.value;MQ.page=1;renderMon();return;}
  if(t.id==="q"){if(screen==="items"){LQ.q=t.value;LQ.page=1;LQ.more=LQ.size;listItems();}else{renderRes();}return;}
  if(t.id==="f-brand"||t.id==="f-prod"){updFull();return;}
@@ -1598,8 +1659,9 @@ ph.addEventListener("change",function(e){
  if(t.id==="pk-from"){S.showStock=t.value;S.lines=[];renderLines();return;}
  if(t.id==="w-loc"){S.showStock=t.value;S.lines=[];renderLines();return;}
  if(t.dataset.ak!=null){var a=S.ses.aset[t.dataset.ak]||(S.ses.aset[t.dataset.ak]={});a.k=t.value;return;}
- if(t.id==="bjenis"){BQ.jenis=t.value;renderBel();return;}
- if(t.id==="bdiv"){BQ.div=t.value;renderBel();return;}
+ if(t.id==="bpgsize"){BQ.size=+t.value;BQ.more=BQ.size;BQ.page=1;renderBel();return;}
+ if(t.id==="bjenis"){BQ.jenis=t.value;BQ.page=1;renderBel();return;}
+ if(t.id==="bdiv"){BQ.div=t.value;BQ.page=1;renderBel();return;}
  if(t.id==="mpgsize"){MQ.size=+t.value;MQ.page=1;renderMon();return;}
  if(t.id==="sortsel"){LQ.sort=t.value;LQ.page=1;listItems();return;}
  if(t.id==="pgsize"){LQ.size=+t.value;LQ.more=LQ.size;LQ.page=1;listItems();return;}
@@ -1618,8 +1680,8 @@ $("nav").addEventListener("click",function(e){});
 var NOTES=[
  ["items","stafpurch","Use case 1 · Daftar Item dan CRUD","Daftar Item memuat bahan dasar (WIP tidak ada di sini). Filter terbuka di sisi kiri tabel dan angkanya ikut menyesuaikan. Status aktif diubah lewat bulatan di kolom Aksi (hijau aktif, abu-abu nonaktif; sorot untuk keterangan). Klik baris untuk detail lengkap (popup, termasuk Storage dan foto). Seluruh data halal pada item nyata adalah data contoh (dummy)."],
  ["items","cfo","CFO memegang hak Admin Purchasing","Peran Admin Purchasing digabung ke CFO: CFO bisa melihat dan mengubah semua yang dulu dipegang Admin Purchasing (item, aset, PR, belanja, laporan opname, persetujuan opname Gudang) dan juga melihat harga. Ikon halal di Daftar Item: hijau (sertifikat berlaku atau green list), kuning (berakhir dalam 30 hari), merah (kedaluwarsa). Klik ikonnya untuk rincian."],
- ["prNew","kitchen","Use case 2 · Head mengajukan PR","Purchase Request hanya bisa dibuat oleh level Head (Kitchen, Bar, Experience). Manager dan CFO tidak membuat PR. Head memantau statusnya di Daftar Belanja (Diajukan, Disetujui, Ditolak, Dibeli sebagian, Dibeli, Tidak jadi dibeli) beserta jejaknya."],
- ["puList","cfo","Use case 2 · Daftar Belanja","Satu tabel untuk semua belanja: PR dari pengajuan sampai dibeli (termasuk ditolak dan tidak jadi dibeli) dan belanja langsung. Status bisa diurutkan dan difilter, riwayat tetap ada. Klik baris untuk detail dan jejak. CFO menyetujui atau menolak (ikon centang dan silang), semua peran Purchasing mencatat pembelian (ikon keranjang)."],
+ ["prNew","kitchen","Use case 2 · Head mengajukan PR","Purchase Request bisa dibuat oleh level Head (Kitchen, Bar, Experience) dan Manager. CFO dan level Staff tidak membuat PR. Head memantau statusnya di Daftar Belanja (Diajukan, Disetujui, Ditolak, Dibeli sebagian, Dibeli, Tidak jadi dibeli) beserta jejaknya."],
+ ["puList","cfo","Use case 2 · Daftar Belanja","Satu tabel untuk semua belanja (sekitar 150 baris data contoh, dibagi halaman): PR dari pengajuan sampai dibeli (termasuk ditolak dan tidak jadi dibeli) dan belanja langsung. Status bisa diurutkan dan difilter, riwayat tetap ada. Klik baris untuk detail lengkap (supplier, divisi, tujuan) dan jejak. Peran tanpa aksi (Manager, Head) tidak melihat kolom Aksi. CFO menyetujui atau menolak (ikon centang dan silang), semua peran Purchasing mencatat pembelian (ikon keranjang)."],
  ["blNew","staf","Belanja Langsung (semua level)","Menu input sendiri untuk laporan belanja yang sudah terjadi: belanja ke pasar atau minimarket tanpa PR. Boleh diinput belakangan dan oleh semua level (coba sebagai Staff Kitchen). Isi tanggal, tempat, item, jumlah, dan harga per satuan. Stok tujuan bertambah dan masuk Daftar Belanja sebagai jenis Langsung."],
  ["resepNew","manajer","Resep","Head hanya bisa membuat resep untuk divisinya. Harga jual hanya muncul untuk Manager. COGS dan margin dihitung otomatis. WIP (Sambal Merah) bisa jadi bahan."],
  ["resepList","manajer","Ubah resep dan ganti merek","Di Resep, klik Ubah resep pada sebuah menu. Pada baris bahan, Ganti merek memilih SKU baru (kategori dan satuan dasar sama) dan bisa diterapkan ke semua resep yang memakai SKU lama. SKU lama menjadi Nonaktif jika tidak lagi dipakai resep mana pun. Coba Susu UHT di Caramel Latte."],
@@ -1629,7 +1691,7 @@ var NOTES=[
  ["opnameList","kitchen","Use case 3 · Head menyetujui","Head divisi yang diopname meninjau selisih, lalu Setujui (stok disesuaikan) atau Kembalikan untuk hitung ulang dengan catatan. Head Kitchen hanya bisa menyetujui Dapur, bukan Bar. Gudang disetujui CFO. Coba sesi Dapur yang sedang menunggu."],
  ["opnameLaporan","manajer","Use case 3 · Laporan opname","Manager dan Purchasing melihat laporan per periode dan lokasi: item dihitung, berselisih, dan nilai selisih (hanya peran yang boleh melihat harga), bisa difilter dan diunduh sebagai CSV. Staff Purchasing tidak melihat nilai."],
  ["home","staf","Akses level Staff","Staff (dapur, Warehouse, Purchasing) tidak bisa mengajukan PR dan tidak melihat harga, tetapi boleh Belanja Langsung dan mengisi harga belanjanya."],
- ["pantau","manajer","Monitoring Stock","Tabel stok per lokasi dengan batas minimum, status (Aman, Menipis, Habis, Tanpa batas), dan nilai (peran yang boleh melihat harga). Bisa dicari, diurutkan, difilter, dan dibagi halaman. Stok tidak diedit langsung (berubah lewat belanja, pemakaian, waste, opname); yang bisa diubah hanya batas minimum oleh Manager dan Head lewat ikon pensil."],
+ ["pantau","manajer","Monitoring Stock","Tabel stok per lokasi dengan status (Aman, Menipis, Habis, Tanpa batas), nilai, dan kolom Pembaruan terakhir (tanggal dan waktu; di atas tabel ada waktu pembaruan terbaru). WIP belum ada di tabel ini. Batas minimum hanya di detail (peran yang boleh melihat harga). Bisa dicari, diurutkan, difilter, dan dibagi halaman. Stok tidak diedit langsung (berubah lewat belanja, pemakaian, waste, opname); yang bisa diubah hanya batas minimum oleh Manager dan Head lewat ikon pensil."],
  ["items","stafpurch","Tampilan web untuk Purchasing","Di layar lebar, menu pindah ke sisi kiri dan daftar item tampil sebagai tabel. Perkecil jendela untuk melihat tampilan ponsel. Sembunyikan panel ini lewat tombol Sembunyikan."]
 ];
 function renderNotes(){
