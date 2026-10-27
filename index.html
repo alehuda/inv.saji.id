@@ -1108,7 +1108,7 @@ function lvEnter(u){
  }).catch(function(e){syState("off");toast("Data belum bisa dimuat dari server");show("home");});
 }
 function lvOut(msg){
- LV.user=null;LV.users=null;role="";items=[];LV.base={};LV.ver={};hist=[];
+ LV.bulkOut="";LV.bulkTxt="";LV.user=null;LV.users=null;role="";items=[];LV.base={};LV.ver={};hist=[];
  var lb=document.querySelector(".tb-l label");if(lb){lb.textContent="Akun";lb.style.cssText="";}
  $("accBtn").hidden=true;$("outBtn").hidden=true;syState("off");show("home");if(msg)toast(msg);
 }
@@ -1135,6 +1135,7 @@ function lvUsersHTML(){
  var me=LV.user,us=LV.users||[];
  var ro=Object.keys(LV.roles).map(function(k){return '<option value="'+k+'">'+esc(LV.roles[k])+'</option>';}).join("");
  var h='<div class="sec">Tambah akun</div><form id="lvAdd" class="card lvf" style="gap:10px"><div class="field"><label for="ad-n">Nama</label><input type="text" id="ad-n" required></div><div class="field"><label for="ad-e">Email</label><input type="email" id="ad-e" required></div><div class="field"><label for="ad-r">Peran</label><select id="ad-r">'+ro+'</select></div><div class="field"><label for="ad-p">Password sementara <small>(min. 10 karakter, huruf dan angka)</small></label><input type="text" id="ad-p" autocomplete="off" required></div><div class="lverr" id="lv-err" hidden></div><button class="primary" type="submit">Tambah akun</button></form>';
+ h+='<div class="sec">Tambah banyak akun</div><form id="lvBulk" class="card lvf" style="gap:10px"><div class="field"><label for="bk-t">Satu orang per baris: nama; email; peran</label><textarea id="bk-t" rows="6" placeholder="Dewi Lestari; dewi@contoh.id; Head Kitchen&#10;Budi; budi@contoh.id; Staff Purchasing" style="width:100%;font:inherit;padding:8px;border:1px solid var(--line);border-radius:10px"></textarea></div><small>Peran: '+Object.keys(LV.roles).map(function(k){return esc(LV.roles[k]);}).join(", ")+'. Password sementara dibuat otomatis dan hanya tampil sekali.</small><div class="lverr" id="lv-err" hidden></div><button class="primary" type="submit">Buat akun</button></form>'+(LV.bulkOut||'');
  if(!items.length)h+='<div class="low">Database item di server masih kosong. <button type="button" data-lv="seed">Impor data awal</button></div>';
  h+='<div class="sec">Daftar akun ('+us.length+')</div><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Nama</th><th>Email</th><th>Peran</th><th>Status</th><th>Masuk terakhir</th><th></th></tr></thead><tbody>'+us.map(function(u){
   var self=u.id===me.id;
@@ -1144,7 +1145,7 @@ function lvUsersHTML(){
  return h;
 }
 SCREENS.akun=function(el){
- head("Kelola akun",false);
+ head("Kelola akun",false);LV.bulkOut="";LV.bulkTxt="";
  if(!can("akun")){el.innerHTML='<div class="info">Hanya Superadmin yang boleh mengelola akun.</div>';return;}
  el.innerHTML='<div class="info">Memuat daftar akun...</div>';
  lvApi("GET","users").then(function(j){
@@ -1173,6 +1174,30 @@ if(LIVE){
     LV.user.mustChange=0;toast("Password diganti");hist=[];enter();
    });
   }
+  if(f.id==="lvBulk"){
+   e.preventDefault();lvErr("");
+   var byLabel={};Object.keys(LV.roles).forEach(function(k){byLabel[LV.roles[k].toLowerCase()]=k;byLabel[k]=k;});
+   var rows=[],bad=[];
+   $("bk-t").value.split(/\n/).forEach(function(ln,i){
+    if(!ln.trim())return;var p=ln.split(/[;\t]/).map(function(x){return x.trim();});
+    var rk=byLabel[(p[2]||"").toLowerCase()];
+    if(p.length<3||!p[0]||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(p[1])||!rk){bad.push(i+1);return;}
+    rows.push({name:p[0],email:p[1],role:rk});
+   });
+   if(bad.length){lvErr("Baris "+bad.join(", ")+" belum benar. Format: nama; email; peran (peran harus sama dengan daftar).");return;}
+   if(!rows.length){lvErr("Belum ada baris.");return;}
+   var al="ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
+   function gen(){var a=new Uint32Array(12);crypto.getRandomValues(a);var p="";for(var i=0;i<12;i++)p+=al[a[i]%al.length];return /[A-Za-z]/.test(p)&&/[0-9]/.test(p)?p:gen();}
+   var res=[],ch=Promise.resolve();
+   rows.forEach(function(r){ch=ch.then(function(){r.password=gen();return lvApi("POST","users",r).then(function(j){res.push({r:r,ok:!!j.ok,err:j.error});});});});
+   ch.then(function(){
+    var okn=res.filter(function(x){return x.ok;}).length;
+    var txt=res.filter(function(x){return x.ok;}).map(function(x){return x.r.name+" | "+x.r.email+" | "+x.r.password;}).join("\n");
+    LV.bulkTxt=txt;
+    LV.bulkOut='<div class="sec">Hasil: '+okn+' dari '+res.length+' akun dibuat</div><div class="card lvf" style="gap:6px"><div class="info">Catat password sementara ini sekarang. Setelah halaman ini ditutup, password tidak bisa dilihat lagi (hanya bisa direset). Tiap orang diminta menggantinya saat masuk pertama.</div>'+res.map(function(x){return '<div class="row"><span class="nm"><b>'+esc(x.r.name)+'</b> '+esc(x.r.email)+'</span>'+(x.ok?'<code>'+esc(x.r.password)+'</code>':'<span class="lverr">'+esc(x.err||"gagal")+'</span>')+'</div>';}).join("")+(okn?'<button class="btn" type="button" data-lv="copybulk">Salin semua</button>':'')+'</div>';
+    return lvUsersRefresh();
+   });
+  }
   if(f.id==="lvAdd"){
    e.preventDefault();lvErr("");
    lvApi("POST","users",{name:$("ad-n").value,email:$("ad-e").value,role:$("ad-r").value,password:$("ad-p").value}).then(function(j){
@@ -1186,6 +1211,7 @@ if(LIVE){
   if(t){
    var a=t.dataset.lv,uid=t.dataset.uid;
    if(a==="pw")show("pw");
+   if(a==="copybulk"&&navigator.clipboard)navigator.clipboard.writeText(LV.bulkTxt||"").then(function(){toast("Disalin");});
    if(a==="out")lvApi("POST","auth/logout",{}).then(function(){lvOut();});
    if(a==="toggle"){var u=(LV.users||[]).filter(function(x){return String(x.id)===uid;})[0];if(u)lvApi("PUT","users/"+uid,{active:!u.active}).then(function(j){if(!j.ok)toast(j.error);return lvUsersRefresh();});}
    if(a==="reset"){var u2=(LV.users||[]).filter(function(x){return String(x.id)===uid;})[0];var p=u2&&window.prompt("Password sementara baru untuk "+u2.name+" (min. 10 karakter, huruf dan angka). Orangnya diminta menggantinya saat masuk.");if(p)lvApi("PUT","users/"+uid,{password:p}).then(function(j){toast(j.ok?"Password direset":(j.error||"Gagal"));});}
