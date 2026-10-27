@@ -9,7 +9,7 @@ cd "$(dirname "$0")"
 cp "$SRC" index.html
 for f in feedback.php feedback-admin.php sync.php; do [ -f "$SRCDIR/$f" ] && cp "$SRCDIR/$f" "$f"; done
 python3 build-live.py
-git add index.html feedback.php feedback-admin.php sync.php live build-live.py .cpanel.yml publish.sh
+git add api index.html feedback.php feedback-admin.php sync.php live build-live.py .cpanel.yml publish.sh
 git diff --cached --quiet && { echo "Tidak ada perubahan."; exit 0; }
 git commit -m "Update mockup $(date +%F)"
 git push

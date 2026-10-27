@@ -1,0 +1,7 @@
+Options -Indexes
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php?_p=$1 [QSA,L]
+<FilesMatch "^(lib|schema|backup)\.php$">
+  Require all denied
+</FilesMatch>

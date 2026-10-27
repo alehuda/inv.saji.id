@@ -15,3 +15,6 @@ deployment:
     - /bin/cp .htaccess $LIVEPATH
     - /bin/cp feedback.php $LIVEPATH
     - /bin/cp sync.php $LIVEPATH
+    - export APIPATH=/home/sajiid/public_html/inv/api/
+    - /bin/mkdir -p $APIPATH
+    - /bin/cp -R api/. $APIPATH
