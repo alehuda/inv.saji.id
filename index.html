@@ -1183,7 +1183,7 @@ SCREENS.home=function(el){
 
 /* --- Item --- */
 SCREENS.itemNew=function(el){
- head("Tambah Item Baru",true);S.pgAuto=true;
+ head("Tambah Item Baru",true);S.pgAuto=true;S.noHalal=false;
  el.innerHTML='<div class="info">Hanya bahan yang sudah halal yang boleh diinput. Bahan non-halal tidak boleh masuk database dan tidak bisa dipesan. Alat dan supplies yang tidak bersentuhan dengan makanan tidak perlu data halal. Status halal dihitung otomatis dan tampil lewat ikon halal di Daftar Item.</div>'+
  '<div class="two"><div class="field"><label for="f-brand">Nama Brand</label><input type="text" id="f-brand" placeholder="mis. ABC"></div><div class="field"><label for="f-prod">Nama Produk *</label><input type="text" id="f-prod" placeholder="mis. Kecap Manis"></div></div>'+
  '<div class="field"><label data-h="f-full" data-t="Nama Lengkap">Nama Lengkap <span class="autotag">otomatis</span></label><div class="card ro" id="f-full">-</div></div>'+
@@ -1222,7 +1222,7 @@ SCREENS.itemEdit=function(el,p){
  if(!can("item")){$("f-hg").disabled=true;$("f-tg").disabled=true;$("f-hg").placeholder="Harga diisi Purchasing";}
  if(usedBy(it))$("f-bu").disabled=true;
  var b=el.querySelector('[data-save="item"]');b.dataset.save="itemEdit";b.textContent="Simpan perubahan";
- S.foto=it.foto||null;setFotoPrev(S.foto);if($("f-hlc"))$("f-hlc").checked=true;
+ S.foto=it.foto||null;setFotoPrev(S.foto);S.noHalal=!it.halal&&(it.tipe==="Bahan"||!!it.foodContact);if($("f-hlc"))$("f-hlc").checked=!!it.halal;if(S.noHalal){var scH=document.querySelector("#f-halal .sec");if(scH)scH.textContent="Data halal (belum ada, boleh dikosongkan dulu)";}
  updFull();
 };
 function syncItemForm(){
@@ -1596,10 +1596,10 @@ function save(kind){
  }
   if(kind==="itemEdit"){
   var ei=S.editItem,prod3=$("f-prod").value.trim(),pg3=$("f-pg").value.trim(),isi3=Number($("f-isi").value),hg5=mv("f-hg"),bun3=$("f-bun").value,bis3=Number($("f-bis").value);
-  var nh1=($("f-tipe").value==="Bahan"||$("f-fc").checked);
+  var skipH=S.noHalal&&!$("f-hlc").checked,nh1=($("f-tipe").value==="Bahan"||$("f-fc").checked)&&!skipH;
   if(!reqMark(["f-prod","f-pg","f-isi"].concat(nh1&&$("f-ds").value==="Sertifikat halal"?["f-hpr","f-pub","f-no"]:[]).concat($("f-bu").value?[]:["f-bu"]),["f-dept"]))return;
   if(nh1&&!$("f-hlc").checked){$("f-hlc").closest("label").classList.add("invalid");err("Konfirmasi bahwa bahan ini halal.");return;}
-  var tp3=$("f-tipe").value,needH3=tp3==="Bahan"||$("f-fc").checked;
+  var tp3=$("f-tipe").value,needH3=(tp3==="Bahan"||$("f-fc").checked)&&!skipH;
   var brand3=$("f-brand").value.trim(),full3=(prod3+(brand3?" "+brand3:"")).trim();
   if(!prod3){err("Nama Produk wajib diisi.");return;}
   if(!pg3){err("Nama Panggil wajib diisi.");return;}
