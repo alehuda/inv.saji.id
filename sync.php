@@ -1,11 +1,12 @@
 <?php
+function saji_home() { $d = __DIR__; while (basename($d) !== 'public_html' && dirname($d) !== $d) $d = dirname($d); return dirname($d); }
 // Sinkron data sandbox antar perangkat. GET ?r=ruang&since=N  |  POST {r, base, force, d:"<json>"}
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
 function out($code, $json) { http_response_code($code); echo $json; exit; }
 function err($code, $msg) { out($code, json_encode(array('ok' => false, 'error' => $msg))); }
 
-$dir = dirname(__DIR__, 3) . '/sync-inventory';
+$dir = saji_home() . '/sync-inventory';
 if (!is_dir($dir)) {
     @mkdir($dir, 0700, true);
     @file_put_contents($dir . '/.htaccess', "Require all denied\n");

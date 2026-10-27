@@ -1,4 +1,5 @@
 <?php
+function saji_home() { $d = __DIR__; while (basename($d) !== 'public_html' && dirname($d) !== $d) $d = dirname($d); return dirname($d); }
 // feedback.php: menerima masukan penguji dari mockup Inventory Saji dan menyimpannya
 // DI LUAR folder web (/home/<akun>/feedback-inventory). Tidak ada rahasia di file ini.
 error_reporting(0);
@@ -32,7 +33,7 @@ if ($nama === '' || !in_array($jenis, $JENIS, true) || !in_array($tingkat, $TING
     out(422, array('ok' => false, 'error' => 'Nama, jenis, tingkat, dan uraian wajib diisi.'));
 }
 
-$DATA = dirname(__DIR__, 3) . '/feedback-inventory';
+$DATA = saji_home() . '/feedback-inventory';
 if (!is_dir($DATA) && !@mkdir($DATA, 0700, true)) out(500, array('ok' => false, 'error' => 'Folder penyimpanan tidak bisa dibuat.'));
 @file_put_contents($DATA . '/.htaccess', "Require all denied\n");
 if (!is_dir($DATA . '/shots')) @mkdir($DATA . '/shots', 0700, true);

@@ -1,11 +1,12 @@
 <?php
+function saji_home() { $d = __DIR__; while (basename($d) !== 'public_html' && dirname($d) !== $d) $d = dirname($d); return dirname($d); }
 // feedback-admin.php: daftar masukan penguji. Dilindungi kunci (file admin-key.txt di luar folder web).
 error_reporting(0);
 ini_set('display_errors', '0');
 header('X-Robots-Tag: noindex, nofollow');
 header('Cache-Control: no-store');
 
-$DATA = dirname(__DIR__, 3) . '/feedback-inventory';
+$DATA = saji_home() . '/feedback-inventory';
 $kf = $DATA . '/admin-key.txt';
 $given = isset($_GET['k']) ? (string)$_GET['k'] : '';
 $real = file_exists($kf) ? trim((string)file_get_contents($kf)) : '';

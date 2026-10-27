@@ -1,4 +1,3 @@
----
 # Dijalankan cPanel setiap kali "Deploy HEAD Commit" di Git Version Control.
 deployment:
   tasks:
@@ -9,3 +8,10 @@ deployment:
     - /bin/cp feedback.php $DEPLOYPATH
     - /bin/cp feedback-admin.php $DEPLOYPATH
     - /bin/cp sync.php $DEPLOYPATH
+    - export LIVEPATH=/home/sajiid/public_html/inv/
+    - /bin/mkdir -p $LIVEPATH/item
+    - /bin/cp live/index.html $LIVEPATH
+    - /bin/cp live/item/index.html $LIVEPATH/item/
+    - /bin/cp .htaccess $LIVEPATH
+    - /bin/cp feedback.php $LIVEPATH
+    - /bin/cp sync.php $LIVEPATH
