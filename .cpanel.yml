@@ -14,7 +14,7 @@ deployment:
     - /bin/cp live/item/index.html $LIVEPATH/item/
     - /bin/cp .htaccess $LIVEPATH
     - /bin/cp feedback.php $LIVEPATH
-    - /bin/cp sync.php $LIVEPATH
+    - /bin/rm -f $LIVEPATH/sync.php /home/sajiid/sync-inventory/item-8f4k2m.json
     - export APIPATH=/home/sajiid/public_html/inv/api/
     - /bin/mkdir -p $APIPATH
     - /bin/cp -R api/. $APIPATH

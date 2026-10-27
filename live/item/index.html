@@ -1114,7 +1114,7 @@ function lvOut(msg){
  $("accBtn").hidden=true;$("outBtn").hidden=true;syState("off");show("home");if(msg)toast(msg);
 }
 function lvBoot(){
- syState("busy");
+ $("role").style.display="none";syState("busy");
  lvApi("GET","auth/me").then(function(j){
   LV.roles=j.roles||{};
   if(j.ok&&j.user)return lvEnter(j.user);
@@ -1322,7 +1322,7 @@ function show(sc,p){
  $("back").hidden=(sc==="home");el.scrollTop=0;
 }
 function go(sc,p){hist.push(screen);show(sc,p);}
-function landing(){if(LIVE)return window.SAJI_LIVE.start||"home";return (role==="kitchen"||role==="bar"||role==="headexp")?"puList":"home";}
+function landing(){if(LIVE)return (role==="kitchen"||role==="bar"||role==="headexp")?"items":(window.SAJI_LIVE.start||"home");return (role==="kitchen"||role==="bar"||role==="headexp")?"puList":"home";}
 function enter(){var l=landing();hist=l==="home"?[]:["home"];show(l);}
 function back(){var s=hist.pop()||"home";show(s);}
 var SCREENS=SCREENS||{};
