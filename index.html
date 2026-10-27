@@ -409,12 +409,16 @@ textarea{font:inherit;color:var(--arang);border:1px solid var(--line);border-rad
 .fbok .big{font-size:22px}
 .cpy{background:#F6F4F3;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:12px;white-space:pre-wrap;max-height:170px;overflow:auto;width:100%}
 @media (max-width:560px){#fbBtn .fbl{display:none}}
+.tbtn[hidden]{display:none}
+.lverr{color:#C62828;font-size:14px}
+.lvf{max-width:420px}
+.tbl select,.tbl .sm{font-size:14px}
 </style>
 
 <div class="shell hide" id="shell">
   <header class="topbar">
     <div class="tb-l"><label for="role">Akun</label><select id="role" aria-label="Pilih akun atau role"></select></div>
-    <div class="tb-r"><button class="tbtn sync off" id="syncBtn" type="button" title="Data dibagi antar perangkat"><i></i><span class="syl">Mode lokal</span></button><button class="tbtn" id="fbBtn" type="button" aria-haspopup="dialog" title="Beri masukan"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 01-11.5 7.2L4 20l1-4.5A8 8 0 1121 12z"/></svg><span class="fbl">Masukan</span></button><button class="tbtn" id="sideToggle" type="button" aria-expanded="false" aria-controls="side"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Use case</button><button class="tbtn" id="reset" type="button">Reset</button></div>
+    <div class="tb-r"><button class="tbtn sync off" id="syncBtn" type="button" title="Data dibagi antar perangkat"><i></i><span class="syl">Mode lokal</span></button><button class="tbtn" id="accBtn" type="button" hidden>Akun saya</button><button class="tbtn" id="outBtn" type="button" hidden>Keluar</button><button class="tbtn" id="fbBtn" type="button" aria-haspopup="dialog" title="Beri masukan"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 01-11.5 7.2L4 20l1-4.5A8 8 0 1121 12z"/></svg><span class="fbl">Masukan</span></button><button class="tbtn" id="sideToggle" type="button" aria-expanded="false" aria-controls="side"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Use case</button><button class="tbtn" id="reset" type="button">Reset</button></div>
   </header>
   <aside class="side" id="side" aria-label="Daftar use case">
     <div class="side-h"><img class="logo" alt="Saji Resto &amp; Cafe" src="data:image/png;base64,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"><button class="btn" id="hideSide" type="button">Sembunyikan</button></div>
@@ -454,7 +458,7 @@ var ROLES={
  gudang:{n:"Staff Warehouse",div:"Purchasing",loc:"Gudang",price:false,desk:"Menerima barang dan mengambil dari gudang",can:{pu:1,bel:1,bl:1,inputHarga:1,pakai:1,waste:1}},
  auditor:{n:"Auditor (staf Exp)",div:"Exp",loc:"Exp",price:false,desk:"Menghitung stok divisi lain saat opname",can:{bl:1,opname:1,opnameView:1}}
 };
-if(LIVE){["staf","gudang","auditor"].forEach(function(k){delete ROLES[k];});}
+if(LIVE){["staf","gudang","auditor"].forEach(function(k){delete ROLES[k];});ROLES.superadmin={n:"Superadmin",div:"Administrasi",loc:"Gudang",price:true,desk:"Mengelola akun, data induk, dan impor",can:{item:1,aset:1,pu:1,bel:1,bl:1,approve:1,pantau:1,kualif:1,batal:1,opnameView:1,laporanOp:1,akun:1}};ROLES.viewer={n:"Hanya lihat",div:"-",loc:"Gudang",price:false,desk:"Hanya melihat Daftar Item",can:{}};}
 var ROLE_NONE={n:"",div:"",loc:"Dapur",price:false,desk:"",can:{}};
 var KAT_ITEM=["Sauce & Condiment","Herb & Spice","Fruit & Vegetable","Poultry & Meat","Seafood","Dairy & Egg","Dry Goods","Oil & Fat","Sweetener & Syrup","Coffee Tea & Beverage Base","Bakery Dessert & Frozen","Packaging & Supplies","Alat & Perlengkapan"];
 var KAT_MENU={Kitchen:["Appetizer & Snack","Asian","Chicken & Duck","Fried Rice","Kids Meal","Noodle","Nusantara","Pizza","Ramen","Rice Bowl","Side Dish & Additional","Western"],Bar:["Coffee","Mocktail","Tea","Milkshake","Non Coffee","Add-On Beverage","Ice Cream","Juice"]};
@@ -1031,6 +1035,171 @@ function syTick(){
  (SY.base===""?syPull():(changed?syPush(false):syPull())).then(function(){SY.on=true;syState("ok");}).catch(function(){SY.on=false;syState("off");}).then(function(){SY.busy=false;if(SY.pending)syRefresh();});
 }
 function syStart(){SY.room=syRoom();syState("busy");syTick();setInterval(syTick,2500);document.addEventListener("visibilitychange",function(){if(!document.hidden){SY.last=0;syTick();}});}
+
+/* ---------- LIVE: masuk dan data dari server ---------- */
+var LV={user:null,seq:0,base:{},ver:{},busy:false,last:0,users:null,roles:{},started:false};
+var ROLEMAP={superadmin:"superadmin",cfo:"cfo",purchasing:"stafpurch",manager:"manajer",head_kitchen:"kitchen",head_exp:"headexp",head_bar:"bar"};
+function lvApi(m,p,b){
+ var o={method:m,credentials:"same-origin",headers:{"X-Saji":"1"}};
+ if(b!==undefined){o.headers["Content-Type"]="application/json";o.body=JSON.stringify(b);}
+ return fetch(API+"api/"+p,o).then(function(r){return r.json().catch(function(){return {ok:false,error:"Jawaban server tidak dikenali."};}).then(function(j){j._s=r.status;if(r.status===401&&LV.user&&p!=="auth/login")lvOut("Sesi berakhir, silakan masuk lagi.");return j;});});
+}
+function lvPut(row){
+ var v=row.ver;delete row.ver;delete row.seq;delete row.updatedAt;delete row.updatedBy;
+ var k=-1;items.forEach(function(x,i){if(x.id===row.id)k=i;});
+ if(k<0)items.push(row);else items[k]=row;
+ LV.ver[row.id]=v;LV.base[row.id]=JSON.stringify(row);if(row.id>=nextId)nextId=row.id+1;
+}
+function lvLoad(){
+ return lvApi("GET","items?since=0").then(function(j){
+  if(!j.ok)throw new Error(j.error||"gagal");
+  items=[];LV.base={};LV.ver={};j.rows.forEach(lvPut);LV.seq=j.seq;normalize();
+ });
+}
+function lvPushOne(it,isNew){
+ var sent=JSON.stringify(it),id=it.id;
+ if(isNew)return lvApi("POST","items",{data:it}).then(function(j){
+  if(!j.ok){toast(j.error||"Item baru tidak tersimpan");if(j._s===403||j._s===422){items=items.filter(function(x){return x!==it;});syRefresh();}return;}
+  var c=JSON.parse(sent);c.id=j.id;it.id=j.id;LV.ver[j.id]=j.ver;LV.base[j.id]=JSON.stringify(c);if(j.id>=nextId)nextId=j.id+1;syRefresh();
+ });
+ return lvApi("PUT","items/"+id,{ver:LV.ver[id],data:it}).then(function(j){
+  if(j.ok){LV.ver[id]=j.ver;LV.base[id]=sent;return;}
+  if(j._s===409&&j.current){toast("Perubahan pada "+it.name+" tidak tersimpan karena sudah diubah orang lain.");lvPut(j.current);syRefresh();return;}
+  if(j._s===403){toast(j.error||"Tidak boleh mengubah data ini.");var b=JSON.parse(LV.base[id]);b.ver=LV.ver[id];lvPut(b);syRefresh();return;}
+  throw new Error(j.error||"gagal");
+ });
+}
+function lvPush(){
+ var todo=[];
+ items.forEach(function(it){var b=LV.base[it.id];if(b===undefined)todo.push([it,true]);else if(b!==JSON.stringify(it))todo.push([it,false]);});
+ var ch=Promise.resolve();todo.forEach(function(t){ch=ch.then(function(){return lvPushOne(t[0],t[1]);});});return ch;
+}
+function lvPoll(){
+ return lvApi("GET","items?since="+LV.seq+"&_="+Date.now()).then(function(j){
+  if(!j.ok)throw new Error(j.error||"gagal");
+  var n=0;
+  j.rows.forEach(function(r){
+   var loc=null;items.forEach(function(x){if(x.id===r.id)loc=x;});
+   if(loc&&LV.base[r.id]!==JSON.stringify(loc))return;
+   if(loc&&LV.ver[r.id]===r.ver)return;
+   lvPut(r);n++;
+  });
+  LV.seq=j.seq;
+  if(n){toast("Data diperbarui dari perangkat lain");syRefresh();}
+ });
+}
+function lvTick(){
+ if(!LV.user||LV.busy)return;
+ if(document.hidden&&Date.now()-LV.last<20000)return;
+ LV.busy=true;LV.last=Date.now();
+ lvPush().then(lvPoll).then(function(){syState("ok");}).catch(function(){syState("off");}).then(function(){LV.busy=false;if(SY.pending)syRefresh();});
+}
+function lvEnter(u){
+ LV.user=u;var key=ROLEMAP[u.role]||"viewer";
+ ROLES[key]=Object.assign({},ROLES[key],{n:u.name});if(key==="viewer")ROLES[key].div=u.roleLabel;
+ role=key;
+ var lb=document.querySelector(".tb-l label");if(lb){lb.textContent=u.name+" · "+u.roleLabel;lb.style.cssText="display:inline;text-transform:none;letter-spacing:0;font-size:14px;color:#fff";}
+ $("role").style.display="none";$("accBtn").hidden=false;$("outBtn").hidden=false;
+ syState("busy");
+ return lvLoad().then(function(){
+  syState("ok");hist=[];
+  if(u.mustChange)show("pw");else enter();
+  if(!LV.started){LV.started=true;setInterval(lvTick,3000);document.addEventListener("visibilitychange",function(){if(!document.hidden){LV.last=0;lvTick();}});}
+ }).catch(function(e){syState("off");toast("Data belum bisa dimuat dari server");show("home");});
+}
+function lvOut(msg){
+ LV.user=null;LV.users=null;role="";items=[];LV.base={};LV.ver={};hist=[];
+ var lb=document.querySelector(".tb-l label");if(lb){lb.textContent="Akun";lb.style.cssText="";}
+ $("accBtn").hidden=true;$("outBtn").hidden=true;syState("off");show("home");if(msg)toast(msg);
+}
+function lvBoot(){
+ syState("busy");
+ lvApi("GET","auth/me").then(function(j){
+  LV.roles=j.roles||{};
+  if(j.ok&&j.user)return lvEnter(j.user);
+  syState("off");show("home");
+ }).catch(function(){syState("off");show("home");toast("Server tidak terjangkau");});
+}
+SCREENS.login=function(el){
+ el.innerHTML='<div class="hello"><b>Masuk ke Inventory Saji</b><span>Gunakan akun yang diberikan Superadmin.</span></div><form id="lvLogin" class="card lvf" style="gap:12px"><div class="field"><label for="lv-email">Email</label><input type="email" id="lv-email" autocomplete="username" required></div><div class="field"><label for="lv-pass">Password</label><input type="password" id="lv-pass" autocomplete="current-password" required></div><div class="lverr" id="lv-err" hidden></div><button class="primary" type="submit">Masuk</button></form>';
+};
+SCREENS.pw=function(el){
+ var forced=LV.user&&LV.user.mustChange;head("Ganti password",!forced);
+ el.innerHTML=(forced?'<div class="info">Ini login pertama Anda. Ganti password sementara dengan password pribadi.</div>':'')+'<form id="lvPw" class="card lvf" style="gap:12px"><div class="field"><label for="pw-old">Password sekarang</label><input type="password" id="pw-old" autocomplete="current-password" required></div><div class="field"><label for="pw-new">Password baru <small>(min. 10 karakter, huruf dan angka)</small></label><input type="password" id="pw-new" autocomplete="new-password" required></div><div class="field"><label for="pw-new2">Ulangi password baru</label><input type="password" id="pw-new2" autocomplete="new-password" required></div><div class="lverr" id="lv-err" hidden></div><button class="primary" type="submit">Simpan</button></form>';
+};
+SCREENS.me=function(el){
+ head("Akun saya",true);var u=LV.user;
+ el.innerHTML='<div class="card lvf"><b>'+esc(u.name)+'</b><span>'+esc(u.email)+'</span><span>'+esc(u.roleLabel)+'</span></div><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" type="button" data-lv="pw">Ganti password</button><button class="btn" type="button" data-lv="out">Keluar</button></div>';
+};
+function lvUsersHTML(){
+ var me=LV.user,us=LV.users||[];
+ var ro=Object.keys(LV.roles).map(function(k){return '<option value="'+k+'">'+esc(LV.roles[k])+'</option>';}).join("");
+ var h='<div class="sec">Tambah akun</div><form id="lvAdd" class="card lvf" style="gap:10px"><div class="field"><label for="ad-n">Nama</label><input type="text" id="ad-n" required></div><div class="field"><label for="ad-e">Email</label><input type="email" id="ad-e" required></div><div class="field"><label for="ad-r">Peran</label><select id="ad-r">'+ro+'</select></div><div class="field"><label for="ad-p">Password sementara <small>(min. 10 karakter, huruf dan angka)</small></label><input type="text" id="ad-p" autocomplete="off" required></div><div class="lverr" id="lv-err" hidden></div><button class="primary" type="submit">Tambah akun</button></form>';
+ if(!items.length)h+='<div class="low">Database item di server masih kosong. <button type="button" data-lv="seed">Impor data awal</button></div>';
+ h+='<div class="sec">Daftar akun ('+us.length+')</div><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Nama</th><th>Email</th><th>Peran</th><th>Status</th><th>Masuk terakhir</th><th></th></tr></thead><tbody>'+us.map(function(u){
+  var self=u.id===me.id;
+  var sel='<select data-lvrole="'+u.id+'"'+(self?' disabled':'')+'>'+Object.keys(LV.roles).map(function(k){return '<option value="'+k+'"'+(k===u.role?' selected':'')+'>'+esc(LV.roles[k])+'</option>';}).join("")+'</select>';
+  return '<tr><td>'+esc(u.name)+'</td><td>'+esc(u.email)+'</td><td>'+sel+'</td><td>'+(u.active?'Aktif':'Nonaktif')+'</td><td>'+esc(u.lastLogin?u.lastLogin.replace(" ","  ")+" UTC":"belum pernah")+'</td><td style="white-space:nowrap">'+(self?'':'<button class="sm" type="button" data-lv="toggle" data-uid="'+u.id+'">'+(u.active?'Nonaktifkan':'Aktifkan')+'</button> ')+'<button class="sm" type="button" data-lv="reset" data-uid="'+u.id+'">Reset password</button></td></tr>';
+ }).join("")+'</tbody></table></div>';
+ return h;
+}
+SCREENS.akun=function(el){
+ head("Kelola akun",false);
+ if(!can("akun")){el.innerHTML='<div class="info">Hanya Superadmin yang boleh mengelola akun.</div>';return;}
+ el.innerHTML='<div class="info">Memuat daftar akun...</div>';
+ lvApi("GET","users").then(function(j){
+  if(screen!=="akun")return;
+  if(!j.ok){el.innerHTML='<div class="info">'+esc(j.error||"Gagal memuat")+'</div>';return;}
+  LV.users=j.users;el.innerHTML=lvUsersHTML();
+ });
+};
+function lvErr(m){var e=$("lv-err");if(e){e.textContent=m;e.hidden=!m;}}
+function lvUsersRefresh(){return lvApi("GET","users").then(function(j){if(j.ok){LV.users=j.users;if(screen==="akun")$("scr").innerHTML=lvUsersHTML();}});}
+if(LIVE){
+ document.addEventListener("submit",function(e){
+  var f=e.target;
+  if(f.id==="lvLogin"){
+   e.preventDefault();lvErr("");var b=f.querySelector("button");b.disabled=true;
+   lvApi("POST","auth/login",{email:$("lv-email").value,password:$("lv-pass").value}).then(function(j){
+    b.disabled=false;if(!j.ok){lvErr(j.error||"Gagal masuk");return;}
+    return lvEnter(j.user);
+   }).catch(function(){b.disabled=false;lvErr("Server tidak terjangkau.");});
+  }
+  if(f.id==="lvPw"){
+   e.preventDefault();lvErr("");
+   if($("pw-new").value!==$("pw-new2").value){lvErr("Password baru dan ulangannya tidak sama.");return;}
+   lvApi("POST","auth/password",{old:$("pw-old").value,"new":$("pw-new").value}).then(function(j){
+    if(!j.ok){lvErr(j.error||"Gagal menyimpan");return;}
+    LV.user.mustChange=0;toast("Password diganti");hist=[];enter();
+   });
+  }
+  if(f.id==="lvAdd"){
+   e.preventDefault();lvErr("");
+   lvApi("POST","users",{name:$("ad-n").value,email:$("ad-e").value,role:$("ad-r").value,password:$("ad-p").value}).then(function(j){
+    if(!j.ok){lvErr(j.error||"Gagal menambah");return;}
+    toast("Akun ditambahkan. Orangnya diminta mengganti password saat masuk pertama.");return lvUsersRefresh();
+   });
+  }
+ });
+ document.addEventListener("click",function(e){
+  var t=e.target.closest?e.target.closest("[data-lv]"):null;
+  if(t){
+   var a=t.dataset.lv,uid=t.dataset.uid;
+   if(a==="pw")show("pw");
+   if(a==="out")lvApi("POST","auth/logout",{}).then(function(){lvOut();});
+   if(a==="toggle"){var u=(LV.users||[]).filter(function(x){return String(x.id)===uid;})[0];if(u)lvApi("PUT","users/"+uid,{active:!u.active}).then(function(j){if(!j.ok)toast(j.error);return lvUsersRefresh();});}
+   if(a==="reset"){var u2=(LV.users||[]).filter(function(x){return String(x.id)===uid;})[0];var p=u2&&window.prompt("Password sementara baru untuk "+u2.name+" (min. 10 karakter, huruf dan angka). Orangnya diminta menggantinya saat masuk.");if(p)lvApi("PUT","users/"+uid,{password:p}).then(function(j){toast(j.ok?"Password direset":(j.error||"Gagal"));});}
+   if(a==="seed")askConfirm("Impor data awal","Memasukkan data item awal ke server. Hanya bisa dilakukan saat database item masih kosong.","Impor",function(){lvApi("POST","items/import",{seed:true}).then(function(j){if(!j.ok){toast(j.error||"Gagal impor");return;}toast(j.imported+" item diimpor");return lvLoad().then(function(){syRefresh();show("akun");});});});
+  }
+  if(LV.user)setTimeout(lvTick,400);
+ });
+ document.addEventListener("change",function(e){
+  var s=e.target;if(s.dataset&&s.dataset.lvrole){lvApi("PUT","users/"+s.dataset.lvrole,{role:s.value}).then(function(j){toast(j.ok?"Peran diubah":(j.error||"Gagal"));return lvUsersRefresh();});}
+  if(LV.user)setTimeout(lvTick,400);
+ });
+ $("accBtn").addEventListener("click",function(){show("me");});
+ $("outBtn").addEventListener("click",function(){lvApi("POST","auth/logout",{}).then(function(){lvOut();});});
+}
 function tglS(){var d=new Date();return d.getDate()+" "+["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"][d.getMonth()];}
 function isOpen(l){return ["Diminta","Dibeli sebagian"].indexOf(l.status)>-1;}
 function usedBy(it){
@@ -1129,7 +1298,8 @@ var GROUPS=[
  ["Stock",[["opnameList","Stock Opname","Hitung item, tinjau, setujui",null,"check"],["opnameLaporan","Laporan opname","Per periode dan lokasi","laporanOp","chart"],["pantau","Monitoring Stock","Stok per lokasi, minimum, nilai","pantau","monitor"]]],
  ["Aktivitas",[["riwayat","Riwayat","Catatan aktivitas","always","clock"]]]
 ];
-function allowed(x){if(LIVE)return x[0]==="items";return x[3]==="item"?(can("item")||can("kualif")||can("itemEdit")):x[3]==="always"?true:x[3]?can(x[3]):(can("opname")||can("opnameView"));}
+if(LIVE)GROUPS.push(["Administrasi",[["akun","Kelola akun","Tambah dan atur akun","akun","clip"]]]);
+function allowed(x){if(LIVE)return x[0]==="items"||(x[0]==="akun"&&can("akun"));return x[3]==="item"?(can("item")||can("kualif")||can("itemEdit")):x[3]==="always"?true:x[3]?can(x[3]):(can("opname")||can("opnameView"));}
 function renderNav(){
  if(!role){$("nav").innerHTML="";return;}
  var cur=NAVOF[screen]||screen;
@@ -1146,7 +1316,7 @@ function show(sc,p){
  renderNav();
  $("who").textContent=role?R().n+" · "+R().div:"";
  var el=$("scr");el.className="scr"+(FITSC[sc]?" fit":"")+(FORMSC[sc]?" form":"")+(LISTSC[sc]?" list":"")+(sc==="home"||!role?" homec":"");
- if(!role){head("Inventory Saji",false);$("back").hidden=true;SCREENS.pick(el);el.scrollTop=0;return;}
+ if(!role){head("Inventory Saji",false);$("back").hidden=true;(LIVE?SCREENS.login:SCREENS.pick)(el);el.scrollTop=0;return;}
  (SCREENS[sc]||SCREENS.home)(el,S.p);
  $("back").hidden=(sc==="home");el.scrollTop=0;
 }
@@ -1934,6 +2104,6 @@ $("reset").addEventListener("click",function(){
 });
 $("syncBtn").addEventListener("click",function(){if(LIVE)return;var n=window.prompt("Nama ruang (huruf kecil, angka, strip). Perangkat dengan nama ruang sama berbagi data.",SY.room);if(n===null)return;n=n.trim().toLowerCase();if(!/^[a-z0-9-]{1,24}$/.test(n)){toast("Nama ruang tidak valid");return;}try{localStorage.setItem("saji-room",n);}catch(e){}location.href=location.pathname+"?ruang="+n;});
 if(LIVE){var sty=document.createElement("style");sty.textContent="#sideToggle,#reset{display:none!important}";document.head.appendChild(sty);}
-seed();if(!LIVE)renderNotes();show("home");sbSet(!LIVE&&window.innerWidth>=900);syStart();
+seed();if(LIVE){sbSet(false);lvBoot();}else{renderNotes();show("home");sbSet(window.innerWidth>=900);syStart();}
 })();
 </script>

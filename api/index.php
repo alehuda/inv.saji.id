@@ -4,12 +4,15 @@ require __DIR__ . '/lib.php';
 $method = $_SERVER['REQUEST_METHOD'];
 $path = trim(isset($_GET['_p']) ? $_GET['_p'] : '', '/');
 $seg = $path === '' ? array() : explode('/', $path);
-$body = array();
+$body = array(); $bodyO = null;
 if ($method !== 'GET') {
     need_csrf();
     $raw = file_get_contents('php://input');
     if (strlen($raw) > 6000000) fail(413, 'Data terlalu besar.');
-    if ($raw !== '') { $body = json_decode($raw, true); if (!is_array($body)) fail(400, 'Permintaan tidak valid.'); }
+    if ($raw !== '') {
+        $body = json_decode($raw, true); if (!is_array($body)) fail(400, 'Permintaan tidak valid.');
+        $bodyO = json_decode($raw);   // salinan objek: {} tetap {} saat disimpan kembali
+    }
 }
 $a = isset($seg[0]) ? $seg[0] : '';
 $b = isset($seg[1]) ? $seg[1] : '';
@@ -99,8 +102,16 @@ $ENT = array('items' => array('items', 'item'), 'suppliers' => array('suppliers'
 if (isset($ENT[$a])) {
     $tbl = $ENT[$a][0]; $label = $ENT[$a][1];
     $u = me();
-    $row = function ($r) { $d = json_decode($r['data'], true); if (!is_array($d)) $d = array(); $d['id'] = (int)$r['id']; $d['ver'] = (int)$r['ver'];
-        $d['seq'] = (int)$r['seq']; $d['updatedAt'] = $r['updated_at']; $d['updatedBy'] = $r['updated_by']; return $d; };
+    $row = function ($r) {  // teks JSON: data asli + penanda server
+        $d = $r['data'];
+        $m = '"id":' . (int)$r['id'] . ',"ver":' . (int)$r['ver'] . ',"seq":' . (int)$r['seq'] . ',"updatedAt":' . json_encode($r['updated_at']) . ',"updatedBy":' . json_encode($r['updated_by'], JSON_UNESCAPED_UNICODE);
+        return rtrim(substr($d, 0, -1)) === '{' ? '{' . $m . '}' : substr($d, 0, -1) . ',' . $m . '}';
+    };
+    $dataOf = function ($o) {  // objek data dari body, tanpa penanda server
+        if (!is_object($o)) return null;
+        foreach (array('id', 'ver', 'seq', 'updatedAt', 'updatedBy') as $k) unset($o->$k);
+        return $o;
+    };
     $can = function ($data) use ($u, $a) {
         if (in_array($u['role'], WRITE_MASTER, true)) return true;
         if ($a === 'items' && isset(HEAD_DEPT[$u['role']])) {
@@ -113,24 +124,27 @@ if (isset($ENT[$a])) {
         $since = isset($_GET['since']) ? (int)$_GET['since'] : 0;
         $rows = q("SELECT * FROM $tbl WHERE seq>? ORDER BY id", array($since))->fetchAll();
         $seq = (int)q("SELECT v FROM meta WHERE k='seq'")->fetch()['v'];
-        out(200, array('ok' => true, 'seq' => $seq, 'full' => $since === 0, 'rows' => array_map($row, $rows)));
+        header('Content-Type: application/json; charset=utf-8'); header('Cache-Control: no-store');
+        echo '{"ok":true,"seq":' . $seq . ',"full":' . ($since === 0 ? 'true' : 'false') . ',"rows":[' . implode(',', array_map($row, $rows)) . ']}';
+        exit;
     }
-    $clean = function ($d) { unset($d['id'], $d['ver'], $d['seq'], $d['updatedAt'], $d['updatedBy']); return $d; };
     if ($method === 'POST' && $b === '') {            // tambah baru
-        $d = isset($body['data']) && is_array($body['data']) ? $clean($body['data']) : null;
+        $dO = $dataOf(isset($bodyO->data) ? $bodyO->data : null);
+        $d = $dO ? json_decode(json_encode($dO), true) : null;
         if (!$d || trim((string)(isset($d['name']) ? $d['name'] : '')) === '') fail(422, 'Nama wajib diisi.');
         if (!in_array($u['role'], WRITE_MASTER, true)) fail(403, 'Peran Anda tidak boleh menambah data induk.');
         db()->beginTransaction();
         $id = (int)q("SELECT COALESCE(MAX(id),0)+1 n FROM $tbl")->fetch()['n'];
         $seq = next_seq();
         q("INSERT INTO $tbl(id,name,status,data,ver,seq,updated_at,updated_by) VALUES(?,?,?,?,1,?,?,?)",
-            array($id, $d['name'], isset($d['status']) ? $d['status'] : 'Aktif', json_encode($d, JSON_UNESCAPED_UNICODE), $seq, now(), $u['name']));
+            array($id, $d['name'], isset($d['status']) ? $d['status'] : 'Aktif', json_encode($dO, JSON_UNESCAPED_UNICODE), $seq, now(), $u['name']));
         audit($u, 'tambah', $label, $id, $d['name']);
         db()->commit();
         out(200, array('ok' => true, 'id' => $id, 'ver' => 1, 'seq' => $seq));
     }
     if ($method === 'PUT' && ctype_digit($b)) {       // ubah, dengan nomor versi
-        $d = isset($body['data']) && is_array($body['data']) ? $clean($body['data']) : null;
+        $dO = $dataOf(isset($bodyO->data) ? $bodyO->data : null);
+        $d = $dO ? json_decode(json_encode($dO), true) : null;
         $ver = isset($body['ver']) ? (int)$body['ver'] : -1;
         if (!$d || trim((string)(isset($d['name']) ? $d['name'] : '')) === '') fail(422, 'Nama wajib diisi.');
         db()->beginTransaction();
@@ -138,10 +152,10 @@ if (isset($ENT[$a])) {
         if (!$cur) { db()->rollBack(); fail(404, 'Data tidak ditemukan.'); }
         $old = json_decode($cur['data'], true);
         if (!$can($old) || !$can($d)) { db()->rollBack(); fail(403, 'Peran Anda tidak boleh mengubah data ini.'); }
-        if ((int)$cur['ver'] !== $ver) { db()->rollBack(); fail(409, 'Data sudah diubah orang lain. Muat ulang dulu.', array('current' => $row($cur))); }
+        if ((int)$cur['ver'] !== $ver) { db()->rollBack(); header('Content-Type: application/json; charset=utf-8'); http_response_code(409); echo '{"ok":false,"error":"Data sudah diubah orang lain. Muat ulang dulu.","current":' . $row($cur) . '}'; exit; }
         $seq = next_seq();
         q("UPDATE $tbl SET name=?, status=?, data=?, ver=ver+1, seq=?, updated_at=?, updated_by=? WHERE id=?",
-            array($d['name'], isset($d['status']) ? $d['status'] : 'Aktif', json_encode($d, JSON_UNESCAPED_UNICODE), $seq, now(), $u['name'], $b));
+            array($d['name'], isset($d['status']) ? $d['status'] : 'Aktif', json_encode($dO, JSON_UNESCAPED_UNICODE), $seq, now(), $u['name'], $b));
         $ch = array();
         foreach ($d as $k => $v) if (!isset($old[$k]) || $old[$k] !== $v) $ch[] = $k;
         audit($u, 'ubah', $label, $b, $d['name'] . ' [' . implode(',', array_slice($ch, 0, 8)) . ']');
@@ -150,18 +164,22 @@ if (isset($ENT[$a])) {
     }
     if ($method === 'POST' && $b === 'import') {      // impor awal / massal, hanya Superadmin
         need_role(array('superadmin'));
-        $list = isset($body['rows']) && is_array($body['rows']) ? $body['rows'] : array();
-        if (!$list || count($list) > 3000) fail(422, 'Daftar kosong atau terlalu banyak.');
+        if (!empty($body['seed'])) {   // berkas awal di luar folder web
+            $sf = dirname(cfg_path()) . '/seed-' . $a . '.json';
+            if (!is_file($sf)) fail(404, 'Berkas data awal belum ada di server.');
+            $listO = json_decode(file_get_contents($sf));
+        } else $listO = isset($bodyO->rows) ? $bodyO->rows : null;
+        if (!is_array($listO) || !$listO || count($listO) > 3000) fail(422, 'Daftar kosong atau terlalu banyak.');
         $replace = !empty($body['replace']);
         db()->beginTransaction();
         if ($replace) q("DELETE FROM $tbl");
         else if ((int)q("SELECT COUNT(*) c FROM $tbl")->fetch()['c'] > 0) { db()->rollBack(); fail(409, 'Tabel sudah berisi. Kirim replace:true bila memang ingin menimpa.'); }
         $seq = next_seq(); $n = 0;
-        foreach ($list as $d) {
-            if (!is_array($d) || empty($d['id']) || trim((string)(isset($d['name']) ? $d['name'] : '')) === '') continue;
-            $id = (int)$d['id']; $d = $clean($d);
+        foreach ($listO as $dO) {
+            if (!is_object($dO) || empty($dO->id) || trim((string)(isset($dO->name) ? $dO->name : '')) === '') continue;
+            $id = (int)$dO->id; $dO = $dataOf($dO);
             q("INSERT INTO $tbl(id,name,status,data,ver,seq,updated_at,updated_by) VALUES(?,?,?,?,1,?,?,?)",
-                array($id, $d['name'], isset($d['status']) ? $d['status'] : 'Aktif', json_encode($d, JSON_UNESCAPED_UNICODE), $seq, now(), $u['name']));
+                array($id, $dO->name, isset($dO->status) ? $dO->status : 'Aktif', json_encode($dO, JSON_UNESCAPED_UNICODE), $seq, now(), $u['name']));
             $n++;
         }
         audit($u, 'impor', $label, '-', "$n data" . ($replace ? ' (menimpa)' : ''));
