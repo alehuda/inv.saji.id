@@ -34,12 +34,12 @@ function q($sql, $args = array()) { $s = db()->prepare($sql); $s->execute($args)
 function now() { return gmdate('Y-m-d H:i:s'); }
 
 const ROLES = array(
-    'cfo' => 'CFO', 'purchasing' => 'Staff Purchasing', 'manager' => 'Manager',
+    'superadmin' => 'Superadmin', 'cfo' => 'CFO', 'purchasing' => 'Staff Purchasing', 'manager' => 'Manager',
     'head_kitchen' => 'Head Kitchen', 'head_bar' => 'Head Bar', 'head_exp' => 'Head Experience',
     'staff_kitchen' => 'Staff Kitchen', 'staff_wh' => 'Staff Warehouse', 'auditor' => 'Auditor (staf Exp)',
 );
 const HEAD_DEPT = array('head_kitchen' => 'Kitchen', 'head_bar' => 'Bar', 'head_exp' => 'Experience');
-const WRITE_MASTER = array('cfo', 'purchasing', 'manager');
+const WRITE_MASTER = array('superadmin', 'cfo', 'purchasing', 'manager');
 
 // ---- sesi ----
 const COOKIE = 'saji_s';

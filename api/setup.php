@@ -1,5 +1,5 @@
 <?php
-// Penyiapan sekali jalan: buka https://inv.saji.id/api/setup.php, isi data database dan akun CFO pertama.
+// Penyiapan sekali jalan: buka https://inv.saji.id/api/setup.php, isi data database dan akun Superadmin pertama.
 // Setelah berhasil, file konfigurasi tersimpan di luar folder web dan halaman ini menolak dipakai lagi.
 require __DIR__ . '/lib.php';
 require __DIR__ . '/schema.php';
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $apass = (string)(isset($_POST['apass']) ? $_POST['apass'] : '');
     $v['host'] = 'localhost'; // hanya database di server yang sama
     if (!preg_match('/^[A-Za-z0-9_]{1,64}$/', $v['name']) || !preg_match('/^[A-Za-z0-9_]{1,32}$/', $v['user'])) $err = 'Nama database atau user tidak valid.';
-    elseif (!filter_var(strtolower($v['email']), FILTER_VALIDATE_EMAIL) || $v['ename'] === '') $err = 'Nama dan email CFO wajib diisi dengan benar.';
+    elseif (!filter_var(strtolower($v['email']), FILTER_VALIDATE_EMAIL) || $v['ename'] === '') $err = 'Nama dan email Superadmin wajib diisi dengan benar.';
     elseif ($m = check_password($apass)) $err = $m;
     else {
         try {
@@ -41,9 +41,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
                 create_schema();
                 q('INSERT INTO users(email,name,role,pass_hash,active,must_change,created_at) VALUES(?,?,?,?,1,0,?)',
-                    array(strtolower($v['email']), $v['ename'], 'cfo', password_hash($apass, PASSWORD_DEFAULT), now()));
-                audit(null, 'setup', 'sistem', '-', 'Penyiapan awal, akun CFO ' . $v['email']);
-                page('<p class="o">Selesai. Database siap dan akun CFO dibuat. Halaman ini sekarang terkunci.</p><p><a href="/">Ke Inventory Saji</a></p>');
+                    array(strtolower($v['email']), $v['ename'], 'superadmin', password_hash($apass, PASSWORD_DEFAULT), now()));
+                audit(null, 'setup', 'sistem', '-', 'Penyiapan awal, akun Superadmin ' . $v['email']);
+                page('<p class="o">Selesai. Database siap dan akun Superadmin dibuat. Halaman ini sekarang terkunci.</p><p><a href="/">Ke Inventory Saji</a></p>');
             } catch (Exception $e) { @unlink(cfg_path()); $err = 'Gagal membuat tabel: ' . h($e->getMessage()); }
         }
     }
@@ -52,7 +52,7 @@ page(($err ? '<p class="e">' . h($err) . '</p>' : '') . '<p><small>Buat dulu dat
 <form method="post" autocomplete="off"><label>Nama database</label><input name="name" value="' . h($v['name']) . '" required>
 <label>User database</label><input name="user" value="' . h($v['user']) . '" required>
 <label>Password database</label><input name="pass" type="password" required>
-<hr><label>Nama CFO (akun pertama)</label><input name="ename" value="' . h($v['ename']) . '" required>
-<label>Email CFO</label><input name="email" type="email" value="' . h($v['email']) . '" required>
-<label>Password CFO <small>(min. 10 karakter, huruf dan angka)</small></label><input name="apass" type="password" required>
+<hr><label>Nama Superadmin (akun pertama)</label><input name="ename" value="' . h($v['ename']) . '" required>
+<label>Email Superadmin</label><input name="email" type="email" value="' . h($v['email']) . '" required>
+<label>Password Superadmin <small>(min. 10 karakter, huruf dan angka)</small></label><input name="apass" type="password" required>
 <button>Siapkan</button></form>');

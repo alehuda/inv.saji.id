@@ -52,9 +52,9 @@ if ($a === 'auth') {
     fail(404, 'Tidak ditemukan.');
 }
 
-// ---------- pengguna (hanya CFO) ----------
+// ---------- pengguna (hanya Superadmin) ----------
 if ($a === 'users') {
-    $u = need_role(array('cfo'));
+    $u = need_role(array('superadmin'));
     if ($method === 'GET' && $b === '') {
         out(200, array('ok' => true, 'users' => array_map('pub_user', q('SELECT * FROM users ORDER BY name')->fetchAll())));
     }
@@ -81,7 +81,7 @@ if ($a === 'users') {
         $role = isset($body['role']) ? (string)$body['role'] : $t['role'];
         $act = isset($body['active']) ? ($body['active'] ? 1 : 0) : (int)$t['active'];
         if (!isset(ROLES[$role]) || $name === '') fail(422, 'Data tidak valid.');
-        if ((int)$t['id'] === (int)$u['id'] && ($role !== 'cfo' || !$act)) fail(422, 'Anda tidak bisa menurunkan atau menonaktifkan akun sendiri.');
+        if ((int)$t['id'] === (int)$u['id'] && ($role !== 'superadmin' || !$act)) fail(422, 'Anda tidak bisa menurunkan atau menonaktifkan akun sendiri.');
         q('UPDATE users SET name=?, role=?, active=? WHERE id=?', array($name, $role, $act, $b));
         if (!empty($body['password'])) {
             if ($m = check_password((string)$body['password'])) fail(422, $m);
@@ -148,8 +148,8 @@ if (isset($ENT[$a])) {
         db()->commit();
         out(200, array('ok' => true, 'ver' => $ver + 1, 'seq' => $seq));
     }
-    if ($method === 'POST' && $b === 'import') {      // impor awal / massal, hanya CFO
-        need_role(array('cfo'));
+    if ($method === 'POST' && $b === 'import') {      // impor awal / massal, hanya Superadmin
+        need_role(array('superadmin'));
         $list = isset($body['rows']) && is_array($body['rows']) ? $body['rows'] : array();
         if (!$list || count($list) > 3000) fail(422, 'Daftar kosong atau terlalu banyak.');
         $replace = !empty($body['replace']);
@@ -173,7 +173,7 @@ if (isset($ENT[$a])) {
 
 // ---------- jejak perubahan ----------
 if ($a === 'audit' && $method === 'GET') {
-    need_role(array('cfo', 'manager'));
+    need_role(array('superadmin', 'cfo', 'manager'));
     $lim = min(500, max(1, isset($_GET['limit']) ? (int)$_GET['limit'] : 100));
     out(200, array('ok' => true, 'rows' => q("SELECT * FROM audit ORDER BY id DESC LIMIT $lim")->fetchAll()));
 }
