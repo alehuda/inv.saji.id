@@ -8,3 +8,4 @@ deployment:
     - /bin/cp .htaccess $DEPLOYPATH
     - /bin/cp feedback.php $DEPLOYPATH
     - /bin/cp feedback-admin.php $DEPLOYPATH
+    - /bin/cp sync.php $DEPLOYPATH
