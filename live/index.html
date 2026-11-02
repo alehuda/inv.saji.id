@@ -542,7 +542,7 @@ function seed(){
  ];
  log=[];S={};nextId=1000;if(!LIVE)remapSes();enrichItems();enrichHalal();if(LIVE){assets=[];menus=[];prs=[];buys=[];sessions=[];log=[];}enrichStamps();normalize();
 }
-var SCHEMA="v18";
+var SCHEMA="v19";
 var SUPD=[];
 var HALALD={};
 function dstr(n){var d=new Date();d.setDate(d.getDate()+n);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
@@ -753,12 +753,16 @@ SCREENS.items=function(el){
 };
 
 /* ----- Supplier ----- */
-var SQ={q:"",st:"",cp:"",cb:"",lg:""};
+var SQ={q:"",st:"",cp:"",cb:""};
 var CARAPESAN=["Via Purchasing","Dipesan divisi","Via website","Belum ditentukan"],CARABAYAR=["Cash","COD","CBD","Tempo"];
 function supNames(){var a=suppliers.filter(function(s){return s.status==="Aktif";}).map(function(s){return s.name;}).sort();return a.length?a:SUPS;}
 function supItems(s){return items.filter(function(i){return !i.wip&&(i.sup||[]).indexOf(s.name)>-1;});}
+function supPic(s){var p0=(s.pics&&s.pics[0])||{};return {n:s.pic||p0.n||"",t:s.picTel||p0.t||s.tel||"",e:s.picEmail||""};}
+function supKet(s){return [s.ket||"",s.produk?"Produk (daftar lama): "+s.produk:""].filter(Boolean).join("; ");}
+function supUrl(u){u=(u||"").trim();if(!u)return "";return /^https?:\/\//i.test(u)?u:"https://"+u;}
 function bayarTxt(s){return s.bayar?esc(s.bayar==="Tempo"&&s.termin?"Tempo "+s.termin+" hari":s.bayar):'<span class="mut">Belum diisi</span>';}
-function picTxt(s){var p=s.pics||[];if(!p.length)return '<span class="mut">-</span>';return esc(p[0].n)+(p.length>1?" +"+(p.length-1):"")+(p[0].t?'<div class="mut nm2">'+esc(p[0].t)+'</div>':"");}
+function picTxt(s){var p=supPic(s);if(!p.n&&!p.t)return '<span class="mut">-</span>';return esc(p.n||"-")+(p.t?'<div class="mut nm2">'+esc(p.t)+'</div>':"");}
+function prodTxt(s){var a=supItems(s);if(!a.length)return '<span class="mut">-</span>';return esc(a.slice(0,2).map(function(i){return i.panggil;}).join(", "))+(a.length>2?' <span class="mut">+'+(a.length-2)+'</span>':'');}
 function supDot(s){var on=s.status==="Aktif",t="Status: "+(on?"Aktif":"Nonaktif");
  if(can("supplier"))return '<button type="button" class="ib sdb" data-tip="'+t+'" aria-label="'+t+'" data-sact="'+(on?"nonaktif":"aktif")+':'+s.id+'"><i class="sdot '+(on?"on":"off")+'"></i></button>';
  return '<span class="ib sdb ro-i" data-tip="'+t+'" aria-label="'+t+'"><i class="sdot '+(on?"on":"off")+'"></i></span>';}
@@ -768,17 +772,16 @@ function supList(){
   if(SQ.st&&s.status!==SQ.st)return false;
   if(SQ.cp&&s.pesan!==SQ.cp)return false;
   if(SQ.cb&&(s.bayar||"(belum diisi)")!==SQ.cb)return false;
-  if(SQ.lg==="1"&&!s.belumLengkap)return false;
-  if(q){var h=[s.name,s.kode,s.picInt,s.tel,s.produk,s.ket,(s.pics||[]).map(function(p){return p.n+" "+p.t;}).join(" ")].join(" ").toLowerCase();if(h.indexOf(q)<0)return false;}
+  if(q){var p=supPic(s),h=[s.name,s.kode,s.picInt,p.n,p.t,p.e,s.web,supKet(s),supItems(s).map(function(i){return i.panggil+" "+i.name;}).join(" ")].join(" ").toLowerCase();if(h.indexOf(q)<0)return false;}
   return true;
  }).sort(function(a,b){return a.name.toLowerCase()<b.name.toLowerCase()?-1:1;});
 }
 function listSup(){
  var arr=supList(),box=$("slist");if(!box)return;
  var rows=arr.map(function(s){
-  return '<tr'+(s.status==="Nonaktif"?' class="off"':'')+' data-sview="'+s.id+'"><td><b>'+esc(s.name)+'</b>'+(s.belumLengkap?' <span class="hflag" title="Data supplier belum lengkap">Data belum lengkap</span>':'')+'<div class="mut nm2">'+esc(s.kode||"")+'</div></td><td>'+esc(s.pesan||"-")+(s.pesan==="Via Purchasing"&&s.picInt?'<div class="mut nm2">PIC: '+esc(s.picInt)+'</div>':'')+'</td><td>'+picTxt(s)+'</td><td>'+bayarTxt(s)+'</td><td>'+esc(s.produk||"-")+'</td><td class="r">'+supItems(s).length+'</td><td><div class="ics">'+supDot(s)+(can("supplier")?ib("edit","Edit",'data-go="supForm" data-p="'+s.id+'"'):"")+'</div></td></tr>';
+  return '<tr'+(s.status==="Nonaktif"?' class="off"':'')+' data-sview="'+s.id+'"><td><b>'+esc(s.name)+'</b>'+'<div class="mut nm2">'+esc(s.kode||"")+'</div></td><td>'+esc(s.pesan||"-")+(s.pesan==="Via Purchasing"&&s.picInt?'<div class="mut nm2">PIC: '+esc(s.picInt)+'</div>':'')+'</td><td>'+picTxt(s)+'</td><td>'+bayarTxt(s)+'</td><td>'+prodTxt(s)+'</td><td><div class="ics">'+supDot(s)+(can("supplier")?ib("edit","Edit",'data-go="supForm" data-p="'+s.id+'"'):"")+'</div></td></tr>';
  }).join("");
- box.innerHTML=arr.length?'<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Supplier</th><th>Cara pesan</th><th>PIC supplier</th><th>Cara bayar</th><th>Produk</th><th>Item</th><th>Aksi</th></tr></thead><tbody>'+rows+'</tbody></table></div>':'<div class="empty">'+(suppliers.length?"Tidak ada supplier yang cocok.":"Belum ada supplier.")+'</div>';
+ box.innerHTML=arr.length?'<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Supplier</th><th>Cara pesan</th><th>PIC supplier</th><th>Cara bayar</th><th>Produk</th><th>Aksi</th></tr></thead><tbody>'+rows+'</tbody></table></div>':'<div class="empty">'+(suppliers.length?"Tidak ada supplier yang cocok.":"Belum ada supplier.")+'</div>';
  var c=$("scnt");if(c)c.textContent=arr.length+" dari "+suppliers.length+" supplier";
 }
 SCREENS.suppliers=function(el){
@@ -786,52 +789,71 @@ SCREENS.suppliers=function(el){
  var so=function(id,lbl,list,cur){return '<select id="'+id+'" aria-label="'+lbl+'"><option value="">'+lbl+': semua</option>'+list.map(function(x){return '<option'+(x===cur?' selected':'')+'>'+esc(x)+'</option>';}).join("")+'</select>';};
  el.innerHTML='<div class="itbar">'+(can("supplier")?'<div class="actrow"><button class="primary" type="button" data-go="supForm">+ Tambah Supplier</button></div>':'')+
   '<div class="field"><input type="text" id="sq" autocomplete="off" aria-label="Cari supplier" placeholder="Cari nama, PIC, telepon, atau produk" value="'+esc(SQ.q)+'"></div>'+
-  '<div class="tools">'+so("sf-st","Status",["Aktif","Nonaktif"],SQ.st)+so("sf-cp","Cara pesan",CARAPESAN,SQ.cp)+so("sf-cb","Cara bayar",CARABAYAR.concat(["(belum diisi)"]),SQ.cb)+'<label class="chk"><input type="checkbox" id="sf-lg"'+(SQ.lg==="1"?" checked":"")+'> Data belum lengkap</label><span class="cnt" id="scnt"></span></div></div><div id="slist"></div>';
+  '<div class="tools">'+so("sf-st","Status",["Aktif","Nonaktif"],SQ.st)+so("sf-cp","Cara pesan",CARAPESAN,SQ.cp)+so("sf-cb","Cara bayar",CARABAYAR.concat(["(belum diisi)"]),SQ.cb)+'<span class="cnt" id="scnt"></span></div></div><div id="slist"></div>';
  listSup();
 };
 function openSupplier(id){
  var s=byId(suppliers,id);if(!s)return;
  var kv=function(k,v){return '<div class="kv"><span>'+k+'</span><b>'+v+'</b></div>';};
- var its=supItems(s),pics=s.pics||[];
- var pic=pics.map(function(p,i){return esc(p.n)+(p.t?" ("+esc(p.t)+")":"")+(i===0&&pics.length>1?" · utama":"");}).join("<br>")||"Belum diisi";
- var itl=its.length?its.slice(0,40).map(function(i){var k=i.sup.indexOf(s.name);return esc(i.panggil)+' <span class="mut">('+(k===0?"utama":"cadangan "+k)+')</span>';}).join(", ")+(its.length>40?" dan "+(its.length-40)+" lainnya":""):"Belum ada item yang memakai supplier ini.";
+ var its=supItems(s),p=supPic(s),u=supUrl(s.web);
+ var itl=its.length?its.slice(0,60).map(function(i){var k=i.sup.indexOf(s.name);return esc(i.panggil)+' <span class="mut">('+(k===0?"utama":"cadangan "+k)+')</span>';}).join(", ")+(its.length>60?" dan "+(its.length-60)+" lainnya":""):"Belum ada item yang diorder di supplier ini.";
  var d=$("dlg");
  d.innerHTML='<div class="mdl" role="dialog" aria-modal="true" aria-label="Detail supplier"><div class="mhd"><div><b class="mt">'+esc(s.name)+'</b><div class="lg">'+esc(s.kode||"")+' · '+esc(s.status)+'</div></div><button type="button" class="ib" data-mclose="1" aria-label="Tutup" title="Tutup">×</button></div><div class="mbd"><div class="kvg">'+
-  kv("Cara pesan",esc(s.pesan||"-")+(s.picInt?" · PIC: "+esc(s.picInt):""))+kv("PIC supplier",pic)+kv("Telepon/WhatsApp",esc(s.tel||"-"))+kv("Alamat",esc(s.alamat||"-"))+kv("Cara bayar",bayarTxt(s))+kv("Bank",esc(s.bank||"-"))+kv("No. rekening",esc(s.rek||"-"))+kv("Atas nama",esc(s.an||"-"))+kv("Produk",esc(s.produk||"-"))+kv("Keterangan",esc(s.ket||"-"))+
-  '</div><div class="kv"><span>Item yang dijual ('+its.length+')</span><b>'+itl+'</b></div>'+(s.belumLengkap?'<div class="lg"><span class="hflag">Data belum lengkap</span></div>':'')+'</div><div class="mft">'+(can("supplier")?'<button type="button" class="sm" data-go="supForm" data-p="'+s.id+'">'+ic("edit")+' Ubah</button> ':'')+'<button type="button" class="primary" data-mclose="1">Tutup</button></div></div>';
+  kv("Cara pesan",esc(s.pesan||"-")+(s.picInt?" · PIC: "+esc(s.picInt):""))+kv("PIC supplier",esc(p.n||"-"))+kv("Telepon/WhatsApp PIC",esc(p.t||"-"))+kv("Email PIC",esc(p.e||"-"))+kv("Website",u?'<a href="'+esc(u)+'" target="_blank" rel="noopener noreferrer">'+esc(s.web)+'</a>':"-")+kv("Alamat",esc(s.alamat||"-"))+kv("Cara bayar",bayarTxt(s))+kv("Bank",esc(s.bank||"-"))+kv("No. rekening",esc(s.rek||"-"))+kv("Atas nama",esc(s.an||"-"))+kv("Keterangan",esc(supKet(s)||"-"))+
+  '</div><div class="kv"><span>Produk ('+its.length+')</span><b>'+itl+'</b></div>'+'</div><div class="mft">'+(can("supplier")?'<button type="button" class="sm" data-go="supForm" data-p="'+s.id+'">'+ic("edit")+' Ubah</button> ':'')+'<button type="button" class="primary" data-mclose="1">Tutup</button></div></div>';
  d.hidden=false;
 }
+function renderSupPick(){
+ var sel=S.spSel||[],q=($("sp-q")?$("sp-q").value:"").trim().toLowerCase(),box=$("sp-sel"),res=$("sp-res");
+ if(box)box.innerHTML=sel.map(function(id){var it=byId(items,id);return it?'<button type="button" class="chip" data-sprm="'+id+'" aria-label="Hapus '+esc(it.panggil)+'">'+esc(it.panggil)+' ×</button>':"";}).join("")||'<span class="lg">Belum ada produk dipilih.</span>';
+ if(!res)return;
+ if(!q){res.innerHTML="";return;}
+ var nm=S.editSup?S.editSup.name:"";
+ var arr=items.filter(function(i){return !i.wip&&sel.indexOf(i.id)<0&&(String(i.panggil||"").toLowerCase().indexOf(q)>-1||String(i.name||"").toLowerCase().indexOf(q)>-1);}).slice(0,8);
+ res.innerHTML=arr.length?arr.map(function(i){var full=(i.sup||[]).filter(function(x){return x!==nm;}).length>=3;return '<button type="button" class="chip" data-spadd="'+i.id+'"'+(full?' disabled title="Item ini sudah punya 3 supplier"':'')+'>+ '+esc(i.panggil)+(full?' (penuh)':'')+'</button>';}).join(" "):'<div class="lg">Tidak ketemu.</div>';
+}
 SCREENS.supForm=function(el,p){
- var s=p?byId(suppliers,+p):null;S.editSup=s||null;
+ var s=p?byId(suppliers,+p):null;S.editSup=s||null;S.spSel=s?supItems(s).map(function(i){return i.id;}):[];
  head(s?"Ubah supplier":"Tambah Supplier",true);
+ var pc=s?supPic(s):{n:"",t:"",e:""};
  var v=function(k){return esc(s&&s[k]!=null?s[k]:"");};
- var picv=s?(s.pics||[]).map(function(x){return x.n+(x.t?"; "+x.t:"");}).join("\n"):"";
- var inp=function(id,lbl,k,ph){return '<div class="field"><label for="'+id+'">'+lbl+'</label><input type="text" id="'+id+'" value="'+v(k)+'"'+(ph?' placeholder="'+ph+'"':'')+'></div>';};
- el.innerHTML='<div class="info">Isi data supplier. Cara bayar wajib, kecuali Anda mencentang Data belum lengkap.</div>'+
-  inp("s-nm","Nama *","name","mis. Aiko Bakeshop")+
-  '<div class="two"><div class="field"><label for="s-cp">Cara pesan *</label><select id="s-cp">'+opts(CARAPESAN,s?s.pesan:"Belum ditentukan")+'</select></div><div class="field" id="s-pw">'+'<label for="s-pi">PIC internal</label><input type="text" id="s-pi" value="'+v("picInt")+'" placeholder="mis. Indah"></div></div>'+
+ var inp=function(id,lbl,val,ph,ty){return '<div class="field"><label for="'+id+'">'+lbl+'</label><input type="'+(ty||"text")+'" id="'+id+'" value="'+esc(val)+'"'+(ph?' placeholder="'+ph+'"':'')+'></div>';};
+ el.innerHTML='<div class="info">Nama dan Cara pesan wajib. PIC, telepon PIC, dan Cara bayar juga wajib.</div>'+
+  inp("s-nm","Nama *",s?s.name:"","mis. Aiko Bakeshop")+
+  '<div class="two"><div class="field"><label for="s-cp">Cara pesan *</label><select id="s-cp">'+opts(CARAPESAN,s?s.pesan:"Belum ditentukan")+'</select></div><div class="field" id="s-pw"><label for="s-pi">PIC internal</label><select id="s-pi">'+picOpts(s?s.picInt:"")+'</select><input type="text" id="s-pin" hidden placeholder="Nama PIC internal baru" style="margin-top:6px"></div></div>'+
   (s?'<div class="field"><label for="s-st">Status *</label><select id="s-st">'+opts(["Aktif","Nonaktif"],s.status)+'</select></div>':'')+
-  '<div class="field"><label for="s-pic">PIC supplier (satu per baris: nama; telepon. Baris pertama adalah utama)</label><textarea id="s-pic" rows="3" style="width:100%;font:inherit;padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--surface)">'+esc(picv)+'</textarea></div>'+
-  '<div class="two">'+inp("s-tel","Telepon/WhatsApp","tel","mis. 0812xxxxxxx")+inp("s-al","Alamat","alamat")+'</div>'+
+  '<div class="sec">Kontak</div>'+
+  '<div class="two">'+inp("s-pic","PIC supplier *",pc.n,"nama")+inp("s-pt","Telepon/WhatsApp PIC *",pc.t,"mis. 0812xxxxxxx","tel")+'</div>'+
+  '<div class="two">'+inp("s-pe","Email PIC",pc.e,"opsional","email")+inp("s-web","Website Supplier",s?s.web||"":"","opsional, mis. https://contoh.id")+'</div>'+inp("s-al","Alamat",s?s.alamat||"":"")+
   '<div class="sec">Pembayaran</div>'+
   '<div class="two"><div class="field"><label for="s-cb">Cara bayar *</label><select id="s-cb"><option value="">Belum diisi</option>'+CARABAYAR.map(function(x){return '<option'+(s&&s.bayar===x?' selected':'')+'>'+x+'</option>';}).join("")+'</select></div><div class="field" id="s-tw"><label for="s-tm">Termin (hari)</label><input type="number" id="s-tm" min="1" value="'+v("termin")+'"></div></div>'+
-  '<div class="two">'+inp("s-bk","Bank","bank","mis. BCA")+inp("s-rk","No. rekening","rek")+'</div>'+inp("s-an","Atas nama rekening","an")+
-  '<div class="sec">Lainnya</div>'+inp("s-pr","Ringkasan produk","produk","mis. Cake, Roti toast")+inp("s-kt","Keterangan","ket","mis. nama toko di marketplace")+
-  '<div class="field"><label class="chk"><input type="checkbox" id="s-bl"'+(s&&s.belumLengkap?" checked":"")+'> Data belum lengkap</label></div>'+
+  '<div class="two">'+inp("s-bk","Bank",s?s.bank||"":"","mis. BCA")+inp("s-rk","No. rekening",s?s.rek||"":"")+'</div>'+inp("s-an","Atas nama rekening",s?s.an||"":"")+
+  '<div class="sec">Produk</div><div class="field"><label for="sp-q">Item yang diorder di supplier ini</label><input type="text" id="sp-q" autocomplete="off" placeholder="Ketik nama item untuk menambahkan"><div id="sp-res" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px"></div><div class="chips" id="sp-sel" style="margin-top:8px"></div><div class="lg">Satu item bisa punya sampai 3 supplier. Urutan utama dan cadangan diatur di formulir item.</div></div>'+
+  '<div class="sec">Lainnya</div>'+inp("s-kt","Keterangan",s?supKet(s):"","mis. nama toko di marketplace")+
   '<div class="err" id="err" hidden></div><div class="frm-act"><button class="ghost" type="button" data-cancel="1">Batalkan</button><button class="primary" type="button" data-save="sup">Simpan supplier</button></div>';
- syncSup();
+ syncSup();renderSupPick();
 };
-function syncSup(){var a=$("s-pw"),b=$("s-tw");if(a)a.hidden=$("s-cp").value!=="Via Purchasing";if(b)b.hidden=$("s-cb").value!=="Tempo";}
+function picNames(){var m={};suppliers.forEach(function(x){if(x.picInt)m[x.picInt]=1;});return Object.keys(m).sort();}
+function picOpts(sel){var n=picNames();if(sel&&n.indexOf(sel)<0)n.push(sel);return '<option value="">- belum dipilih -</option>'+n.map(function(x){return '<option'+(x===sel?' selected':'')+'>'+esc(x)+'</option>';}).join("")+'<option value="__new">+ Tambah PIC baru...</option>';}
+function picVal(){var s=$("s-pi").value;return s==="__new"?$("s-pin").value.trim():s;}
+function syncSup(){var a=$("s-pw"),b=$("s-tw"),n=$("s-pin");if(n)n.hidden=$("s-pi").value!=="__new";if(a)a.hidden=$("s-cp").value!=="Via Purchasing";if(b)b.hidden=$("s-cb").value!=="Tempo";}
 function saveSup(){
- var nm=$("s-nm").value.trim(),cp=$("s-cp").value,cb=$("s-cb").value,tm=parseInt($("s-tm").value,10)||0,bl=$("s-bl").checked,ed=S.editSup;
+ var nm=$("s-nm").value.trim(),cp=$("s-cp").value,cb=$("s-cb").value,tm=parseInt($("s-tm").value,10)||0,ed=S.editSup;
+ var pn=$("s-pic").value.trim(),pt=$("s-pt").value.trim(),pe=$("s-pe").value.trim();
  if(!reqMark(["s-nm"],[]))return;
  if(suppliers.some(function(x){return x!==ed&&x.name.toLowerCase()===nm.toLowerCase();})){err('Nama "'+nm+'" sudah dipakai supplier lain.');return;}
- if(!cb&&!bl){err("Pilih Cara bayar, atau centang Data belum lengkap.");return;}
- if(cb==="Tempo"&&!(tm>0)&&!bl){err("Termin (hari) wajib diisi jika Cara bayar Tempo.");return;}
- var pics=$("s-pic").value.split(/\n/).map(function(l){var q=l.split(";");return {n:(q[0]||"").trim(),t:(q[1]||"").trim()};}).filter(function(q){return q.n||q.t;});
- var o={name:nm,status:ed?$("s-st").value:"Aktif",pesan:cp,picInt:cp==="Via Purchasing"?$("s-pi").value.trim():"",pics:pics,tel:$("s-tel").value.trim(),alamat:$("s-al").value.trim(),bayar:cb,termin:cb==="Tempo"&&tm>0?tm:"",bank:$("s-bk").value.trim(),rek:$("s-rk").value.trim(),an:$("s-an").value.trim(),produk:$("s-pr").value.trim(),ket:$("s-kt").value.trim(),belumLengkap:bl};
- if(ed){var old=ed.name;Object.assign(ed,o);if(old!==nm)items.forEach(function(i){(i.sup||[]).forEach(function(x,k){if(x===old)i.sup[k]=nm;});});addLog("Supplier diubah",nm);toast("Supplier diperbarui.");}
- else{var mx=0,mk=0;suppliers.forEach(function(x){if(x.id>mx)mx=x.id;var n=parseInt(String(x.kode||"").replace(/\D/g,""),10)||0;if(n>mk)mk=n;});o.id=mx+1;o.kode="SUP-"+String(mk+1).padStart(3,"0");suppliers.push(o);addLog("Supplier baru",nm);toast("Supplier disimpan.");}
+ if(!pn||!pt){err("PIC supplier dan telepon PIC wajib diisi.");return;}
+ if(pe&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(pe)){err("Email PIC belum benar.");return;}
+ if(!cb){err("Pilih Cara bayar.");return;}
+ if(cb==="Tempo"&&!(tm>0)){err("Termin (hari) wajib diisi jika Cara bayar Tempo.");return;}
+ var o={name:nm,status:ed?$("s-st").value:"Aktif",pesan:cp,picInt:cp==="Via Purchasing"?picVal():"",pic:pn,picTel:pt,picEmail:pe,web:$("s-web").value.trim(),alamat:$("s-al").value.trim(),bayar:cb,termin:cb==="Tempo"&&tm>0?tm:"",bank:$("s-bk").value.trim(),rek:$("s-rk").value.trim(),an:$("s-an").value.trim(),ket:$("s-kt").value.trim()};
+ if(ed){var old=ed.name;Object.assign(ed,o);delete ed.pics;delete ed.tel;delete ed.produk;if(old!==nm)items.forEach(function(i){(i.sup||[]).forEach(function(x,k){if(x===old)i.sup[k]=nm;});});addLog("Supplier diubah",nm);}
+ else{var mx=0,mk=0;suppliers.forEach(function(x){if(x.id>mx)mx=x.id;var n=parseInt(String(x.kode||"").replace(/\D/g,""),10)||0;if(n>mk)mk=n;});o.id=mx+1;o.kode="SUP-"+String(mk+1).padStart(3,"0");suppliers.push(o);addLog("Supplier baru",nm);}
+ var full=[];
+ items.forEach(function(i){if(i.wip)return;var sup=(i.sup||[]).slice(),has=sup.indexOf(nm)>-1,want=(S.spSel||[]).indexOf(i.id)>-1;
+  if(want&&!has){if(sup.length>=3){full.push(i.panggil);return;}sup.push(nm);i.sup=sup;}
+  else if(!want&&has){i.sup=sup.filter(function(x){return x!==nm;});}});
+ toast(full.length?"Disimpan. "+full.length+" item tidak ditambahkan karena sudah punya 3 supplier.":(ed?"Supplier diperbarui.":"Supplier disimpan."));
  back();
 }
 function supSel(n,sel){var nm=supNames().slice(),lb=["Supplier utama","Cadangan 1","Cadangan 2"][n-1];if(sel&&nm.indexOf(sel)<0)nm.push(sel);return '<select id="f-sup'+n+'" aria-label="'+lb+'"><option value="">'+lb+' (kosong)</option>'+nm.map(function(x){return '<option'+(x===sel?' selected':'')+'>'+esc(x)+'</option>';}).join("")+'</select>';}
@@ -851,8 +873,8 @@ function supFromCsv(text){
  if(ix("Nama")<0||ix("Kode")<0)return null;
  var g=function(r,n){var k=ix(n);return k<0?"":(r[k]||"").trim();};
  return rows.slice(1).filter(function(r){return g(r,"Nama");}).map(function(r){
-  var kode=g(r,"Kode"),id=parseInt(kode.replace(/\D/g,""),10),pic=g(r,"PIC supplier"),tel=g(r,"Telepon/WhatsApp"),tm=parseInt(g(r,"Termin (hari)"),10);
-  return {id:id,name:g(r,"Nama"),status:g(r,"Status")||"Aktif",kode:kode,pesan:g(r,"Cara pesan")||"Belum ditentukan",picInt:g(r,"PIC internal"),pics:pic?[{n:pic,t:tel}]:[],tel:tel,alamat:g(r,"Alamat"),bayar:g(r,"Cara bayar"),termin:tm>0?tm:"",bank:g(r,"Bank"),rek:g(r,"No. rekening"),an:g(r,"Atas nama rekening"),produk:g(r,"Ringkasan produk"),ket:g(r,"Keterangan"),belumLengkap:!!g(r,"Data belum lengkap")};
+  var kode=g(r,"Kode"),id=parseInt(kode.replace(/\D/g,""),10),tm=parseInt(g(r,"Termin (hari)"),10),lama=g(r,"Ringkasan produk"),ket=[g(r,"Keterangan"),lama?"Produk (daftar lama): "+lama:""].filter(Boolean).join("; ");
+  return {id:id,name:g(r,"Nama"),status:g(r,"Status")||"Aktif",kode:kode,pesan:g(r,"Cara pesan")||"Belum ditentukan",picInt:g(r,"PIC internal"),pic:g(r,"PIC supplier"),picTel:g(r,"Telepon/WhatsApp PIC")||g(r,"Telepon/WhatsApp"),picEmail:g(r,"Email PIC"),web:g(r,"Website Supplier"),alamat:g(r,"Alamat"),bayar:g(r,"Cara bayar"),termin:tm>0?tm:"",bank:g(r,"Bank"),rek:g(r,"No. rekening"),an:g(r,"Atas nama rekening"),ket:ket};
  }).filter(function(o){return o.id>0;});
 }
 
@@ -1012,7 +1034,7 @@ function genBelanja(){
  B.forEach(function(b,i){b.id=4+i;b.kode="BL-"+String(b.id).padStart(4,"0");buys.push(b);});
 }
 
-var MOCKV="v0.18";
+var MOCKV="v0.20";
 var SKJ=[["CFO-01", "CFO", "Buka Daftar Item, cari \"Kecap manis\", klik ikon halalnya."], ["CFO-02", "CFO", "Buka Filter di Daftar Item, centang Status halal: Kedaluwarsa."], ["CFO-03", "CFO", "Tambah item baru (bahan) dengan data lengkap, halal, dan foto."], ["CFO-04", "CFO", "Tekan Simpan pada form item baru yang masih kosong."], ["CFO-05", "CFO", "Ubah harga sebuah item lalu simpan. Coba juga tombol Batalkan."], ["CFO-06", "CFO", "Nonaktifkan sebuah item lewat bulatan status, lalu aktifkan lagi."], ["CFO-07", "CFO", "Di Daftar Belanja, filter status Diajukan. Setujui satu baris dan tolak satu baris."], ["CFO-08", "CFO", "Catat pembelian sebagian untuk satu PR, lalu lengkapi sisanya."], ["CFO-09", "CFO", "Setelah Auditor menghitung Gudang (skenario AUD-01), tinjau dan setujui sesi itu."], ["SPC-01", "Staff Purchasing", "Cari item dan buka detailnya. Perhatikan kolom harga."], ["SPC-02", "Staff Purchasing", "Tambah item baru bertipe Alat (mis. Ember kecil)."], ["SPC-03", "Staff Purchasing", "Ubah item dan isi harga baru."], ["SPC-04", "Staff Purchasing", "Hapus item yang baru Anda tambah, lalu coba hapus item yang punya stok (mis. Kecap Manis ABC)."], ["SPC-05", "Staff Purchasing", "Catat pembelian untuk PR yang disetujui."], ["SPC-06", "Staff Purchasing", "Coba cari tombol Setujui di Daftar Belanja."], ["MGR-01", "Manager", "Ajukan PR dengan 2 item, satu di antaranya Tulis bebas."], ["MGR-02", "Manager", "Buat menu baru dengan 2 bahan dan isi harga jual."], ["MGR-03", "Manager", "Ubah resep Caramel Latte, lalu Ganti merek pada Susu UHT."], ["MGR-04", "Manager", "Di Monitoring Stock, atur batas minimum sebuah item menjadi sangat besar."], ["MGR-05", "Manager", "Buka Laporan opname, filter lokasi, lalu Unduh CSV."], ["HEAD-01", "Head Kitchen", "Ajukan PR lalu pantau statusnya di Daftar Belanja."], ["HEAD-02", "Head Kitchen", "Catat Pemakaian dari Dapur dan coba pilih Gudang sebagai lokasi."], ["HEAD-03", "Head Kitchen", "Catat Waste dengan alasan Tumpah."], ["HEAD-04", "Head Kitchen", "Tinjau sesi opname Dapur yang menunggu, lalu setujui."], ["HEAD-05", "Head Kitchen", "Klik Reset. Tinjau sesi Dapur, tekan Kembalikan tanpa catatan, lalu dengan catatan."], ["HEAD-06", "Head Bar", "Buka Stock Opname dan cari sesi Dapur."], ["HEAD-07", "Head Experience", "Cek menu yang tampil."], ["HEAD-08", "Head Kitchen", "Buka Daftar Item. Ubah satu item yang dipakai Kitchen, lalu cari item yang hanya dipakai Bar: ikon Edit tidak ada."], ["SPC-07", "Staff Purchasing", "Tambah item baru: Nama Panggil terisi otomatis sama dengan Nama Lengkap, lalu ubah."], ["SUP-01", "Staff Purchasing", "Buka menu Supplier, cari \"Aiko\", lalu klik barisnya untuk melihat detail."], ["SUP-02", "Staff Purchasing", "Tambah supplier baru dengan Cara bayar Tempo 14 hari."], ["SUP-03", "Staff Purchasing", "Nonaktifkan lalu aktifkan lagi sebuah supplier lewat bulatan status."], ["SUP-04", "Staff Purchasing", "Ubah item: pilih Supplier utama dan Cadangan 1, lalu simpan."], ["SUP-05", "Head Kitchen", "Buka menu Supplier: data bisa dilihat, tidak ada tombol tambah atau ubah."], ["AUD-04", "Auditor (staf Exp)", "Mulai opname Dapur: hanya item yang dipakai Kitchen yang tampil."], ["STK-01", "Staff Kitchen", "Catat Belanja Langsung dengan tanggal kemarin, dua item, dan harga."], ["STK-02", "Staff Kitchen", "Catat Pemakaian satu bahan dengan satuan bundling."], ["STW-01", "Staff Warehouse", "Buka Daftar Belanja dan catat pembelian satu PR."], ["STW-02", "Staff Warehouse", "Ambil dari gudang satu bahan ke Dapur."], ["AUD-01", "Auditor (staf Exp)", "Mulai opname Gudang, isi semua item, lalu Selesai dihitung."], ["AUD-02", "Auditor (staf Exp)", "Coba mulai opname untuk lokasi Exp."], ["AUD-03", "Auditor (staf Exp)", "Gunakan kolom cari yang menempel saat menghitung banyak item."], ["UMM-01", "Semua peran", "Arahkan penunjuk ke ikon di kolom Aksi dan ke ikon ?."], ["UMM-02", "Semua peran", "Ciutkan menu kiri lalu buka kembali. Coba juga di ponsel atau tablet."], ["UMM-03", "Semua peran", "Klik Reset lalu cek bahwa data kembali ke awal."]];
 var ROLEPERAN={cfo:"CFO",stafpurch:"Staff Purchasing",manajer:"Manager",kitchen:"Head Kitchen",bar:"Head Bar",headexp:"Head Experience",staf:"Staff Kitchen",gudang:"Staff Warehouse",auditor:"Auditor (staf Exp)"};
 var FBJ=["Kesalahan (bug)","Saran perbaikan","Pertanyaan","Kebingungan / istilah","Fitur belum ada","Pujian"];
@@ -1522,11 +1544,11 @@ function homeLive(el){
  var arr=items.filter(function(i){return !i.wip;}),c={};
  arr.forEach(function(i){var k=halalState(i).k;c[k]=(c[k]||0)+1;});
  var aktif=arr.filter(function(i){return i.status==="Aktif";}).length;
- var sa=suppliers.filter(function(s){return s.status==="Aktif";}).length,sb=suppliers.filter(function(s){return s.belumLengkap;}).length;
+ var sa=suppliers.filter(function(s){return s.status==="Aktif";}).length;
  var st=[["Total item",arr.length],["Aktif",aktif],["Halal kedaluwarsa",c.bad||0],["Belum ada data halal",c.none||0],["Supplier aktif",sa]];
  var h='<div class="hello"><b>Halo, '+esc(R().n)+'</b><span>'+esc(R().desk)+'</span></div>';
  h+='<div class="stats">'+st.map(function(x){return '<div class="stat"><b>'+x[1]+'</b><span>'+x[0]+'</span></div>';}).join("")+'</div>';
- h+=(c.none?'<div class="low">'+c.none+' item belum ada data halal (penanda oranye di Daftar Item). <button type="button" data-hfv="Belum ada data">Lihat</button></div>':'')+(c.bad?'<div class="low">'+c.bad+' item sertifikat halalnya sudah kedaluwarsa. <button type="button" data-hfv="Kedaluwarsa">Lihat</button></div>':'')+(sb&&(can("supplier")||can("supplierView"))?'<div class="low">'+sb+' supplier datanya belum lengkap. <button type="button" data-sflt="1">Lihat</button></div>':'');
+ h+=(c.none?'<div class="low">'+c.none+' item belum ada data halal (penanda oranye di Daftar Item). <button type="button" data-hfv="Belum ada data">Lihat</button></div>':'')+(c.bad?'<div class="low">'+c.bad+' item sertifikat halalnya sudah kedaluwarsa. <button type="button" data-hfv="Kedaluwarsa">Lihat</button></div>':'');
  GROUPS.forEach(function(g){var ts=g[1].filter(allowed);if(!ts.length)return;h+='<div class="hg">'+g[0]+'</div><div class="tiles">'+ts.map(function(x){return '<button type="button" class="tile" data-go="'+x[0]+'"><b>'+x[1]+'</b><span>'+x[2]+'</span></button>';}).join("")+'</div>';});
  el.innerHTML=h;
 }
@@ -2150,9 +2172,11 @@ ph.addEventListener("click",function(e){
  if(go1){var d=go1.dataset;if(go1.closest("#nav")){hist=d.go==="home"?[]:["home"];if(d.go==="pantau"&&!can("pantau"))return;show(d.go);return;}if(d.go==="home"||d.go==="pantau"||d.go==="riwayat"){if(d.go==="pantau"&&!can("pantau"))return;hist=[];hist.push("home");if(d.go==="home"){show("home");}else{show(d.go);}return;}go(d.go,d.p);return;}
  if(t.id==="back"){back();return;}
  var ps=t.closest("[data-pst]");if(ps){S.pst=ps.dataset.pst;$("pst").querySelectorAll("button").forEach(function(b){b.setAttribute("aria-pressed",String(b===ps));});$("pu-buy").hidden=S.pst==="batal";$("pu-cancel").hidden=S.pst!=="batal";return;}
+ var spa=t.closest("[data-spadd]");if(spa){var sid=+spa.dataset.spadd;if((S.spSel||[]).indexOf(sid)<0)S.spSel.push(sid);if($("sp-q"))$("sp-q").value="";renderSupPick();return;}
+ var spr=t.closest("[data-sprm]");if(spr){S.spSel=(S.spSel||[]).filter(function(x){return x!==+spr.dataset.sprm;});renderSupPick();return;}
  var sact=t.closest("[data-sact]");if(sact){var sp2=sact.dataset.sact.split(":"),ss=byId(suppliers,+sp2[1]);if(ss){if(sp2[0]==="nonaktif"){askConfirm("Nonaktifkan supplier?","\""+ss.name+"\" tidak muncul lagi di pilihan supplier. Item yang memakainya dan riwayatnya tetap tersimpan, dan supplier bisa diaktifkan kembali.","Nonaktifkan",function(){ss.status="Nonaktif";addLog("Supplier dinonaktifkan",ss.name);toast(ss.name+" dinonaktifkan.");listSup();},true);}else{ss.status="Aktif";addLog("Supplier diaktifkan",ss.name);toast(ss.name+" diaktifkan kembali.");listSup();}}return;}
  var sv=t.closest("[data-sview]");if(sv&&!t.closest(".ib,[data-go]")){openSupplier(+sv.dataset.sview);return;}
- var sfl=t.closest("[data-sflt]");if(sfl){SQ.lg="1";SQ.q="";go("suppliers");return;}
+ 
  var da=t.closest("[data-act]");if(da){var pa=da.dataset.act.split(":"),ia=byId(items,+pa[1]);
   var refresh=function(){if($("list"))listItems();};
   if(pa[0]==="nonaktif"){askConfirm("Nonaktifkan item?","\""+ia.panggil+"\" tidak akan muncul di pilihan resep dan permintaan beli. Riwayat dan stok tetap tersimpan, dan item bisa diaktifkan kembali.","Nonaktifkan",function(){ia.status="Nonaktif";ia.reason="Dinonaktifkan "+R().n;addLog("Item dinonaktifkan",ia.name);toast(ia.panggil+" dinonaktifkan.");refresh();},true);return;}
@@ -2190,7 +2214,7 @@ ph.addEventListener("input",function(e){
  if(t.id==="o-q"){opFilter(t.value);return;}
  if(t.id==="bq"){BQ.q=t.value;BQ.page=1;BQ.more=BQ.size;renderBel();return;}
  if(t.id==="mq"){MQ.q=t.value;MQ.page=1;renderMon();return;}
- if(t.id==="sq"){SQ.q=t.value;listSup();return;}if(t.id==="q"){if(screen==="items"){LQ.q=t.value;LQ.page=1;LQ.more=LQ.size;listItems();}else{renderRes();}return;}
+ if(t.id==="sq"){SQ.q=t.value;listSup();return;}if(t.id==="sp-q"){renderSupPick();return;}if(t.id==="q"){if(screen==="items"){LQ.q=t.value;LQ.page=1;LQ.more=LQ.size;listItems();}else{renderRes();}return;}
  if(t.id==="f-pg"){S.pgAuto=false;return;}
  if(t.id==="f-ter"||t.id==="f-mas"){calcExp();return;}
  if(t.id==="f-brand"||t.id==="f-prod"){updFull();return;}
@@ -2218,7 +2242,7 @@ ph.addEventListener("change",function(e){
  if(t.id==="rp-per"||t.id==="rp-lok"){S.rp={per:$("rp-per").value,lok:$("rp-lok").value};renderLaporan($("scr"));return;}
  if(t.id==="gm-new"){S.gmNew=t.value;renderGm();return;}
  if(t.id==="gm-all"){S.gmAll=t.checked;return;}
- if(/^sf-(st|cp|cb|lg)$/.test(t.id)){SQ[t.id.slice(3)]=t.id==="sf-lg"?(t.checked?"1":""):t.value;listSup();return;}if(t.id==="s-cp"||t.id==="s-cb"){syncSup();return;}if(t.id==="sup-file"){lvSupFile(t);return;}if(t.id==="f-tipe"||t.id==="f-fc"){syncItemForm();return;}
+ if(/^sf-(st|cp|cb)$/.test(t.id)){SQ[t.id.slice(3)]=t.value;listSup();return;}if(t.id==="s-cp"||t.id==="s-cb"||t.id==="s-pi"){syncSup();return;}if(t.id==="sup-file"){lvSupFile(t);return;}if(t.id==="f-tipe"||t.id==="f-fc"){syncItemForm();return;}
  if(t.id==="f-kat"){$("f-sub").innerHTML=opts(SUBS[t.value]);return;}
  if(t.id==="f-ds"){$("f-cert").hidden=t.value!=="Sertifikat halal";return;}
 });
@@ -2230,7 +2254,7 @@ $("nav").addEventListener("click",function(e){});
 var NOTES=[
  ["items","stafpurch","Use case 1 · Daftar Item dan CRUD","Daftar Item memuat bahan, alat, dan supplies. Filter terbuka di sisi kiri tabel dan angkanya ikut menyesuaikan. Status aktif diubah lewat bulatan di kolom Aksi (hijau aktif, abu-abu nonaktif; sorot untuk keterangan). Klik baris untuk detail lengkap (popup, termasuk Storage dan foto). Data halal diambil dari Form List Material Halal. Item yang belum cocok tampil Belum ada data."],
  ["items","cfo","CFO memegang hak Admin Purchasing","Peran Admin Purchasing digabung ke CFO: CFO bisa melihat dan mengubah semua yang dulu dipegang Admin Purchasing (item, aset, PR, belanja, laporan opname, persetujuan opname Gudang) dan juga melihat harga. Ikon halal di Daftar Item: Green List (hijau), Lengkap (biru), Lengkap+ (ungu), Kedaluwarsa (merah). Klik ikonnya untuk rincian."],
- ["suppliers","stafpurch","Supplier","Menu Supplier memuat pemasok beserta cara pesan, cara bayar, PIC, dan rekening. Klik baris untuk detail dan daftar item yang dijual. Cadangan ditentukan per item (Supplier 2 dan 3 di formulir item). Penanda oranye Data belum lengkap bisa dicentang di formulir."],
+ ["suppliers","stafpurch","Supplier","Menu Supplier memuat pemasok beserta cara pesan, cara bayar, PIC, dan rekening. Klik baris untuk detail dan daftar item yang dijual. Cadangan ditentukan per item (Supplier 2 dan 3 di formulir item)."],
  ["suppliers","kitchen","Supplier","Head dan Manager bisa melihat daftar supplier. Menambah dan mengubah supplier dikerjakan Purchasing, CFO, dan Manager."],
  ["items","kitchen","Head mengubah item","Head dan Manager bisa membuka Daftar Item dan mengubah item lewat ikon Edit. Head hanya bisa mengubah item yang dipakai oleh divisinya (kolom Dipakai oleh). Membuat, menonaktifkan, dan menghapus item tetap tugas Purchasing."],
   ["items","bar","Head mengubah item","Head dan Manager bisa membuka Daftar Item dan mengubah item lewat ikon Edit. Head hanya bisa mengubah item yang dipakai oleh divisinya (kolom Dipakai oleh). Membuat, menonaktifkan, dan menghapus item tetap tugas Purchasing."],
