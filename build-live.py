@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Membuat halaman LIVE dari index.html: live/index.html (Beranda, alamat /) dan live/item/index.html (Daftar Item, alamat /item/).
+# Membuat halaman LIVE dari index.html: live/index.html (Beranda, /), live/item/index.html (Daftar Item, /item/), live/supplier/index.html (Supplier, /supplier/).
 # Halaman LIVE tidak memuat data item sama sekali: data datang dari server setelah login.
 import os,re
 src=open("index.html",encoding="utf-8").read()
@@ -25,6 +25,7 @@ def strip_literal(t,name,open_c,close_c):
 
 src=strip_literal(src,"REAL","[","]")
 src=strip_literal(src,"HALALD","{","}")
+src=strip_literal(src,"SUPD","[","]")
 
 def make(start):
     cfg='<script>window.SAJI_LIVE={start:"%s",api:"/"};</script>\n'%start
@@ -32,7 +33,7 @@ def make(start):
     t=src[:i]+cfg+src[i:]
     t=t.replace("<title>Mockup Inventory Saji</title>","<title>Inventory Saji</title>")
     return t
-for path,start in(("live/index.html","home"),("live/item/index.html","items")):
+for path,start in(("live/index.html","home"),("live/item/index.html","items"),("live/supplier/index.html","suppliers")):
     os.makedirs(os.path.dirname(path),exist_ok=True)
     open(path,"w",encoding="utf-8").write(make(start))
     print("dibuat",path,os.path.getsize(path))

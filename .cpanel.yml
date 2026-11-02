@@ -12,6 +12,8 @@ deployment:
     - /bin/mkdir -p $LIVEPATH/item
     - /bin/cp live/index.html $LIVEPATH
     - /bin/cp live/item/index.html $LIVEPATH/item/
+    - /bin/mkdir -p $LIVEPATH/supplier
+    - /bin/cp live/supplier/index.html $LIVEPATH/supplier/
     - /bin/cp .htaccess $LIVEPATH
     - /bin/cp feedback.php $LIVEPATH
     - /bin/rm -f $LIVEPATH/sync.php /home/sajiid/sync-inventory/item-8f4k2m.json
