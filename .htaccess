@@ -2,3 +2,7 @@
 Header set X-Robots-Tag "noindex, nofollow"
 AddDefaultCharset UTF-8
 DirectoryIndex index.html
+# Halaman aplikasi selalu dicek ulang ke server supaya pembaruan langsung terpakai
+<FilesMatch "\.html$">
+Header set Cache-Control "no-cache"
+</FilesMatch>
