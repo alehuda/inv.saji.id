@@ -107,6 +107,20 @@ if (isset($ENT[$a])) {
         $m = '"id":' . (int)$r['id'] . ',"ver":' . (int)$r['ver'] . ',"seq":' . (int)$r['seq'] . ',"updatedAt":' . json_encode($r['updated_at']) . ',"updatedBy":' . json_encode($r['updated_by'], JSON_UNESCAPED_UNICODE);
         return rtrim(substr($d, 0, -1)) === '{' ? '{' . $m . '}' : substr($d, 0, -1) . ',' . $m . '}';
     };
+    // data supplier dipotong sesuai peran: keuangan hanya peran pengelola, kontak untuk pengelola dan Head
+    $hide = array();
+    if ($a === 'suppliers' && !in_array($u['role'], WRITE_MASTER, true)) {
+        $hide = array('bayar', 'termin', 'bank', 'rek', 'an');
+        if (!isset(HEAD_DEPT[$u['role']])) $hide = array_merge($hide, array('pic', 'picTel', 'picEmail', 'alamat', 'ket', 'tel', 'pics'));
+    }
+    $view = function ($r) use ($row, $hide) {
+        if ($r['status'] === 'Dihapus') return '{"id":' . (int)$r['id'] . ',"ver":' . (int)$r['ver'] . ',"seq":' . (int)$r['seq'] . ',"_del":true}';
+        $t = $row($r);
+        if (!$hide) return $t;
+        $o = json_decode($t);
+        foreach ($hide as $k) unset($o->$k);
+        return json_encode($o, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    };
     $dataOf = function ($o) {  // objek data dari body, tanpa penanda server
         if (!is_object($o)) return null;
         foreach (array('id', 'ver', 'seq', 'updatedAt', 'updatedBy') as $k) unset($o->$k);
@@ -122,10 +136,10 @@ if (isset($ENT[$a])) {
     };
     if ($method === 'GET') {
         $since = isset($_GET['since']) ? (int)$_GET['since'] : 0;
-        $rows = q("SELECT * FROM $tbl WHERE seq>? ORDER BY id", array($since))->fetchAll();
+        $rows = q("SELECT * FROM $tbl WHERE seq>?" . ($since === 0 ? " AND status<>'Dihapus'" : '') . " ORDER BY id", array($since))->fetchAll();
         $seq = (int)q("SELECT v FROM meta WHERE k='seq'")->fetch()['v'];
         header('Content-Type: application/json; charset=utf-8'); header('Cache-Control: no-store');
-        echo '{"ok":true,"seq":' . $seq . ',"full":' . ($since === 0 ? 'true' : 'false') . ',"rows":[' . implode(',', array_map($row, $rows)) . ']}';
+        echo '{"ok":true,"seq":' . $seq . ',"full":' . ($since === 0 ? 'true' : 'false') . ',"rows":[' . implode(',', array_map($view, $rows)) . ']}';
         exit;
     }
     if ($method === 'POST' && $b === '') {            // tambah baru
@@ -151,7 +165,18 @@ if (isset($ENT[$a])) {
         $cur = q("SELECT * FROM $tbl WHERE id=?", array($b))->fetch();
         if (!$cur) { db()->rollBack(); fail(404, 'Data tidak ditemukan.'); }
         $old = json_decode($cur['data'], true);
+        if ($cur['status'] === 'Dihapus') { db()->rollBack(); fail(404, 'Data sudah dihapus.'); }
         if (!$can($old) || !$can($d)) { db()->rollBack(); fail(403, 'Peran Anda tidak boleh mengubah data ini.'); }
+        if ($a === 'items' && isset(HEAD_DEPT[$u['role']])) {   // data halal hanya Purchasing, CFO, Manager, Superadmin
+            $nz = function ($v) use (&$nz) {
+                if (!is_array($v)) return $v;
+                if ($v && array_keys($v) !== range(0, count($v) - 1)) ksort($v);
+                return array_map($nz, $v);
+            };
+            if (json_encode($nz(isset($old['halal']) ? $old['halal'] : null)) !== json_encode($nz(isset($d['halal']) ? $d['halal'] : null))) {
+                db()->rollBack(); fail(403, 'Data halal hanya boleh diubah oleh Purchasing, CFO, atau Manager.');
+            }
+        }
         if ((int)$cur['ver'] !== $ver) { db()->rollBack(); header('Content-Type: application/json; charset=utf-8'); http_response_code(409); echo '{"ok":false,"error":"Data sudah diubah orang lain. Muat ulang dulu.","current":' . $row($cur) . '}'; exit; }
         $seq = next_seq();
         q("UPDATE $tbl SET name=?, status=?, data=?, ver=ver+1, seq=?, updated_at=?, updated_by=? WHERE id=?",
@@ -161,6 +186,18 @@ if (isset($ENT[$a])) {
         audit($u, 'ubah', $label, $b, $d['name'] . ' [' . implode(',', array_slice($ch, 0, 8)) . ']');
         db()->commit();
         out(200, array('ok' => true, 'ver' => $ver + 1, 'seq' => $seq));
+    }
+    if ($method === 'DELETE' && ctype_digit($b)) {    // hapus item: ditandai, agar perangkat lain ikut menghapus
+        if ($a !== 'items') fail(405, 'Metode tidak didukung.');
+        need_role(array('superadmin', 'cfo', 'purchasing'));
+        db()->beginTransaction();
+        $cur = q("SELECT * FROM items WHERE id=?", array($b))->fetch();
+        if (!$cur || $cur['status'] === 'Dihapus') { db()->rollBack(); out(200, array('ok' => true)); }
+        $seq = next_seq();
+        q("UPDATE items SET status='Dihapus', ver=ver+1, seq=?, updated_at=?, updated_by=? WHERE id=?", array($seq, now(), $u['name'], $b));
+        audit($u, 'hapus', 'item', $b, $cur['name']);
+        db()->commit();
+        out(200, array('ok' => true, 'seq' => $seq));
     }
     if ($method === 'POST' && $b === 'import') {      // impor awal / massal, hanya Superadmin
         need_role(array('superadmin'));
@@ -191,8 +228,9 @@ if (isset($ENT[$a])) {
 
 // ---------- jejak perubahan ----------
 if ($a === 'audit' && $method === 'GET') {
-    need_role(array('superadmin', 'cfo', 'manager'));
+    $u = need_role(array('superadmin', 'cfo', 'manager', 'purchasing'));
     $lim = min(500, max(1, isset($_GET['limit']) ? (int)$_GET['limit'] : 100));
-    out(200, array('ok' => true, 'rows' => q("SELECT * FROM audit ORDER BY id DESC LIMIT $lim")->fetchAll()));
+    $w = $u['role'] === 'purchasing' ? "WHERE entity IN ('item','supplier')" : '';   // Purchasing tidak melihat catatan akun dan login
+    out(200, array('ok' => true, 'rows' => q("SELECT * FROM audit $w ORDER BY id DESC LIMIT $lim")->fetchAll()));
 }
 fail(404, 'Tidak ditemukan.');
