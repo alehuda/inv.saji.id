@@ -740,7 +740,7 @@ function lqList(){
  return lqBase().filter(function(i){return lqMatch(i);}).slice().sort(function(a,b){var x=lqVal(a,k),y=lqVal(b,k),ex=(x===""||x==null),ey=(y===""||y==null);if(ex&&ey)return 0;if(ex)return 1;if(ey)return -1;return (typeof x==="number"?x-y:String(x).localeCompare(String(y),"id"))*d;});
 }
 function depTxt(i){return (i.depts||[]).join(", ")||"-";}
-function hFlag(it){return halalState(it).k==="none"?' <span class="hflag" title="Data halal belum ada">Halal: belum ada data</span>':"";}
+function hFlag(it){return "";}
 function nm2(it,tag){return it.name!==it.panggil?"<"+tag+(tag==="div"?' class="mut nm2"':"")+">"+esc(it.name)+"</"+tag+">":"";}
 function supTxt(i){return (i.sup&&i.sup.length)?esc(i.sup.join(", ")):'<span class="mut">Belum diisi</span>';}
 function dotToggle(it){
@@ -794,7 +794,7 @@ function listItems(){
 SCREENS.items=function(el){
  head("Daftar Item",true);S.open=null;
  var sortOpts=COLS.filter(function(c){return c[0]!=="harga"||R().price;});
- el.innerHTML='<div class="itbar">'+((can("item")||can("itemNew"))?'<div class="actrow"><button class="ghost" type="button" data-go="impor">Impor item</button><button class="primary" type="button" data-go="itemNew">+ Tambah Item Baru</button></div>':'')+
+ el.innerHTML='<div class="itbar">'+((can("item")||can("itemNew"))?'<div class="actrow">'+(canImport()?'<button class="ghost" type="button" data-go="impor">Impor item</button>':'')+'<button class="primary" type="button" data-go="itemNew">+ Tambah Item Baru</button></div>':'')+
   '<div class="field"><input type="text" id="q" autocomplete="off" aria-label="Cari item" placeholder="Cari nama, nama panggil, atau istilah lain" value="'+esc(LQ.q)+'"></div>'+
   '<div class="tools"><button type="button" class="chip" id="fbtn" aria-pressed="false"></button><label class="lg" for="sortsel">Urutkan</label><select id="sortsel">'+sortOpts.map(function(c){return '<option value="'+c[0]+'"'+(LQ.sort===c[0]?' selected':'')+'>'+c[1]+'</option>';}).join("")+'</select><button type="button" class="sm" id="sortdir" aria-label="Balik urutan">'+(LQ.dir>0?"A–Z ▲":"Z–A ▼")+'</button><span class="cnt" id="cnt"></span></div>'+
   '<div class="chips" id="chips" hidden></div></div><div class="itlay"><div class="itwrap" id="list"></div></div><div class="pager" id="pager"></div>';
@@ -1455,6 +1455,7 @@ function lvFbList(){
   +[["Yang dilakukan",r.lakukan],["Yang terjadi",r.terjadi],["Yang diharapkan",r.harapan],["Usulan",r.usulan]].filter(function(x){return x[1];}).map(function(x){return '<div style="margin-top:8px"><span class="lg">'+x[0]+'</span><div>'+esc(x[1])+'</div></div>';}).join("")+'</div>';}).join(""):'<div class="empty">Belum ada masukan.</div>';
 }
 /* ---------- LIVE: impor item dari CSV ---------- */
+function canImport(){return !!LIVE&&(role==="superadmin"||role==="cfo");}
 var IMCOLS=[["brand","Brand",0],["prod","Nama Produk",1],["panggil","Nama Panggil",1],["tipe","Tipe",1],["divisi","Divisi",1],["kat","Kategori",1],["sub","Sub Kategori",1],["stor","Storage",0],["sup","Supplier",0],["bu","Satuan Dasar",1],["kem","Satuan Kemasan",1],["isi","Isi Bersih",1],["harga","Harga Beli",0],["bun","Satuan Bundling",0],["bis","Isi Bundling",0],["dasar","Dasar Halal",0],["jenis","Jenis Halal",0],["hprod","Produsen",0],["hneg","Negara Asal",0],["hpub","Penerbit Sertifikat",0],["hno","No Sertifikat",0],["hter","Tanggal Terbit",0],["hexp","Tanggal Berakhir",0]];
 function imParse(t){
  t=String(t||"").replace(/^﻿/,"");var first=t.split("\n")[0]||"",sep=(first.split(";").length>first.split(",").length)?";":",",rows=[],row=[],f="",q=false,i,c;
@@ -1505,7 +1506,7 @@ function imBuild(raw){
 }
 SCREENS.impor=function(el){
  head("Impor item",false);
- if(!can("item")&&!can("itemNew")){el.innerHTML='<div class="info">Peran Anda tidak boleh mengimpor item.</div>';return;}
+ if(!canImport()){el.innerHTML='<div class="info">Impor item hanya untuk Superadmin dan CFO.</div>';return;}
  el.innerHTML='<div class="info">Impor menambah item baru dari file CSV (Excel: Simpan sebagai CSV). Item dengan nama yang sudah ada dilewati, jadi data yang sudah diisi tidak tertimpa. Satuan: Level 1 Satuan Dasar, Level 2 Satuan Kemasan (satu per baris), Level 3 Satuan Bundling.</div>'
  +'<div class="field"><button type="button" class="ghost" id="imTpl">Unduh templat CSV</button></div>'
  +'<div class="field"><label for="imf">File CSV</label><input type="file" id="imf" accept=".csv,text/csv"></div><div id="imres"></div>';
@@ -1766,7 +1767,7 @@ var GROUPS=[
  ["Aktivitas",[["riwayat","Riwayat","Catatan aktivitas","always","clock"]]]
 ];
 if(LIVE)GROUPS.push(["Administrasi",[["jejak","Jejak perubahan","Siapa mengubah apa","jejak","clock"],["akun","Kelola akun","Tambah dan atur akun","akun","clip"],["masukan","Masukan penguji","Laporan dan saran dari pengguna","masukan","clip"]]]);
-function allowed(x){if(LIVE)return x[0]==="items"||(x[0]==="suppliers"&&(can("supplier")||can("supplierView")))||(x[0]==="jejak"&&can("jejak"))||(x[0]==="akun"&&can("akun"))||(x[0]==="masukan"&&can("masukan"))||(x[0]==="impor"&&(can("item")||can("itemNew")));return x[3]==="supplier"?(can("supplier")||can("supplierView")):x[3]==="item"?(can("item")||can("kualif")||can("itemEdit")):x[3]==="always"?true:x[3]?can(x[3]):(can("opname")||can("opnameView"));}
+function allowed(x){if(LIVE)return x[0]==="items"||(x[0]==="suppliers"&&(can("supplier")||can("supplierView")))||(x[0]==="jejak"&&can("jejak"))||(x[0]==="akun"&&can("akun"))||(x[0]==="masukan"&&can("masukan"))||(x[0]==="impor"&&canImport());return x[3]==="supplier"?(can("supplier")||can("supplierView")):x[3]==="item"?(can("item")||can("kualif")||can("itemEdit")):x[3]==="always"?true:x[3]?can(x[3]):(can("opname")||can("opnameView"));}
 function renderNav(){
  if(!role){$("nav").innerHTML="";return;}
  var cur=NAVOF[screen]||screen;
