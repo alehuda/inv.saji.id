@@ -226,6 +226,75 @@ if (isset($ENT[$a])) {
     fail(404, 'Tidak ditemukan.');
 }
 
+// ---------- berkas dokumen halal (surat pernyataan, alur produksi) ----------
+function files_dir() { $d = saji_home() . '/inv-files'; if (!is_dir($d)) @mkdir($d, 0750, true); return $d; }
+if ($a === 'files') {
+    if ($method === 'POST' && $b === '') {
+        need_role(WRITE_MASTER);
+        $name = trim((string)(isset($body['name']) ? $body['name'] : ''));
+        $bin = base64_decode((string)(isset($body['data']) ? $body['data'] : ''), true);
+        if ($bin === false || $bin === '') fail(422, 'Berkas tidak terbaca.');
+        if (strlen($bin) > 4 * 1024 * 1024) fail(413, 'Berkas terlalu besar (maksimal 4 MB).');
+        $h4 = substr($bin, 0, 4); $ext = '';
+        if ($h4 === '%PDF') $ext = 'pdf';
+        elseif ($h4 === "\x89PNG") $ext = 'png';
+        elseif (substr($bin, 0, 3) === "\xFF\xD8\xFF") $ext = 'jpg';
+        elseif ($h4 === "PK\x03\x04" && strtolower(substr($name, -5)) === '.docx') $ext = 'docx';
+        if ($ext === '') fail(422, 'Jenis berkas harus PDF, DOCX, JPG, atau PNG.');
+        $fid = bin2hex(random_bytes(16)) . '.' . $ext;
+        if (@file_put_contents(files_dir() . '/' . $fid, $bin) === false) fail(500, 'Berkas tidak bisa disimpan.');
+        audit(me(), 'unggah', 'item', 0, 'Dokumen halal: ' . substr(preg_replace('/[^\w\s.\-()]/u', '', $name), 0, 80));
+        out(200, array('ok' => true, 'fid' => $fid));
+    }
+    if ($method === 'GET' && preg_match('/^[a-f0-9]{32}\.(pdf|png|jpg|docx)$/', $b)) {
+        need_role(array_keys(ROLES));
+        $f = files_dir() . '/' . $b;
+        if (!file_exists($f)) fail(404, 'Berkas tidak ditemukan.');
+        $ext = substr($b, -3) === 'ocx' ? 'docx' : substr($b, -3);
+        $mt = array('pdf' => 'application/pdf', 'png' => 'image/png', 'jpg' => 'image/jpeg', 'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+        header('Content-Type: ' . $mt[$ext]); header('X-Content-Type-Options: nosniff'); header('Cache-Control: private, no-store');
+        header('Content-Disposition: ' . ($ext === 'docx' ? 'attachment' : 'inline') . '; filename="dokumen-halal.' . $ext . '"');
+        readfile($f); exit;
+    }
+    fail(404, 'Tidak ditemukan.');
+}
+
+// ---------- pindah kategori (sekali jalan, Superadmin) ----------
+if ($a === 'admin' && $b === 'migrate-kategori' && $method === 'POST') {
+    $u = need_role(array('superadmin'));
+    $SUBMAP = array('Ready Cake & Bread' => array('Bakery & Baking', 'Ready Cake & Bread'), 'Baking Ingredient' => array('Bakery & Baking', 'Baking Ingredient'),
+        'Biscuit & Crumble' => array('Bakery & Baking', 'Biscuit & Crumble'), 'Dessert & Topping' => array('Dessert & Topping', 'Topping & Pelengkap'),
+        'Ice Cream' => array('Frozen', 'Ice Cream'), 'Frozen Snack' => array('Frozen', 'Frozen Snack'));
+    $n = 0; db()->beginTransaction();
+    foreach (q("SELECT id,name,data FROM items WHERE data LIKE '%Bakery Dessert & Frozen%'")->fetchAll() as $r) {
+        $sub = preg_match('/"sub":"([^"]*)"/', $r['data'], $m) ? $m[1] : '';
+        if ($sub === '' || !isset($SUBMAP[$sub])) {
+            $nm = strtolower($r['name']);
+            if (strpos($nm, 'ice cream') !== false) $sub = 'Ice Cream';
+            elseif (strpos($nm, 'crumble') !== false) $sub = 'Biscuit & Crumble';
+            elseif (strpos($nm, 'pasta') !== false || strpos($nm, 'baking') !== false) $sub = 'Baking Ingredient';
+            else $sub = 'Ready Cake & Bread';
+        }
+        list($nk, $ns) = $SUBMAP[$sub];
+        $d = str_replace('"kat":"Bakery Dessert & Frozen"', '"kat":' . json_encode($nk), $r['data']);
+        $d = preg_match('/"sub":"[^"]*"/', $d) ? preg_replace('/"sub":"[^"]*"/', '"sub":' . json_encode($ns), $d, 1) : $d;
+        $seq = next_seq();
+        q("UPDATE items SET data=?, ver=ver+1, seq=?, updated_at=?, updated_by=? WHERE id=?", array($d, $seq, now(), $u['name'], $r['id']));
+        audit($u, 'ubah', 'item', $r['id'], $r['name'] . ' [kat,sub] kategori dipecah');
+        $n++;
+    }
+    db()->commit();
+    out(200, array('ok' => true, 'dipindah' => $n));
+}
+
+// ---------- masukan penguji (hanya Superadmin) ----------
+if ($a === 'feedback' && $method === 'GET') {
+    need_role(array('superadmin'));
+    $f = saji_home() . '/feedback-inventory/feedback.jsonl';
+    $rows = array();
+    if (file_exists($f)) foreach (explode("\n", (string)file_get_contents($f)) as $ln) { $r = json_decode($ln, true); if (is_array($r)) $rows[] = $r; }
+    out(200, array('ok' => true, 'rows' => array_slice(array_reverse($rows), 0, 300)));
+}
 // ---------- jejak perubahan ----------
 if ($a === 'audit' && $method === 'GET') {
     $u = need_role(array('superadmin', 'cfo', 'manager', 'purchasing'));
